@@ -1,13 +1,19 @@
 package sistemateatros;
 
+import org.mindrot.jbcrypt.BCrypt;
 import sistemateatros.authmanager.AuthenticationManager;
+import sistemateatros.controllers.AuthenticationController;
 import sistemateatros.database.DatabaseConnection;
 
 public class Main {
 
     public static void main(String[] args) {
-        // Database and authentication setup
+        // Authentication Setup
         AuthenticationManager.loadAuthenticationUsers();
-        DatabaseConnection.setupServerConnection();
+
+        // Start application
+        AuthenticationController authenticationController = new AuthenticationController();
     }
+
+
 }

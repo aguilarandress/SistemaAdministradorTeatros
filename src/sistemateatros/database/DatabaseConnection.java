@@ -15,32 +15,16 @@ public class DatabaseConnection {
     private static SQLServerDataSource dataSource = new SQLServerDataSource();
 
     /**
-     * Sets config for server connection
-     */
-    public static void setupServerConnection() {
-        dataSource.setServerName("localhost");
-        dataSource.setPortNumber(1433);
-        dataSource.setDatabaseName("SISTEMA_TEATROS");
-    }
-
-    /**
      * Se conecta a la base de datos como administrador del sistema
      */
     public static void connectAsSysAdmin() {
+        dataSource.setServerName("localhost");
+        dataSource.setPortNumber(1433);
+        dataSource.setDatabaseName("SISTEMA_TEATROS");
         // Get sysadmin credentials
         User sysAdmin = AuthenticationManager.getSysAdmin();
         dataSource.setUser(sysAdmin.getUsername());
         dataSource.setPassword(sysAdmin.getPassword());
-        createDatabaseConnection();
-    }
-
-    // TODO: Implementar conexion a base de datos con admin teatro
-    // TODO: Implementar conexion a base de datos con agente teatro
-
-    /**
-     * Crea la conexion a la base de datos
-     */
-    private static void createDatabaseConnection() {
         try {
             connection = dataSource.getConnection();
             System.out.println("Connected successfuly...");
@@ -48,6 +32,34 @@ public class DatabaseConnection {
             System.out.println("**ERROR** En la conexion a la base");
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Se conecta a la base de datos como administrador del teatro
+     */
+    public static void connectAsTeatroAdmin() {
+        // TODO: Implementar conexion a base de datos con admin teatro
+    }
+
+    /**
+     * Se conecta a la base de datos como agente de teatro
+     */
+    public static void connectAsAgenteTeatro() {
+        // TODO: Implementar conexion a base de datos con agente teatro
+    }
+
+    /**
+     * Se desconecta del servidor de la base de datos
+     */
+    public static void closeConnection() {
+        try {
+            connection.close();
+            System.out.println("Disconnected successfuly...");
+        } catch (SQLException e) {
+            System.out.println("**ERROR** Al desconectarse de la base de datos");
+            e.printStackTrace();
+        }
+
     }
 
     /**
