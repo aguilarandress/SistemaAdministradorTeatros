@@ -54,12 +54,12 @@ public class DatabaseConnection {
     public static void closeConnection() {
         try {
             connection.close();
+            connection = null;
             System.out.println("Disconnected successfuly...");
         } catch (SQLException e) {
             System.out.println("**ERROR** Al desconectarse de la base de datos");
             e.printStackTrace();
         }
-
     }
 
     /**
