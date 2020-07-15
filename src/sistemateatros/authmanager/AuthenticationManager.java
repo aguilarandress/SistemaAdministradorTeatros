@@ -1,18 +1,24 @@
 package sistemateatros.authmanager;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import io.github.cdimascio.dotenv.Dotenv;
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
+import org.jasypt.properties.EncryptableProperties;
+import org.jasypt.salt.RandomSaltGenerator;
 import sistemateatros.models.User;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
 
 /**
  * Clase para leer los usuarios del archivo de configuracion
  */
 public class AuthenticationManager {
 
+    private static String host;
+    private static int port;
+    private static String databaseName;
     private static User sysAdmin;
     // TODO: Definir la cuenta para el agente de teatro
     // TODO: Definir la cuenta para el administrador de teatro
@@ -21,30 +27,46 @@ public class AuthenticationManager {
      * Carga los usuarios para la base de datos
      */
     public static void loadAuthenticationUsers() {
-        // JSON parser object to parse read file
-        JSONParser jsonParser = new JSONParser();
-        try (FileReader reader = new FileReader("config/auth.json"))
-        {
-            // Read JSON file
-            Object jsonObj = jsonParser.parse(reader);
-            JSONObject authenticationUsers = (JSONObject) jsonObj;
-            // Get sysadmin account
-            Object sysAdminObj = authenticationUsers.get("sysadmin");
-            JSONObject sysAdminJSON = (JSONObject) sysAdminObj;
-            // Get sysadmin credentials
-            String sysAdminUsername = (String) sysAdminJSON.get("user");
-            String sysAdminPassword = (String) sysAdminJSON.get("password");
-            sysAdmin = new User(sysAdminUsername, sysAdminPassword);
-
-            // TODO: Obtener cuenta del administrador de teatros
-            // TODO: Obtener cuenta del agente de teatro
+        // Get secret key
+        Dotenv dotenv = Dotenv.load();
+        String secretkey = dotenv.get("SECRET_KEY");
+        // Create encryptor
+        StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+        encryptor.setPassword(secretkey);
+        encryptor.setSaltGenerator(new RandomSaltGenerator());
+        // Load properties file
+        Properties props = new EncryptableProperties(encryptor);
+        try {
+            props.load(new FileInputStream("./config/application.properties"));
+            // Get server properties
+            host = props.getProperty("datasource.host");
+            databaseName = props.getProperty("datasource.name");
+            port = Integer.parseInt(props.getProperty("datasource.port"));
+            // Get system admin properties
+            sysAdmin = new User();
+            sysAdmin.setUsername(props.getProperty("datasource.sysadminusername"));
+            sysAdmin.setPassword(props.getProperty("datasource.sysadminpassword"));
+            // TODO Obtener los datos del administrador de teatro
+            // TODO Obtener los datos del agente de teatro
         } catch (FileNotFoundException e) {
+            System.out.println("**ERROR** File not found...");
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+            System.out.println("**ERROR** IOException...");
             e.printStackTrace();
         }
+    }
+
+    public static int getPort() {
+        return port;
+    }
+
+    public static String getDatabaseName() {
+        return databaseName;
+    }
+
+    public static String getHost() {
+        return host;
     }
 
     /**
@@ -54,4 +76,5 @@ public class AuthenticationManager {
     public static User getSysAdmin() {
         return sysAdmin;
     }
+
 }

@@ -18,9 +18,9 @@ public class DatabaseConnection {
      * Se conecta a la base de datos como administrador del sistema
      */
     public static void connectAsSysAdmin() {
-        dataSource.setServerName("localhost");
-        dataSource.setPortNumber(1433);
-        dataSource.setDatabaseName("SISTEMA_TEATROS");
+        dataSource.setServerName(AuthenticationManager.getHost());
+        dataSource.setPortNumber(AuthenticationManager.getPort());
+        dataSource.setDatabaseName(AuthenticationManager.getDatabaseName());
         // Get sysadmin credentials
         User sysAdmin = AuthenticationManager.getSysAdmin();
         dataSource.setUser(sysAdmin.getUsername());
