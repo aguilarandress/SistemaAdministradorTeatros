@@ -37,7 +37,7 @@ public class AuthenticationView {
     }
 
     public String getPassword() {
-        return this.sysAdminPasswordField.getPassword().toString();
+        return new String(this.sysAdminPasswordField.getPassword());
     }
 
     public void close() {

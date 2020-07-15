@@ -20,8 +20,8 @@ public class AuthenticationManager {
     private static int port;
     private static String databaseName;
     private static User sysAdmin;
+    private static User teatroAdmin;
     // TODO: Definir la cuenta para el agente de teatro
-    // TODO: Definir la cuenta para el administrador de teatro
 
     /**
      * Carga los usuarios para la base de datos
@@ -46,7 +46,10 @@ public class AuthenticationManager {
             sysAdmin = new User();
             sysAdmin.setUsername(props.getProperty("datasource.sysadminusername"));
             sysAdmin.setPassword(props.getProperty("datasource.sysadminpassword"));
-            // TODO Obtener los datos del administrador de teatro
+            // Get teatro admin properties
+            teatroAdmin = new User();
+            teatroAdmin.setUsername(props.getProperty("datasource.teatroadminusername"));
+            teatroAdmin.setPassword(props.getProperty("datasource.teatroadminpassword"));
             // TODO Obtener los datos del agente de teatro
         } catch (FileNotFoundException e) {
             System.out.println("**ERROR** File not found...");
@@ -57,14 +60,26 @@ public class AuthenticationManager {
         }
     }
 
+    /**
+     * Obtiene el puerto del servidor de la base de datos
+     * @return El puerto del servidor de la base de datos
+     */
     public static int getPort() {
         return port;
     }
 
+    /**
+     * Obtiene el nombre de la base de datos
+     * @return El nombre de la base de datos
+     */
     public static String getDatabaseName() {
         return databaseName;
     }
 
+    /**
+     * Obtiene el host de la base de datos
+     * @return El host de la base de datos
+     */
     public static String getHost() {
         return host;
     }
@@ -77,4 +92,11 @@ public class AuthenticationManager {
         return sysAdmin;
     }
 
+    /**
+     * Obtiene el administrador de teatros
+     * @return La cuenta del administrador de teatros
+     */
+    public static User getTeatroAdmin() {
+        return teatroAdmin;
+    }
 }
