@@ -52,13 +52,15 @@ public class DatabaseConnection {
      * Se desconecta del servidor de la base de datos
      */
     public static void closeConnection() {
-        try {
-            connection.close();
-            connection = null;
-            System.out.println("Disconnected successfuly...");
-        } catch (SQLException e) {
-            System.out.println("**ERROR** Al desconectarse de la base de datos");
-            e.printStackTrace();
+        if (connection != null) {
+            try {
+                connection.close();
+                connection = null;
+                System.out.println("Disconnected successfuly...");
+            } catch (SQLException e) {
+                System.out.println("**ERROR** Al desconectarse de la base de datos");
+                e.printStackTrace();
+            }
         }
     }
 
