@@ -11,8 +11,6 @@ public class SystemAdminView {
     private JLabel agregarTeatroTitle;
     private JTextField teatroNombreField;
     private JLabel teatroNombreLabel;
-    private JLabel teatroDireccionLabel;
-    private JTextField teatroDireccionField;
     private JTextField telefonoAdministracionField;
     private JLabel telefonoAdministracionLabel;
     private JLabel telefonoBoleteriaLabel;
@@ -46,5 +44,33 @@ public class SystemAdminView {
 
     public JButton getAgregarTeatroBtn() {
         return agregarTeatroBtn;
+    }
+
+    public JTextField getTeatroNombreField() {
+        return teatroNombreField;
+    }
+
+    public JTextField getTelefonoAdministracionField() {
+        return telefonoAdministracionField;
+    }
+
+    public JTextField getTelefonoBoleteriaField() {
+        return telefonoBoleteriaField;
+    }
+
+    public JTextField getTeatroCorreoField() {
+        return teatroCorreoField;
+    }
+
+    public JTextField getTeatroSitioWebField() {
+        return teatroSitioWebField;
+    }
+
+    public void clearAgregarTeatroFields() {
+        teatroNombreField.setText("");
+        teatroCorreoField.setText("");
+        telefonoAdministracionField.setText("");
+        telefonoBoleteriaField.setText("");
+        teatroSitioWebField.setText("");
     }
 }
