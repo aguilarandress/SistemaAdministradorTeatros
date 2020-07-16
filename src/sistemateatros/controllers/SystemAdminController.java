@@ -1,11 +1,14 @@
 package sistemateatros.controllers;
 
-import sistemateatros.views.AuthenticationView;
+import sistemateatros.views.SystemAdminView;
 
 public class SystemAdminController {
 
-    public SystemAdminController() {
+    private SystemAdminView systemAdminView;
 
+    public SystemAdminController() {
+        this.systemAdminView = new SystemAdminView();
+        this.systemAdminView.setVisible();
     }
 
 }
