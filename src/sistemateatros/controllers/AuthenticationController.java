@@ -77,8 +77,9 @@ public class AuthenticationController {
                 return;
             }
             authenticationView.displayMessage("Loggin in...", true);
-
-            // TODO: Crear conexion para administrador de teatros
+            TheaterAdminController theaterAdminController= new TheaterAdminController();
+            authenticationView.hide();
+            // TODO: Crear el controlador de admin teatro
         }
     }
 }

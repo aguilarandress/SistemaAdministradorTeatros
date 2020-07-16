@@ -33,6 +33,9 @@ public class AuthenticationView {
     public void setVisible() {
         this.frame.setVisible(true);
     }
+    public void hide() { this.frame.setVisible(false);
+    }
+
 
     public void displayMessage(String message, boolean success) {
         JOptionPane.showMessageDialog(this.frame, message, success ? "EXITO" : "ERROR",
