@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Clase para teatros en la BD
@@ -22,6 +23,33 @@ public class TeatrosJDBC implements TeatrosDAO {
     @Override
     public void setConnection(Connection connection) {
         this.connection = connection;
+    }
+
+    /**
+     * Obtiene todos los teatros
+     * @return Todos los teatros de la base de datos
+     */
+    @Override
+    public ArrayList<Teatro> getTeatros() {
+        ArrayList<Teatro> teatros = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetTeatros");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Teatro teatro = new Teatro();
+                teatro.setId(resultSet.getInt("Id"));
+                teatro.setNombre(resultSet.getString("Nombre"));
+                teatro.setSitioWeb(resultSet.getString("SitioWeb"));
+                teatro.setCorreo(resultSet.getString("Correo"));
+                teatro.setCapacidad(resultSet.getInt("Capacidad"));
+                teatro.setTelefonoAdministracion(resultSet.getString("TelefonoAdministracion"));
+                teatro.setTelefonoBoleteria(resultSet.getString("TelefonoBoleteria"));
+                teatros.add(teatro);
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return teatros;
     }
 
     /**

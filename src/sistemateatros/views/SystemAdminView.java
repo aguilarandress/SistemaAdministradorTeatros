@@ -20,6 +20,11 @@ public class SystemAdminView {
     private JLabel teatroSitioWebLabel;
     private JTextField teatroSitioWebField;
     private JButton agregarTeatroBtn;
+    private JPanel agregarAsientosTab;
+    private JLabel agregarBloqueTitle;
+    private JComboBox teatroAgregarBloqueBox;
+    private JTextField nombreBloqueField;
+    private JButton agregarBloqueBtn;
 
     public SystemAdminView() {
         this.frame = new JFrame("Administrador de sistemas");

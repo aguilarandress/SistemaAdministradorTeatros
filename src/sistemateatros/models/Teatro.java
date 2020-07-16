@@ -2,6 +2,7 @@ package sistemateatros.models;
 
 public class Teatro {
     private int id;
+    private int capacidad;
     private String nombre;
     private String correo;
     private String sitioWeb;
@@ -30,12 +31,20 @@ public class Teatro {
         this.telefonoAdministracion = telefonoAdministracion;
     }
 
+    public void setCapacidad(int capacidad) {
+        this.capacidad = capacidad;
+    }
+
     public void setTelefonoBoleteria(String telefonoBoleteria) {
         this.telefonoBoleteria = telefonoBoleteria;
     }
 
     public int getId() {
         return id;
+    }
+
+    public int getCapacidad() {
+        return capacidad;
     }
 
     public String getNombre() {
@@ -56,5 +65,10 @@ public class Teatro {
 
     public String getTelefonoBoleteria() {
         return telefonoBoleteria;
+    }
+
+    @Override
+    public String toString() {
+        return this.getNombre();
     }
 }
