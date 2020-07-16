@@ -1,6 +1,7 @@
 package sistemateatros.jdbc;
 
 import sistemateatros.daos.TeatrosDAO;
+import sistemateatros.models.Bloque;
 import sistemateatros.models.Teatro;
 
 import java.sql.Connection;
@@ -90,6 +91,38 @@ public class TeatrosJDBC implements TeatrosDAO {
             preparedStatement.setString(4, teatro.getSitioWeb());
             preparedStatement.setString(5, teatro.getTelefonoAdministracion());
             preparedStatement.setString(6, teatro.getTelefonoBoleteria());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Bloque getBloqueByNombre(int idTeatro, String nombre) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByNombreBloques ?, ?");
+            preparedStatement.setString(1, nombre);
+            preparedStatement.setInt(2, idTeatro);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            boolean bloqueFound = resultSet.next();
+            if (!bloqueFound) {
+                return null;
+            }
+            Bloque bloque = new Bloque();
+            bloque.setNombre(resultSet.getString("Nombre"));
+            return bloque;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public void crearBloque(Bloque bloque) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC CreateBloques ?, ?");
+            preparedStatement.setString(1, bloque.getNombre());
+            preparedStatement.setInt(2, bloque.getIdTeatro());
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();

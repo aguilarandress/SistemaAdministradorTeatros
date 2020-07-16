@@ -1,5 +1,7 @@
 package sistemateatros.models;
 
+import java.util.ArrayList;
+
 public class Teatro {
     private int id;
     private int capacidad;
@@ -8,6 +10,7 @@ public class Teatro {
     private String sitioWeb;
     private String telefonoAdministracion;
     private String telefonoBoleteria;
+    private ArrayList<Bloque> bloques;
 
     public Teatro() {}
 

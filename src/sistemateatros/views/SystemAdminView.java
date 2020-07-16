@@ -1,11 +1,13 @@
 package sistemateatros.views;
 
+import sistemateatros.models.Teatro;
+
 import javax.swing.*;
 
 public class SystemAdminView {
 
     private JFrame frame;
-    private JTabbedPane agregarTeatroTab;
+    private JTabbedPane tabbedPane;
     private JPanel jpanel;
     private JPanel agregarTeatroPanel;
     private JLabel agregarTeatroTitle;
@@ -20,17 +22,29 @@ public class SystemAdminView {
     private JLabel teatroSitioWebLabel;
     private JTextField teatroSitioWebField;
     private JButton agregarTeatroBtn;
-    private JPanel agregarAsientosTab;
+    private JPanel agregarBloquesTab;
     private JLabel agregarBloqueTitle;
-    private JComboBox teatroAgregarBloqueBox;
+    private JComboBox<Teatro> teatroAgregarBloqueBox;
+    private DefaultComboBoxModel<Teatro> teatroComboBoxModel;
+
     private JTextField nombreBloqueField;
     private JButton agregarBloqueBtn;
+    private JPanel agregarFilasTab;
+    private JComboBox seleccionarTeatroAgregarFilaBox;
+    private JComboBox seleccionarBloqueAgregarFilaBox;
+    private JTextField letraFilaField;
+    private JTextField capacidadFilaField;
+    private JButton agregarFilaBtn;
+    private JLabel agregarFilaTitle;
 
     public SystemAdminView() {
         this.frame = new JFrame("Administrador de sistemas");
         this.frame.setContentPane(this.jpanel);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.pack();
+        // Set models
+        this.teatroComboBoxModel = new DefaultComboBoxModel<>();
+        this.teatroAgregarBloqueBox.setModel(teatroComboBoxModel);
         this.frame.setSize(800, 600);
     }
 
@@ -63,6 +77,14 @@ public class SystemAdminView {
         return telefonoBoleteriaField;
     }
 
+    public JTabbedPane getTabbedPane() {
+        return tabbedPane;
+    }
+
+    public JComboBox<Teatro> getTeatroAgregarBloqueBox() {
+        return teatroAgregarBloqueBox;
+    }
+
     public JTextField getTeatroCorreoField() {
         return teatroCorreoField;
     }
@@ -71,11 +93,23 @@ public class SystemAdminView {
         return teatroSitioWebField;
     }
 
+    public JTextField getNombreBloqueField() {
+        return nombreBloqueField;
+    }
+
     public void clearAgregarTeatroFields() {
         teatroNombreField.setText("");
         teatroCorreoField.setText("");
         telefonoAdministracionField.setText("");
         telefonoBoleteriaField.setText("");
         teatroSitioWebField.setText("");
+    }
+
+    public void clearAgregarBloqueFields() {
+        nombreBloqueField.setText("");
+    }
+
+    public JButton getAgregarBloqueBtn() {
+        return agregarBloqueBtn;
     }
 }

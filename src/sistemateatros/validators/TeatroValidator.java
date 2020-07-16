@@ -2,6 +2,7 @@ package sistemateatros.validators;
 
 import sistemateatros.database.DatabaseConnection;
 import sistemateatros.jdbc.TeatrosJDBC;
+import sistemateatros.models.Bloque;
 import sistemateatros.models.Teatro;
 import java.util.regex.Pattern;
 import java.util.ArrayList;
@@ -41,6 +42,30 @@ public class TeatroValidator {
         // Verificar nombre repetido
         Teatro teatroConNombre = teatrosJDBC.getTeatroByNombre(teatro.getNombre());
         if (teatroConNombre != null) {
+            errores.add("Nombre ya existe");
+        }
+        return errores;
+    }
+
+    /**
+     * Valida cuando se agrega un bloque nuevo
+     * @param bloque El nuevo bloque
+     * @return Los errores de validacion
+     */
+    public static ArrayList<String> validarBloque(Bloque bloque) {
+        ArrayList<String> errores = new ArrayList<String>();
+        // Validar campos
+        if (bloque.getNombre().isEmpty() || bloque.getNombre().length() > 20) {
+            errores.add("Nombre invalido");
+        }
+        if (errores.size() > 0) {
+            return  errores;
+        }
+        // Validar repetidos
+        TeatrosJDBC teatrosJDBC = new TeatrosJDBC();
+        teatrosJDBC.setConnection(DatabaseConnection.getConnection());
+        Bloque bloqueConNombre = teatrosJDBC.getBloqueByNombre(bloque.getIdTeatro(), bloque.getNombre());
+        if (bloqueConNombre != null) {
             errores.add("Nombre ya existe");
         }
         return errores;
