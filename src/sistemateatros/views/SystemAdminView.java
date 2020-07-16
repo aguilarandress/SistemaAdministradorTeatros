@@ -43,4 +43,8 @@ public class SystemAdminView {
     public void close() {
         this.frame.dispose();
     }
+
+    public JButton getAgregarTeatroBtn() {
+        return agregarTeatroBtn;
+    }
 }
