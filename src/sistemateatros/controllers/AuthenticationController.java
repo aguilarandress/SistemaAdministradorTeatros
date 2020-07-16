@@ -7,7 +7,10 @@ import org.mindrot.jbcrypt.BCrypt;
 import sistemateatros.database.DatabaseConnection;
 import sistemateatros.jdbc.AuthenticationJDBC;
 import sistemateatros.models.SystemAdmin;
+import sistemateatros.models.TheaterAdmin;
 import sistemateatros.views.AuthenticationView;
+
+import javax.xml.crypto.Data;
 
 /**
  * Authentication Controller class
@@ -21,6 +24,7 @@ public class AuthenticationController {
         this.authenticationView.setVisible();
         // Set action listeners
         this.authenticationView.getLoginSysAdminBtn().addActionListener(new SystemAdminLoginListener());
+        this.authenticationView.getLoginTeaAdminBtn().addActionListener(new AdministradorTeatroLoginListener());
     }
 
     private class SystemAdminLoginListener implements ActionListener {
@@ -49,11 +53,31 @@ public class AuthenticationController {
         }
     }
 
-    private class AdministradorTeatro implements ActionListener {
+    private class AdministradorTeatroLoginListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             // Create connection
             DatabaseConnection.closeConnection();
+            DatabaseConnection.connectAsTeatroAdmin();
+            String username = authenticationView.getTheaterUsername();
+            String password = authenticationView.getTheaterPassword();
+            //Obtener Admministradores de teatros
+            AuthenticationJDBC authenticationJDBC = new AuthenticationJDBC();
+            authenticationJDBC.setConnection(DatabaseConnection.getConnection());
+
+            TheaterAdmin theaterAdmin = authenticationJDBC.getTheaterAdminByUsername(username);
+
+            if (theaterAdmin == null) {
+                authenticationView.displayMessage("No user found...", false);
+                return;
+            }
+
+            if (!BCrypt.checkpw(password, theaterAdmin.getPassword())) {
+                authenticationView.displayMessage("Incorrrect password", false);
+                return;
+            }
+            authenticationView.displayMessage("Loggin in...", true);
+
             // TODO: Crear conexion para administrador de teatros
         }
     }

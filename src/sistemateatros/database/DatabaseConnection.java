@@ -38,7 +38,20 @@ public class DatabaseConnection {
      * Se conecta a la base de datos como administrador del teatro
      */
     public static void connectAsTeatroAdmin() {
-        // TODO: Implementar conexion a base de datos con admin teatro
+        dataSource.setServerName(AuthenticationManager.getHost());
+        dataSource.setPortNumber(AuthenticationManager.getPort());
+        dataSource.setDatabaseName(AuthenticationManager.getDatabaseName());
+        // Get theateradmin credentials
+        User teaAdmin = AuthenticationManager.getTeatroAdmin();
+        dataSource.setUser(teaAdmin.getUsername());
+        dataSource.setPassword(teaAdmin.getPassword());
+        try {
+            connection = dataSource.getConnection();
+            System.out.println("Connected successfuly...");
+        } catch (SQLException e) {
+            System.out.println("**ERROR** En la conexion a la base");
+            e.printStackTrace();
+        }
     }
 
     /**
