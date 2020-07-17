@@ -28,6 +28,7 @@ FROM TeatroAgentes
 WHERE @Nombre = Nombre
 GO
 CREATE PROCEDURE CreateTeatroAgentes 
+@Id int,
 @nombre nvarchar(30) ,
 @IdTeatro int,
 @fecha date,
@@ -41,7 +42,15 @@ CREATE PROCEDURE CreateTeatroAgentes
 @tOtro varchar(9) = NULL
 
 AS
-INSERT INTO TeatroAgentes(IdTeatro,FechaNacimiento,Sexo,Direccion,TelefonoCasa,TelefonoCelular,TelefonoOtro,Email,Usuario,Password)
+INSERT INTO TeatroAgentes(Id,FechaNacimiento,Sexo,Direccion,TelefonoCasa,TelefonoCelular,TelefonoOtro,Email,Usuario,Password)
 
-VALUES(@nombre,@IdTeatro,@fecha,@sexo,@direccion,@tCasa,@tMovil,@tOtro,@email,@usuario,@password)
+VALUES(@Id,@nombre,@IdTeatro,@fecha,@sexo,@direccion,@tCasa,@tMovil,@tOtro,@email,@usuario,@password)
 GO
+
+CREATE PROCEDURE ValidateIdTeatroAgentes 
+@Id int
+AS
+SELECT *
+FROM TeatroAgentes
+WHERE Id = @ID
+GO	

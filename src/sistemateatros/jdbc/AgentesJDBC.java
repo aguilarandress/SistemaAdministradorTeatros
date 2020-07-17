@@ -12,6 +12,29 @@ public class AgentesJDBC implements AgentesDAO {
     public void setConnection(Connection connection) {
         this.connection = connection;
     }
+
+    @Override
+    public boolean existeCedula(int cedula) {
+        try {
+
+
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC ValidateIdTeatroAgentes ?");
+            preparedStatement.setInt(1, cedula);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            boolean agenteFound = resultSet.next();
+            if (!agenteFound) {
+
+                return false;
+            }
+            return true;
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
     @Override
     public boolean verificarUsername(String username) {
         try {
@@ -57,42 +80,43 @@ public class AgentesJDBC implements AgentesDAO {
     @Override
     public void AddAgente(AgentTheater agentTheater) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("EXEC CreateTeatroAgentes ?,?,?,?,?,?,?,?,?,?,?");
-            preparedStatement.setString(1, agentTheater.getNombre());
-            preparedStatement.setInt(2,agentTheater.getIdTeatro());
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC CreateTeatroAgentes ?,?,?,?,?,?,?,?,?,?,?,?");
+            preparedStatement.setInt(1,agentTheater.getCedula());
+            preparedStatement.setString(2, agentTheater.getNombre());
+            preparedStatement.setInt(3,agentTheater.getIdTeatro());
             SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy");
             java.sql.Date date = new java.sql.Date(agentTheater.getFechaNacimiento().getTime());
-            preparedStatement.setDate(3,date);
+            preparedStatement.setDate(4,date);
 
 
-            preparedStatement.setString(4,String.valueOf(agentTheater.getSexo()));
-            preparedStatement.setString(5,agentTheater.getDireccion());
-            preparedStatement.setString(6,agentTheater.getEmail());
-            preparedStatement.setString(7,agentTheater.getUsername());
-            preparedStatement.setString(8,String.valueOf(agentTheater.getPassword()));
+            preparedStatement.setString(5,String.valueOf(agentTheater.getSexo()));
+            preparedStatement.setString(6,agentTheater.getDireccion());
+            preparedStatement.setString(7,agentTheater.getEmail());
+            preparedStatement.setString(8,agentTheater.getUsername());
+            preparedStatement.setString(9,String.valueOf(agentTheater.getPassword()));
             if (!(agentTheater.getTelefonoCasa()==null))
             {
-                preparedStatement.setString(9,agentTheater.getTelefonoCasa());
-            }
-            else
-            {
-                preparedStatement.setNull(9, Types.VARCHAR);
-            }
-            if (!(agentTheater.getTelefonoCelular()==null))
-            {
-                preparedStatement.setString(10,agentTheater.getTelefonoCelular());
+                preparedStatement.setString(10,agentTheater.getTelefonoCasa());
             }
             else
             {
                 preparedStatement.setNull(10, Types.VARCHAR);
             }
-            if (!(agentTheater.getTelefonoOtro()==null))
+            if (!(agentTheater.getTelefonoCelular()==null))
             {
-                preparedStatement.setString(11,agentTheater.getTelefonoOtro());
+                preparedStatement.setString(11,agentTheater.getTelefonoCelular());
             }
             else
             {
                 preparedStatement.setNull(11, Types.VARCHAR);
+            }
+            if (!(agentTheater.getTelefonoOtro()==null))
+            {
+                preparedStatement.setString(12,agentTheater.getTelefonoOtro());
+            }
+            else
+            {
+                preparedStatement.setNull(12, Types.VARCHAR);
             }
             preparedStatement.execute();
 

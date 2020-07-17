@@ -3,6 +3,8 @@ import com.toedter.calendar.JDateChooser;
 import sistemateatros.models.AgentTheater;
 
 import javax.swing.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Date;
 
 public class TheaterAdminView {
@@ -24,6 +26,7 @@ public class TheaterAdminView {
     private JButton addButton;
     private JPasswordField password;
     private JTextField usuario;
+    private JTextField cedula;
     private String Admin;
     JDateChooser date = new JDateChooser();
 
@@ -39,9 +42,22 @@ public class TheaterAdminView {
         this.setAdmin(Admin);
         this.welcome_message.setText(welcome_message.getText() + getAdmin());
         CalendarHolder.add(date);
+        cedula.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent ke) {
+                String value = cedula.getText();
+                int l = value.length();
+                if ((ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9' )|| ke.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                    cedula.setEditable(true);
+
+                } else {
+                    cedula.setEditable(false);
+
+                }
+            }
 
 
 
+    });
     }
     public void setVisible() {
         this.frame.setVisible(true);
@@ -96,6 +112,10 @@ public class TheaterAdminView {
         return usuario.getText();
     }
 
+    public String getCedula() {
+        return cedula.getText();
+    }
+
     public char getGenero()
     {
         if(masculinoRadioButton.isSelected())
@@ -139,6 +159,7 @@ public class TheaterAdminView {
         email.setText("");
         password.setText("");
         usuario.setText("");
+        cedula.setText("");
 
     }
     private void createUIComponents() {

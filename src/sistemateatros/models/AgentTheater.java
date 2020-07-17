@@ -3,7 +3,7 @@ package sistemateatros.models;
 import java.util.Date;
 
 public class AgentTheater {
-    private int id;
+    private int cedula;
     private String nombre;
     private Date fechaNacimiento;
     private char sexo;
@@ -18,8 +18,8 @@ public class AgentTheater {
 
     public AgentTheater() { }
 
-    public int getId() {
-        return id;
+    public int getCedula() {
+        return cedula;
     }
 
     public String getNombre() {
@@ -54,8 +54,8 @@ public class AgentTheater {
         return email;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCedula(int cedula) {
+        this.cedula = cedula;
     }
 
     public void setNombre(String nombre) {

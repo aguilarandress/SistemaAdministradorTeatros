@@ -71,6 +71,7 @@ public class TheaterAdminController {
             theaterAdminView.setTelefonos(agentTheater);
             agentTheater.setUsername(theaterAdminView.getUsuario());
             agentTheater.setPassword(theaterAdminView.getPassword());
+            agentTheater.setCedula(Integer.parseInt(theaterAdminView.getCedula()));
 
             ArrayList<String> errores = AgenteValidator.validarAgente(agentTheater);
             if (errores.size()>0)

@@ -21,6 +21,12 @@ public class AgenteValidator {
         {
             errores.add("Esta persona ya se encuentra registrada");
         }
+        if(agente.getCedula() < 99999999 || agente.getCedula() > 1000000000
+                || agentesJDBC.existeCedula(agente.getCedula())) {
+            {
+                errores.add("Cédula inválida");
+            }
+        }
         if(agente.getFechaNacimiento().toString().isEmpty())
         {
             errores.add("Fecha de nacimiento Inválida");

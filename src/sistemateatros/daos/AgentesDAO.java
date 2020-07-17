@@ -10,4 +10,5 @@ public interface AgentesDAO {
     public boolean verificarNombre(String nombre);
     public void AddAgente(AgentTheater agentTheater);
     public void setConnection(Connection connection);
+    public boolean existeCedula(int cedula);
 }
