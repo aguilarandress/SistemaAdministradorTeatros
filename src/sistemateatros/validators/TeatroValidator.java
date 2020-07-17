@@ -3,6 +3,7 @@ package sistemateatros.validators;
 import sistemateatros.database.DatabaseConnection;
 import sistemateatros.jdbc.TeatrosJDBC;
 import sistemateatros.models.Bloque;
+import sistemateatros.models.Fila;
 import sistemateatros.models.Teatro;
 import java.util.regex.Pattern;
 import java.util.ArrayList;
@@ -67,6 +68,27 @@ public class TeatroValidator {
         Bloque bloqueConNombre = teatrosJDBC.getBloqueByNombre(bloque.getIdTeatro(), bloque.getNombre());
         if (bloqueConNombre != null) {
             errores.add("Nombre ya existe");
+        }
+        return errores;
+    }
+
+    public static ArrayList<String> validarFila(Fila fila) {
+        ArrayList<String> errores = new ArrayList<String>();
+        // Validar campos
+        if (fila.getLetra().length() != 1) {
+            errores.add("Letra no valida");
+        }
+        if (fila.getNumeroAsientos() <= 0) {
+            errores.add("Numero de asientos no valido");
+        }
+        if (errores.size() > 0) {
+            return errores;
+        }
+        TeatrosJDBC teatrosJDBC = new TeatrosJDBC();
+        teatrosJDBC.setConnection(DatabaseConnection.getConnection());
+        Fila filaConLetra = teatrosJDBC.getFilaByLetra(fila.getLetra(), fila.getBloqueId());
+        if (filaConLetra != null) {
+            errores.add("Fila ya existe");
         }
         return errores;
     }

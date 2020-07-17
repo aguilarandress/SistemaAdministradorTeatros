@@ -2,6 +2,7 @@ package sistemateatros.jdbc;
 
 import sistemateatros.daos.TeatrosDAO;
 import sistemateatros.models.Bloque;
+import sistemateatros.models.Fila;
 import sistemateatros.models.Teatro;
 
 import java.sql.Connection;
@@ -158,6 +159,38 @@ public class TeatrosJDBC implements TeatrosDAO {
             PreparedStatement preparedStatement = connection.prepareStatement("EXEC CreateBloques ?, ?");
             preparedStatement.setString(1, bloque.getNombre());
             preparedStatement.setInt(2, bloque.getIdTeatro());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Fila getFilaByLetra(String letra, int idBloque) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByLetraFilas ?, ?");
+            preparedStatement.setString(1, letra);
+            preparedStatement.setInt(2, idBloque);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            boolean filaFound = resultSet.next();
+            if (!filaFound) {
+                return null;
+            }
+            Fila fila = new Fila();
+            fila.setLetra(resultSet.getString("FilaId"));
+            return fila;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public void crearFila(Fila fila) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC CreateFilas ?, ?, ?");
+            preparedStatement.setString(1, fila.getLetra());
+            preparedStatement.setInt(2, fila.getBloqueId());
+            preparedStatement.setInt(3, fila.getNumeroAsientos());
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();

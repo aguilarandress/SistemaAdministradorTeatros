@@ -42,6 +42,8 @@ public class SystemAdminView {
     private JTextField capacidadFilaField;
     private JButton agregarFilaBtn;
     private JLabel agregarFilaTitle;
+    private JLabel letraFilaLabel;
+    private JLabel capacidadFilaLabel;
 
     public SystemAdminView() {
         this.frame = new JFrame("Administrador de sistemas");
@@ -132,5 +134,17 @@ public class SystemAdminView {
 
     public JButton getAgregarBloqueBtn() {
         return agregarBloqueBtn;
+    }
+
+    public JTextField getLetraFilaField() {
+        return letraFilaField;
+    }
+
+    public JTextField getCapacidadFilaField() {
+        return capacidadFilaField;
+    }
+
+    public JButton getAgregarFilaBtn() {
+        return agregarFilaBtn;
     }
 }

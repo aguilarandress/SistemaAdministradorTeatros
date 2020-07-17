@@ -1,6 +1,7 @@
 package sistemateatros.daos;
 
 import sistemateatros.models.Bloque;
+import sistemateatros.models.Fila;
 import sistemateatros.models.Teatro;
 
 import java.sql.Connection;
@@ -12,6 +13,8 @@ public interface TeatrosDAO {
     public ArrayList<Teatro> getTeatros();
     public Bloque getBloqueByNombre(int idTeatro, String nombre);
     public ArrayList<Bloque> getBloquesByIdTeatro(int idTeatro);
+    public Fila getFilaByLetra(String letra, int idBloque);
     public void crearBloque(Bloque bloque);
+    public void crearFila(Fila fila);
     public void crearTeatro(Teatro teatro);
 }

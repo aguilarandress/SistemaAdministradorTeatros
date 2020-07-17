@@ -3,16 +3,14 @@ package sistemateatros.controllers;
 import sistemateatros.database.DatabaseConnection;
 import sistemateatros.jdbc.TeatrosJDBC;
 import sistemateatros.models.Bloque;
+import sistemateatros.models.Fila;
 import sistemateatros.models.Teatro;
 import sistemateatros.validators.TeatroValidator;
 import sistemateatros.views.SystemAdminView;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 /**
@@ -29,6 +27,8 @@ public class SystemAdminController {
         this.systemAdminView.getTabbedPane().addChangeListener(new CambiarPaneListener());
         this.systemAdminView.getAgregarTeatroBtn().addActionListener(new AgregarTeatroListener());
         this.systemAdminView.getAgregarBloqueBtn().addActionListener(new AgregarBloqueListener());
+        this.systemAdminView.getAgregarFilaBtn().addActionListener(new AgregarFilaListener());
+        this.systemAdminView.getCapacidadFilaField().addKeyListener(new CapacidadFieldListener());
         this.systemAdminView.getSeleccionarTeatroAgregarFilaBox().addItemListener(new SeleccionarTeatroAgregarFilaListener());
     }
 
@@ -56,7 +56,10 @@ public class SystemAdminController {
         TeatrosJDBC teatrosJDBC = new TeatrosJDBC();
         teatrosJDBC.setConnection(DatabaseConnection.getConnection());
         ArrayList<Teatro> teatros = teatrosJDBC.getTeatros();
-        // TODO: Verificar que sucede si no hay teatros
+        // TODO: Probar esto bien
+        if (teatros.size() == 0) {
+            systemAdminView.getTabbedPane().setSelectedIndex(0);
+        }
         for (int i = 0; i < teatros.size(); i++) {
             this.systemAdminView.getTeatroAgregarBloqueBox().addItem(teatros.get(i));
         }
@@ -69,6 +72,10 @@ public class SystemAdminController {
         TeatrosJDBC teatrosJDBC = new TeatrosJDBC();
         teatrosJDBC.setConnection(DatabaseConnection.getConnection());
         ArrayList<Teatro> teatros = teatrosJDBC.getTeatros();
+        // TODO: Probar esto bien
+        if (teatros.size() == 0) {
+            systemAdminView.getTabbedPane().setSelectedIndex(0);
+        }
         for (int i = 0; i < teatros.size(); i++) {
             // Verificar que el teatro tenga bloques
             if (teatrosJDBC.getBloquesByIdTeatro(teatros.get(i).getId()).size() > 0) {
@@ -127,6 +134,47 @@ public class SystemAdminController {
             teatrosJDBC.crearBloque(bloque);
             systemAdminView.displayMessage("Bloque creado!", true);
             systemAdminView.clearAgregarBloqueFields();
+        }
+    }
+
+    private class AgregarFilaListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Bloque bloqueSeleccionado = (Bloque) systemAdminView.getSeleccionarBloqueAgregarFilaBox().getSelectedItem();
+            String letraFila = systemAdminView.getLetraFilaField().getText();
+            if (systemAdminView.getCapacidadFilaField().getText().isEmpty()) {
+                systemAdminView.displayMessage("Numero de asientos no valido", false);
+                return;
+            }
+            int capacidadFila = Integer.parseInt(systemAdminView.getCapacidadFilaField().getText());
+            Fila filaNueva = new Fila();
+            filaNueva.setLetra(letraFila);
+            filaNueva.setBloqueId(bloqueSeleccionado.getId());
+            filaNueva.setNumeroAsientos(capacidadFila);
+            // Validar fila
+            // TODO: Validar que solo sean letra mayusculas y que no esten todas
+            ArrayList<String> errores = TeatroValidator.validarFila(filaNueva);
+            if (errores.size() > 0) {
+                systemAdminView.displayMessage(errores.get(0), false);
+                return;
+            }
+            // Crear fila y asientos
+            TeatrosJDBC teatrosJDBC = new TeatrosJDBC();
+            teatrosJDBC.setConnection(DatabaseConnection.getConnection());
+            teatrosJDBC.crearFila(filaNueva);
+            systemAdminView.displayMessage("Fila creada!", true);
+        }
+    }
+
+    private class CapacidadFieldListener extends KeyAdapter {
+        @Override
+        public void keyTyped(KeyEvent e) {
+            char c = e.getKeyChar();
+            if (!((c >= '0') && (c <= '9') ||
+                    (c == KeyEvent.VK_BACK_SPACE) ||
+                    (c == KeyEvent.VK_DELETE))) {
+                e.consume();
+            }
         }
     }
 
