@@ -33,15 +33,15 @@ CREATE PROCEDURE CreateTeatroAgentes
 @fecha date,
 @sexo char,
 @direccion nvarchar(40),
-@tCasa varchar(9) = NULL,
-@tMovil  varchar(9) = NULL,
-@tOtro varchar(9) = NULL,
 @email nvarchar(20),
 @usuario nvarchar(20),
-@password char(60)
+@password char(60),
+@tCasa varchar(9) = NULL,
+@tMovil  varchar(9) = NULL,
+@tOtro varchar(9) = NULL
 
 AS
-INSERT INTO TeatroAgentes(Nombre,IdTeatro,FechaNacimiento,Sexo,Direccion,TelefonoCasa,TelefonoCelular,TelefonoOtro,Email,Usuario,Password)
+INSERT INTO TeatroAgentes(IdTeatro,FechaNacimiento,Sexo,Direccion,TelefonoCasa,TelefonoCelular,TelefonoOtro,Email,Usuario,Password)
 
 VALUES(@nombre,@IdTeatro,@fecha,@sexo,@direccion,@tCasa,@tMovil,@tOtro,@email,@usuario,@password)
 GO
