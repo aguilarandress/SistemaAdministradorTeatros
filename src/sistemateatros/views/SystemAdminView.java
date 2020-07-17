@@ -44,6 +44,8 @@ public class SystemAdminView {
     private JLabel agregarFilaTitle;
     private JLabel letraFilaLabel;
     private JLabel capacidadFilaLabel;
+    private JLabel nombreAgregarBloqueLabel;
+    private JLabel teatroAgregarBloqueField;
 
     public SystemAdminView() {
         this.frame = new JFrame("Administrador de sistemas");

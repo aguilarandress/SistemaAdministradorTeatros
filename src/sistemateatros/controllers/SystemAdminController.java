@@ -141,6 +141,9 @@ public class SystemAdminController {
         }
     }
 
+    /**
+     * Listener para agregar filas y asientos
+     */
     private class AgregarFilaListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -158,12 +161,13 @@ public class SystemAdminController {
             filaNueva.setBloqueId(bloqueSeleccionado.getId());
             filaNueva.setNumeroAsientos(capacidadFila);
             // Validar fila
-            // TODO: Validar que solo sean letra mayusculas y que no esten todas
+            // TODO: Agregar un check en la base de datos para que sea alfabetico
             ArrayList<String> errores = TeatroValidator.validarFila(filaNueva);
             if (errores.size() > 0) {
                 systemAdminView.displayMessage(errores.get(0), false);
                 return;
             }
+            filaNueva.setLetra(letraFila.toUpperCase());
             // Crear fila y asientos
             TeatrosJDBC teatrosJDBC = new TeatrosJDBC();
             teatrosJDBC.setConnection(DatabaseConnection.getConnection());

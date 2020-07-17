@@ -80,7 +80,7 @@ public class TeatroValidator {
     public static ArrayList<String> validarFila(Fila fila) {
         ArrayList<String> errores = new ArrayList<String>();
         // Validar campos
-        if (fila.getLetra().length() != 1) {
+        if (fila.getLetra().length() != 1 || !Character.isAlphabetic(fila.getLetra().charAt(0))) {
             errores.add("Letra no valida");
         }
         if (fila.getNumeroAsientos() <= 0) {
