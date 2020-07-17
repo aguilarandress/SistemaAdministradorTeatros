@@ -3,6 +3,7 @@ import com.toedter.calendar.JDateChooser;
 import sistemateatros.models.AgentTheater;
 
 import javax.swing.*;
+import java.util.Date;
 
 public class TheaterAdminView {
     private JFrame frame;
@@ -20,7 +21,7 @@ public class TheaterAdminView {
     private JRadioButton femeninoRadioButton;
     private JPanel CalendarHolder;
     private JButton verificarDisponibilidadButton;
-    private JButton añadirButton;
+    private JButton addButton;
     private JPasswordField password;
     private JTextField usuario;
     private String Admin;
@@ -29,7 +30,7 @@ public class TheaterAdminView {
 
 
     public TheaterAdminView(String Admin) {
-        date.setDateFormatString("dd/MM/yyyy");
+        date.setDateFormatString("yyyy-MM-dd");
         this.frame = new JFrame("Aplicación de administración de teatros");
         this.frame.setContentPane(this.homeTAdm);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -79,8 +80,8 @@ public class TheaterAdminView {
         return email.getText();
     }
 
-    public String getDate() {
-        return date.getDateFormatString();
+    public Date getDate() {
+        return date.getDate();
     }
 
     public String gettOther() {
@@ -121,10 +122,25 @@ public class TheaterAdminView {
             agente.setTelefonoOtro(tOther.getText());
         }
     }
-    public JButton getAñadirButton() {
-        return añadirButton;
+    public JButton getaddButton() {
+        return addButton;
     }
+    public void displayMessage(String message, boolean success) {
+        JOptionPane.showMessageDialog(this.frame, message, success ? "EXITO" : "ERROR",
+                success ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE);
+    }
+    public void clearFields()
+    {
+        NombreField.setText("");
+        direccionField.setText("");
+        tHome.setText("");
+        tMobile.setText("");
+        tOther.setText("");
+        email.setText("");
+        password.setText("");
+        usuario.setText("");
 
+    }
     private void createUIComponents() {
         // TODO: place custom component creation code here
     }

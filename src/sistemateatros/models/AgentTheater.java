@@ -1,9 +1,11 @@
 package sistemateatros.models;
 
+import java.util.Date;
+
 public class AgentTheater {
     private int id;
     private String nombre;
-    private String fechaNacimiento;
+    private Date fechaNacimiento;
     private char sexo;
     private int idTeatro;
     private String direccion;
@@ -24,7 +26,7 @@ public class AgentTheater {
         return nombre;
     }
 
-    public String getFechaNacimiento() {
+    public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
 
@@ -60,7 +62,7 @@ public class AgentTheater {
         this.nombre = nombre;
     }
 
-    public void setFechaNacimiento(String fechaNacimiento) {
+    public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
