@@ -11,6 +11,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
 /**
@@ -27,6 +29,7 @@ public class SystemAdminController {
         this.systemAdminView.getTabbedPane().addChangeListener(new CambiarPaneListener());
         this.systemAdminView.getAgregarTeatroBtn().addActionListener(new AgregarTeatroListener());
         this.systemAdminView.getAgregarBloqueBtn().addActionListener(new AgregarBloqueListener());
+        this.systemAdminView.getSeleccionarTeatroAgregarFilaBox().addItemListener(new SeleccionarTeatroAgregarFilaListener());
     }
 
     /**
@@ -38,6 +41,8 @@ public class SystemAdminController {
             // Verificar cual tabbed pane se esta cargando
             if (systemAdminView.getTabbedPane().getSelectedIndex() == 1) {
                 onAgregarBloqueSelected();
+            } else if (systemAdminView.getTabbedPane().getSelectedIndex() == 2) {
+                onAgregarFilaSelected();
             }
         }
     }
@@ -46,6 +51,7 @@ public class SystemAdminController {
      * Evento cuando se selecciona el tab para agregar bloques
      */
     private void onAgregarBloqueSelected() {
+        this.systemAdminView.getTeatroAgregarBloqueBox().removeAllItems();
         // Obtener teatros
         TeatrosJDBC teatrosJDBC = new TeatrosJDBC();
         teatrosJDBC.setConnection(DatabaseConnection.getConnection());
@@ -53,6 +59,21 @@ public class SystemAdminController {
         // TODO: Verificar que sucede si no hay teatros
         for (int i = 0; i < teatros.size(); i++) {
             this.systemAdminView.getTeatroAgregarBloqueBox().addItem(teatros.get(i));
+        }
+    }
+
+    private void onAgregarFilaSelected() {
+        this.systemAdminView.getSeleccionarTeatroAgregarFilaBox().removeAllItems();
+        this.systemAdminView.getSeleccionarBloqueAgregarFilaBox().removeAllItems();
+        // Obtener teatros
+        TeatrosJDBC teatrosJDBC = new TeatrosJDBC();
+        teatrosJDBC.setConnection(DatabaseConnection.getConnection());
+        ArrayList<Teatro> teatros = teatrosJDBC.getTeatros();
+        for (int i = 0; i < teatros.size(); i++) {
+            // Verificar que el teatro tenga bloques
+            if (teatrosJDBC.getBloquesByIdTeatro(teatros.get(i).getId()).size() > 0) {
+                this.systemAdminView.getSeleccionarTeatroAgregarFilaBox().addItem(teatros.get(i));
+            }
         }
     }
 
@@ -106,6 +127,25 @@ public class SystemAdminController {
             teatrosJDBC.crearBloque(bloque);
             systemAdminView.displayMessage("Bloque creado!", true);
             systemAdminView.clearAgregarBloqueFields();
+        }
+    }
+
+    private class SeleccionarTeatroAgregarFilaListener implements ItemListener {
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            // Check for item selection
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                // Obtener teatro seleccionado
+                Teatro teatroSeleccionado = (Teatro) systemAdminView.getSeleccionarTeatroAgregarFilaBox().getSelectedItem();
+                TeatrosJDBC teatrosJDBC = new TeatrosJDBC();
+                teatrosJDBC.setConnection(DatabaseConnection.getConnection());
+                ArrayList<Bloque> bloques = teatrosJDBC.getBloquesByIdTeatro(teatroSeleccionado.getId());
+                systemAdminView.getSeleccionarBloqueAgregarFilaBox().removeAllItems();
+                // Agregar bloques al combo box
+                for (int i = 0; i < bloques.size(); i++) {
+                    systemAdminView.getSeleccionarBloqueAgregarFilaBox().addItem(bloques.get(i));
+                }
+            }
         }
     }
 

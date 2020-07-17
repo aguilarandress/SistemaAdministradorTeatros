@@ -1,5 +1,6 @@
 package sistemateatros.views;
 
+import sistemateatros.models.Bloque;
 import sistemateatros.models.Teatro;
 
 import javax.swing.*;
@@ -30,8 +31,13 @@ public class SystemAdminView {
     private JTextField nombreBloqueField;
     private JButton agregarBloqueBtn;
     private JPanel agregarFilasTab;
+
+    private DefaultComboBoxModel<Teatro> seleccionarTeatroAgregarFilaComboBoxModel;
     private JComboBox seleccionarTeatroAgregarFilaBox;
+
+    private DefaultComboBoxModel<Bloque> seleccionarBloqueAgregarFilaComboBoxModel;
     private JComboBox seleccionarBloqueAgregarFilaBox;
+
     private JTextField letraFilaField;
     private JTextField capacidadFilaField;
     private JButton agregarFilaBtn;
@@ -45,6 +51,13 @@ public class SystemAdminView {
         // Set models
         this.teatroComboBoxModel = new DefaultComboBoxModel<>();
         this.teatroAgregarBloqueBox.setModel(teatroComboBoxModel);
+
+        this.seleccionarTeatroAgregarFilaComboBoxModel = new DefaultComboBoxModel<>();
+        this.seleccionarTeatroAgregarFilaBox.setModel(seleccionarTeatroAgregarFilaComboBoxModel);
+
+        this.seleccionarBloqueAgregarFilaComboBoxModel = new DefaultComboBoxModel<>();
+        this.seleccionarBloqueAgregarFilaBox.setModel(seleccionarBloqueAgregarFilaComboBoxModel);
+
         this.frame.setSize(800, 600);
     }
 
@@ -83,6 +96,14 @@ public class SystemAdminView {
 
     public JComboBox<Teatro> getTeatroAgregarBloqueBox() {
         return teatroAgregarBloqueBox;
+    }
+
+    public JComboBox getSeleccionarBloqueAgregarFilaBox() {
+        return seleccionarBloqueAgregarFilaBox;
+    }
+
+    public JComboBox getSeleccionarTeatroAgregarFilaBox() {
+        return seleccionarTeatroAgregarFilaBox;
     }
 
     public JTextField getTeatroCorreoField() {

@@ -97,6 +97,12 @@ public class TeatrosJDBC implements TeatrosDAO {
         }
     }
 
+    /**
+     * Obtiene un bloque por nombre
+     * @param idTeatro El id del teatro de ese bloque
+     * @param nombre El nombre de ese bloque
+     * @return El bloque con el nombre deseado
+     */
     @Override
     public Bloque getBloqueByNombre(int idTeatro, String nombre) {
         try {
@@ -117,6 +123,35 @@ public class TeatrosJDBC implements TeatrosDAO {
         return null;
     }
 
+    /**
+     * Obtiene los bloques de un teatro
+     * @param idTeatro El id de ese teatro
+     * @return Los bloques de ese teatro
+     */
+    @Override
+    public ArrayList<Bloque> getBloquesByIdTeatro(int idTeatro) {
+        ArrayList<Bloque> bloques = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByTeatroIdBloques ?");
+            preparedStatement.setInt(1, idTeatro);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Bloque bloque = new Bloque();
+                bloque.setId(resultSet.getInt("Id"));
+                bloque.setNombre(resultSet.getString("Nombre"));
+                bloque.setIdTeatro(resultSet.getInt("IdTeatro"));
+                bloques.add(bloque);
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return bloques;
+    }
+
+    /**
+     * Crea un bloque nuevo
+     * @param bloque Los datos del bloque nuevo
+     */
     @Override
     public void crearBloque(Bloque bloque) {
         try {

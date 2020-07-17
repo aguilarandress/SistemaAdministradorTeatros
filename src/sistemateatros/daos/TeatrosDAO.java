@@ -11,6 +11,7 @@ public interface TeatrosDAO {
     public Teatro getTeatroByNombre(String nombre);
     public ArrayList<Teatro> getTeatros();
     public Bloque getBloqueByNombre(int idTeatro, String nombre);
+    public ArrayList<Bloque> getBloquesByIdTeatro(int idTeatro);
     public void crearBloque(Bloque bloque);
     public void crearTeatro(Teatro teatro);
 }

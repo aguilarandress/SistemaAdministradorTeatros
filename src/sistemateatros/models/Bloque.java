@@ -32,4 +32,9 @@ public class Bloque {
     public void setIdTeatro(int idTeatro) {
         this.idTeatro = idTeatro;
     }
+
+    @Override
+    public String toString() {
+        return this.nombre;
+    }
 }
