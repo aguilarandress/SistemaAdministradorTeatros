@@ -77,9 +77,8 @@ public class AuthenticationController {
                 return;
             }
             authenticationView.displayMessage("Loggin in...", true);
-            TheaterAdminController theaterAdminController= new TheaterAdminController();
-            theaterAdminController.setAdmin(theaterAdmin.getNombre());
-            theaterAdminController.setIdTeatro(theaterAdmin.getIdTeatro());
+            TheaterAdminController theaterAdminController= new TheaterAdminController(theaterAdmin.getIdTeatro(),theaterAdmin.getNombre());
+            theaterAdmin.setId(theaterAdmin.getId());
             authenticationView.hide();
             // TODO: Crear el controlador de admin teatro
         }
