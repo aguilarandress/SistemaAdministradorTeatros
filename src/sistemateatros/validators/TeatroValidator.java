@@ -72,6 +72,11 @@ public class TeatroValidator {
         return errores;
     }
 
+    /**
+     * Valida las filas de un bloque
+     * @param fila La fila ingresada
+     * @return Los errores de validacion de la fila
+     */
     public static ArrayList<String> validarFila(Fila fila) {
         ArrayList<String> errores = new ArrayList<String>();
         // Validar campos
@@ -84,6 +89,7 @@ public class TeatroValidator {
         if (errores.size() > 0) {
             return errores;
         }
+        // Verificar si la fila ya existia
         TeatrosJDBC teatrosJDBC = new TeatrosJDBC();
         teatrosJDBC.setConnection(DatabaseConnection.getConnection());
         Fila filaConLetra = teatrosJDBC.getFilaByLetra(fila.getLetra(), fila.getBloqueId());

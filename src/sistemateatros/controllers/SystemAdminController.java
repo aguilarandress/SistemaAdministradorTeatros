@@ -65,6 +65,9 @@ public class SystemAdminController {
         }
     }
 
+    /**
+     * Evento cuando se selecciona el tab para agregar filas
+     */
     private void onAgregarFilaSelected() {
         this.systemAdminView.getSeleccionarTeatroAgregarFilaBox().removeAllItems();
         this.systemAdminView.getSeleccionarBloqueAgregarFilaBox().removeAllItems();
@@ -76,6 +79,7 @@ public class SystemAdminController {
         if (teatros.size() == 0) {
             systemAdminView.getTabbedPane().setSelectedIndex(0);
         }
+        // Agregar teatros al combo box
         for (int i = 0; i < teatros.size(); i++) {
             // Verificar que el teatro tenga bloques
             if (teatrosJDBC.getBloquesByIdTeatro(teatros.get(i).getId()).size() > 0) {
@@ -140,8 +144,10 @@ public class SystemAdminController {
     private class AgregarFilaListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            // Obtener datos del formulario
             Bloque bloqueSeleccionado = (Bloque) systemAdminView.getSeleccionarBloqueAgregarFilaBox().getSelectedItem();
             String letraFila = systemAdminView.getLetraFilaField().getText();
+            // Verificar el campo de capacidad
             if (systemAdminView.getCapacidadFilaField().getText().isEmpty()) {
                 systemAdminView.displayMessage("Numero de asientos no valido", false);
                 return;
@@ -166,6 +172,9 @@ public class SystemAdminController {
         }
     }
 
+    /**
+     * Listener para solo permitir escribir digitos
+     */
     private class CapacidadFieldListener extends KeyAdapter {
         @Override
         public void keyTyped(KeyEvent e) {
@@ -178,6 +187,9 @@ public class SystemAdminController {
         }
     }
 
+    /**
+     * Listener de seleccion para el combo box de teatros
+     */
     private class SeleccionarTeatroAgregarFilaListener implements ItemListener {
         @Override
         public void itemStateChanged(ItemEvent e) {

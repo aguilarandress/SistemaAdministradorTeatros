@@ -165,12 +165,19 @@ public class TeatrosJDBC implements TeatrosDAO {
         }
     }
 
+    /**
+     * Obtiene la fila de un bloque por su letra
+     * @param letra La letra de la fila
+     * @param idBloque El id del bloque donde pertenece la fia
+     * @return La fila que coincide con la letra
+     */
     public Fila getFilaByLetra(String letra, int idBloque) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByLetraFilas ?, ?");
             preparedStatement.setString(1, letra);
             preparedStatement.setInt(2, idBloque);
             ResultSet resultSet = preparedStatement.executeQuery();
+            // Verificar si existe la fila
             boolean filaFound = resultSet.next();
             if (!filaFound) {
                 return null;
