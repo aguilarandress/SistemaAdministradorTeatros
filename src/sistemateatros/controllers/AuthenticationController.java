@@ -78,6 +78,8 @@ public class AuthenticationController {
             }
             authenticationView.displayMessage("Loggin in...", true);
             TheaterAdminController theaterAdminController= new TheaterAdminController();
+            theaterAdminController.setAdmin(theaterAdmin.getNombre());
+            theaterAdminController.setIdTeatro(theaterAdmin.getIdTeatro());
             authenticationView.hide();
             // TODO: Crear el controlador de admin teatro
         }
