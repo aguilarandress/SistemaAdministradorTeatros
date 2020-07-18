@@ -33,6 +33,15 @@ public class TheaterAdminValidator {
             theaterAdmin.getPassword().length() > 20) {
             errores.add("Password invalido");
         }
+        if (theaterAdmin.getTelefonoCasa() != null && !validarTelefono(theaterAdmin.getTelefonoCasa())) {
+            errores.add("Telefono Casa invalido");
+        }
+        if (theaterAdmin.getTelefonoCelular() != null && !validarTelefono(theaterAdmin.getTelefonoCelular())) {
+            errores.add("Telefono celular invalido");
+        }
+        if (theaterAdmin.getTelefonoOtro() != null && !validarTelefono(theaterAdmin.getTelefonoOtro())) {
+            errores.add("Telefono otro invalido");
+        }
         if (errores.size() > 0) {
             return errores;
         }
