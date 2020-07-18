@@ -53,7 +53,11 @@ public class SystemAdminView {
 
     private JTextField cedulaAgregarAdminField;
     private JTextField nombreAgregarAdminField;
+
+    private DefaultComboBoxModel<Teatro> teatroAgregarAdminCBModel;
     private JComboBox teatroAgregarAdminCB;
+
+
     private JRadioButton hombreAgregarAdminRB;
     private JRadioButton mujerAgregarAdminRB;
     private JTextField direccionAgregarAdminField;
@@ -90,6 +94,13 @@ public class SystemAdminView {
 
         this.seleccionarBloqueAgregarFilaComboBoxModel = new DefaultComboBoxModel<>();
         this.seleccionarBloqueAgregarFilaBox.setModel(seleccionarBloqueAgregarFilaComboBoxModel);
+
+        this.teatroAgregarAdminCBModel = new DefaultComboBoxModel<>();
+        this.teatroAgregarAdminCB.setModel(teatroAgregarAdminCBModel);
+
+        ButtonGroup radioBtnSexoGroup = new ButtonGroup();
+        radioBtnSexoGroup.add(this.hombreAgregarAdminRB);
+        radioBtnSexoGroup.add(this.mujerAgregarAdminRB);
 
         this.frame.setSize(800, 600);
     }
@@ -186,5 +197,17 @@ public class SystemAdminView {
 
     public JButton getAgregarAdminBtn() {
         return agregarAdminBtn;
+    }
+
+    public JComboBox getTeatroAgregarAdminCB() {
+        return teatroAgregarAdminCB;
+    }
+
+    public JRadioButton getHombreAgregarAdminRB() {
+        return hombreAgregarAdminRB;
+    }
+
+    public JRadioButton getMujerAgregarAdminRB() {
+        return mujerAgregarAdminRB;
     }
 }

@@ -30,6 +30,29 @@ public class SystemAdminController {
         this.systemAdminView.getAgregarFilaBtn().addActionListener(new AgregarFilaListener());
         this.systemAdminView.getCapacidadFilaField().addKeyListener(new CapacidadFieldListener());
         this.systemAdminView.getSeleccionarTeatroAgregarFilaBox().addItemListener(new SeleccionarTeatroAgregarFilaListener());
+        this.systemAdminView.getAgregarAdminBtn().addActionListener(new AgregarAdminTeatroListener());
+//        this.systemAdminView.getHombreAgregarAdminRB().addItemListener(new SelectHombreItemListener());
+//        this.systemAdminView.getMujerAgregarAdminRB().addItemListener(new SelectMujerItemListener());
+    }
+
+    private class SelectHombreItemListener implements ItemListener {
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                systemAdminView.getMujerAgregarAdminRB().setSelected(true);
+                systemAdminView.getHombreAgregarAdminRB().setSelected(false);
+            }
+        }
+    }
+
+    private class SelectMujerItemListener implements ItemListener {
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                systemAdminView.getHombreAgregarAdminRB().setSelected(true);
+                systemAdminView.getMujerAgregarAdminRB().setSelected(false);
+            }
+        }
     }
 
     /**
@@ -43,6 +66,8 @@ public class SystemAdminController {
                 onAgregarBloqueSelected();
             } else if (systemAdminView.getTabbedPane().getSelectedIndex() == 2) {
                 onAgregarFilaSelected();
+            } else if (systemAdminView.getTabbedPane().getSelectedIndex() == 3) {
+                onAgregarAdminTeatroSelected();
             }
         }
     }
@@ -85,6 +110,21 @@ public class SystemAdminController {
             if (teatrosJDBC.getBloquesByIdTeatro(teatros.get(i).getId()).size() > 0) {
                 this.systemAdminView.getSeleccionarTeatroAgregarFilaBox().addItem(teatros.get(i));
             }
+        }
+    }
+
+    private void onAgregarAdminTeatroSelected() {
+        this.systemAdminView.getTeatroAgregarAdminCB().removeAllItems();
+        // Obtener teatros
+        TeatrosJDBC teatrosJDBC = new TeatrosJDBC();
+        teatrosJDBC.setConnection(DatabaseConnection.getConnection());
+        ArrayList<Teatro> teatros = teatrosJDBC.getTeatros();
+        // TODO: Probar esto bien
+        if (teatros.size() == 0) {
+            systemAdminView.getTabbedPane().setSelectedIndex(0);
+        }
+        for (int i = 0; i < teatros.size(); i++) {
+            this.systemAdminView.getTeatroAgregarAdminCB().addItem(teatros.get(i));
         }
     }
 
@@ -174,6 +214,13 @@ public class SystemAdminController {
             teatrosJDBC.crearFila(filaNueva);
             systemAdminView.displayMessage("Fila creada!", true);
             systemAdminView.clearAgregarFilaFields();
+        }
+    }
+
+    private class AgregarAdminTeatroListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
         }
     }
 
