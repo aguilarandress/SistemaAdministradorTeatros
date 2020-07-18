@@ -1,5 +1,6 @@
 package sistemateatros.views;
 
+import com.toedter.calendar.JDateChooser;
 import sistemateatros.models.Bloque;
 import sistemateatros.models.Teatro;
 
@@ -46,6 +47,34 @@ public class SystemAdminView {
     private JLabel capacidadFilaLabel;
     private JLabel nombreAgregarBloqueLabel;
     private JLabel teatroAgregarBloqueField;
+    private JPanel agregarAdminTab;
+    private JLabel agregarAdminTitle;
+
+
+    private JTextField cedulaAgregarAdminField;
+    private JTextField nombreAgregarAdminField;
+    private JComboBox teatroAgregarAdminCB;
+    private JRadioButton hombreAgregarAdminRB;
+    private JRadioButton mujerAgregarAdminRB;
+    private JTextField direccionAgregarAdminField;
+    private JTextField telCelularAgregarAdminField;
+    private JTextField telCasaAgregarAdminField;
+    private JTextField telOtroAgregarAdminField;
+    private JTextField emailAgregarAdminField;
+    private JTextField usuarioAgregarAdminField;
+    private JPasswordField passwordAgregarAdminField;
+    private JButton agregarAdminBtn;
+    private JLabel cedulaAgregarAdminLabel;
+    private JLabel nombreAgregarAdminLabel;
+    private JLabel teatroAgregarAdminLabel;
+    private JLabel sexoAgregarAdminLabel;
+    private JLabel direccionAgregarAdminLabel;
+    private JLabel telCelularAgregarAdminLabel;
+    private JLabel telCasaAgregarAdminLabel;
+    private JLabel telOtroAgregarAdminLabel;
+    private JLabel emailAgregarAdminLabel;
+    private JLabel usuarioAgregarAdminLabel;
+    private JLabel passwordAgregarAdminLabel;
 
     public SystemAdminView() {
         this.frame = new JFrame("Administrador de sistemas");
@@ -134,6 +163,11 @@ public class SystemAdminView {
         nombreBloqueField.setText("");
     }
 
+    public void clearAgregarFilaFields() {
+        letraFilaField.setText("");
+        capacidadFilaField.setText("");
+    }
+
     public JButton getAgregarBloqueBtn() {
         return agregarBloqueBtn;
     }
@@ -148,5 +182,9 @@ public class SystemAdminView {
 
     public JButton getAgregarFilaBtn() {
         return agregarFilaBtn;
+    }
+
+    public JButton getAgregarAdminBtn() {
+        return agregarAdminBtn;
     }
 }

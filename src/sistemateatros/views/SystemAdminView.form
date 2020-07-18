@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="jpanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="712" height="486"/>
+      <xy x="20" y="20" width="712" height="506"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -280,6 +280,230 @@
                   <text value="Capacidad de fila:"/>
                 </properties>
               </component>
+            </children>
+          </grid>
+          <grid id="6b99f" binding="agregarAdminTab" layout-manager="GridLayoutManager" row-count="14" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="Agregar admin del teatro"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="562af" class="javax.swing.JLabel" binding="agregarAdminTitle">
+                <constraints>
+                  <grid row="0" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font size="20" style="1"/>
+                  <text value="Agregar administrador de teatro"/>
+                </properties>
+              </component>
+              <component id="9ed68" class="javax.swing.JTextField" binding="cedulaAgregarAdminField">
+                <constraints>
+                  <grid row="1" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="6928a" class="javax.swing.JTextField" binding="nombreAgregarAdminField">
+                <constraints>
+                  <grid row="2" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="6b7f1" class="javax.swing.JComboBox" binding="teatroAgregarAdminCB">
+                <constraints>
+                  <grid row="3" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="33c7" class="javax.swing.JRadioButton" binding="hombreAgregarAdminRB">
+                <constraints>
+                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Hombre"/>
+                </properties>
+              </component>
+              <component id="c1003" class="javax.swing.JRadioButton" binding="mujerAgregarAdminRB">
+                <constraints>
+                  <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Mujer"/>
+                </properties>
+              </component>
+              <component id="1fff5" class="javax.swing.JTextField" binding="direccionAgregarAdminField">
+                <constraints>
+                  <grid row="5" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="a2aa0" class="javax.swing.JTextField" binding="telCelularAgregarAdminField">
+                <constraints>
+                  <grid row="6" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="d5be8" class="javax.swing.JTextField" binding="telCasaAgregarAdminField">
+                <constraints>
+                  <grid row="7" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="32f21" class="javax.swing.JTextField" binding="telOtroAgregarAdminField">
+                <constraints>
+                  <grid row="8" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="7686d" class="javax.swing.JTextField" binding="emailAgregarAdminField">
+                <constraints>
+                  <grid row="9" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="c014" class="javax.swing.JTextField" binding="usuarioAgregarAdminField">
+                <constraints>
+                  <grid row="10" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="e65f0" class="javax.swing.JPasswordField" binding="passwordAgregarAdminField">
+                <constraints>
+                  <grid row="11" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="bf629" class="javax.swing.JButton" binding="agregarAdminBtn">
+                <constraints>
+                  <grid row="12" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Agregar Administrador"/>
+                </properties>
+              </component>
+              <component id="54d93" class="javax.swing.JLabel" binding="cedulaAgregarAdminLabel">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Cedula:"/>
+                </properties>
+              </component>
+              <component id="60a9e" class="javax.swing.JLabel" binding="nombreAgregarAdminLabel">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Nombre:"/>
+                </properties>
+              </component>
+              <component id="10f6f" class="javax.swing.JLabel" binding="teatroAgregarAdminLabel">
+                <constraints>
+                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Elegir Teatro"/>
+                </properties>
+              </component>
+              <component id="d5ff7" class="javax.swing.JLabel" binding="sexoAgregarAdminLabel">
+                <constraints>
+                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Sexo:"/>
+                </properties>
+              </component>
+              <component id="e63fc" class="javax.swing.JLabel" binding="direccionAgregarAdminLabel">
+                <constraints>
+                  <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Direccion:"/>
+                </properties>
+              </component>
+              <component id="37272" class="javax.swing.JLabel" binding="telCelularAgregarAdminLabel">
+                <constraints>
+                  <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Telefono Celular:"/>
+                </properties>
+              </component>
+              <component id="dc0c6" class="javax.swing.JLabel" binding="telCasaAgregarAdminLabel">
+                <constraints>
+                  <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Telefono Casa:"/>
+                </properties>
+              </component>
+              <component id="ae3ff" class="javax.swing.JLabel" binding="telOtroAgregarAdminLabel">
+                <constraints>
+                  <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Telefono Otro:"/>
+                </properties>
+              </component>
+              <component id="fed2" class="javax.swing.JLabel" binding="emailAgregarAdminLabel">
+                <constraints>
+                  <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Email:"/>
+                </properties>
+              </component>
+              <component id="d7146" class="javax.swing.JLabel" binding="usuarioAgregarAdminLabel">
+                <constraints>
+                  <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Usuario:"/>
+                </properties>
+              </component>
+              <component id="681b1" class="javax.swing.JLabel" binding="passwordAgregarAdminLabel">
+                <constraints>
+                  <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Password:"/>
+                </properties>
+              </component>
+              <hspacer id="183ad">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <hspacer id="239b0">
+                <constraints>
+                  <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <vspacer id="c7c15">
+                <constraints>
+                  <grid row="13" column="1" row-span="1" col-span="3" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
             </children>
           </grid>
         </children>

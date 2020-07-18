@@ -173,6 +173,7 @@ public class SystemAdminController {
             teatrosJDBC.setConnection(DatabaseConnection.getConnection());
             teatrosJDBC.crearFila(filaNueva);
             systemAdminView.displayMessage("Fila creada!", true);
+            systemAdminView.clearAgregarFilaFields();
         }
     }
 
