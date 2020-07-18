@@ -124,19 +124,19 @@ public class TheaterAdminsJDBC implements TeatroAdminsDAO {
                 preparedStatement.setString(7,theaterAdmin.getTelefonoCasa());
             }
             else {
-                preparedStatement.setNull(10, Types.VARCHAR);
+                preparedStatement.setNull(7, Types.VARCHAR);
             }
             if (!(theaterAdmin.getTelefonoCelular() == null)) {
                 preparedStatement.setString(8, theaterAdmin.getTelefonoCelular());
             }
             else {
-                preparedStatement.setNull(11, Types.VARCHAR);
+                preparedStatement.setNull(8, Types.VARCHAR);
             }
             if (!(theaterAdmin.getTelefonoOtro() == null)) {
                 preparedStatement.setString(9,theaterAdmin.getTelefonoOtro());
             }
             else {
-                preparedStatement.setNull(12, Types.VARCHAR);
+                preparedStatement.setNull(9, Types.VARCHAR);
             }
             preparedStatement.setString(10,theaterAdmin.getEmail());
             preparedStatement.setString(11,theaterAdmin.getUsername());
