@@ -89,3 +89,60 @@ CREATE TRIGGER Trg_FilasIns
 				INSERT INTO Asientos(AsientoId, FilaId, BloqueId) VALUES(@contador + 1, @FilaId, @BloqueId);
 				SET @contador = @contador + 1;
 			END
+
+GO;
+
+USE SISTEMA_TEATROS;
+
+GO
+
+CREATE PROCEDURE GetByIdTeatroAdministradores
+	@Id INT
+AS
+	SELECT Id, Nombre, Direccion, TelefonoCasa, TelefonoCelular, TelefonoOtro,
+		Email, Sexo, FechaNacimiento, IdTeatro
+	FROM TeatroAdministradores
+	WHERE Id = @Id;
+
+GO
+
+CREATE PROCEDURE GetByNombreTeatroAdministradores
+	@Nombre VARCHAR(30)
+AS
+	SELECT Id, Nombre, Direccion, TelefonoCasa, TelefonoCelular, TelefonoOtro,
+		Email, Sexo, FechaNacimiento, IdTeatro
+	FROM TeatroAdministradores
+	WHERE Nombre = @Nombre;
+
+GO
+
+CREATE PROCEDURE GetByUsuarioTeatroAdministradores
+	@Usuario VARCHAR(20)
+AS
+	SELECT Id, Nombre, Direccion, TelefonoCasa, TelefonoCelular, TelefonoOtro,
+		Email, Sexo, FechaNacimiento, IdTeatro
+	FROM TeatroAdministradores
+	WHERE Usuario = @Usuario;
+
+GO
+
+CREATE PROCEDURE CreateTeatroAdministradores
+	@Id INT,
+	@Nombre VARCHAR(30),
+	@IdTeatro INT,
+	@FechaNacimiento DATE,
+	@Sexo CHAR,
+	@Direccion VARCHAR(40),
+	@TelefonoCasa VARCHAR(9) = NULL, --DEFAULT VALUES
+	@TelefonoCelular VARCHAR(9) = NULL,
+	@TelefonoOtro VARCHAR(9) = NULL,
+	@Email VARCHAR(20),
+	@Usuario VARCHAR(20),
+	@Password CHAR(60)
+AS
+	INSERT INTO TeatroAdministradores(Id, Nombre, IdTeatro, FechaNacimiento, Sexo, Direccion,
+	TelefonoCasa, TelefonoCelular, TelefonoOtro, Email, Usuario, Password)
+	VALUES(@Id, @Nombre, @IdTeatro, @FechaNacimiento, @Sexo, @Direccion, @TelefonoCasa, 
+	@TelefonoCelular, @TelefonoOtro, @Email, @Usuario, @Password);
+
+GO
