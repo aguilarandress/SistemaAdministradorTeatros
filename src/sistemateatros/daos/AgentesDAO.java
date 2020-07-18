@@ -6,6 +6,7 @@ import sistemateatros.models.TheaterAdmin;
 import java.sql.Connection;
 
 public interface AgentesDAO {
+
     public boolean verificarUsername(String username);
     public boolean verificarNombre(String nombre);
     public void AddAgente(AgentTheater agentTheater);

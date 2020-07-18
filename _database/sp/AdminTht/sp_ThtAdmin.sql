@@ -54,3 +54,23 @@ SELECT *
 FROM TeatroAgentes
 WHERE Id = @ID
 GO	
+
+CREATE PROCEDURE GetProduccionesTipos
+AS
+SELECT * 
+FROM ProduccionTipos
+Order By ID
+GO
+
+CREATE PROCEDURE CreateProduccion
+@desc text,
+@dateI DATE,
+@dateF DATE,
+@name nvarchar(30),
+@IdE int,
+@IdTe int,
+@IdTi int
+AS
+INSERT INTO Producciones(Descripcion,FechaInicial,FechaFinal,Nombre,IdEstado,IdTeatro,IdTipo)
+VALUES(@desc,@dateI,@dateF,@name,@IdE,@IdTe,@IdTi)
+GO

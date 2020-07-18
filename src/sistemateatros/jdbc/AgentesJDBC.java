@@ -108,7 +108,9 @@ public class AgentesJDBC implements AgentesDAO {
             }
             else
             {
-                preparedStatement.setNull(11, Types.VARCHAR);
+                preparedStatement.setNull(
+
+                        11, Types.VARCHAR);
             }
             if (!(agentTheater.getTelefonoOtro()==null))
             {

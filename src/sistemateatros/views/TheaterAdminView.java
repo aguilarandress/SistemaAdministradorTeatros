@@ -1,10 +1,14 @@
 package sistemateatros.views;
 import com.toedter.calendar.JDateChooser;
 import sistemateatros.models.AgentTheater;
+import sun.security.krb5.internal.crypto.Des;
 
 import javax.swing.*;
+import java.awt.event.ComponentAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class TheaterAdminView {
@@ -27,12 +31,24 @@ public class TheaterAdminView {
     private JPasswordField password;
     private JTextField usuario;
     private JTextField cedula;
+    private JTextField produccion;
+    private JTextField Descripcion;
+    private JComboBox tipoProd;
+    private JButton prodAdd;
+    private JPanel holderI;
+    private JPanel holderF;
     private String Admin;
     JDateChooser date = new JDateChooser();
+    JDateChooser prodInicio = new JDateChooser();
+    JDateChooser prodFinal = new JDateChooser();
 
-
+    public JButton getProdAdd() {
+        return prodAdd;
+    }
 
     public TheaterAdminView(String Admin) {
+        prodInicio.setDateFormatString("yyyy-MM-dd");
+        prodFinal.setDateFormatString("yyyy-MM-dd");
         date.setDateFormatString("yyyy-MM-dd");
         this.frame = new JFrame("Aplicación de administración de teatros");
         this.frame.setContentPane(this.homeTAdm);
@@ -42,6 +58,9 @@ public class TheaterAdminView {
         this.setAdmin(Admin);
         this.welcome_message.setText(welcome_message.getText() + getAdmin());
         CalendarHolder.add(date);
+        holderI.add(prodInicio);
+        holderF.add(prodFinal);
+        //Configurar el field de cédula para que solo acepte números
         cedula.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent ke) {
                 String value = cedula.getText();
@@ -51,13 +70,15 @@ public class TheaterAdminView {
 
                 } else {
                     cedula.setEditable(false);
-
                 }
+
             }
 
 
 
     });
+        panel1.addComponentListener(new ComponentAdapter() {
+        });
     }
     public void setVisible() {
         this.frame.setVisible(true);
@@ -67,7 +88,15 @@ public class TheaterAdminView {
     public String getAdmin() {
         return Admin;
     }
+    public void setCombo(ArrayList<String> tipos)
+    {
+        for (String tipo:
+                tipos
+             ) {
+            this.tipoProd.addItem(tipo);
+        }
 
+    }
     public void setAdmin(String admin) {
         Admin = admin;
     }
@@ -116,6 +145,27 @@ public class TheaterAdminView {
         return cedula.getText();
     }
 
+    public String getProduccion() {
+        return produccion.getText();
+    }
+
+    public String getDescripcion() {
+        return Descripcion.getText();
+    }
+
+    public int getTipoProd() {
+
+        return tipoProd.getSelectedIndex()+1;
+    }
+
+    public Date getProdInicio() {
+        return prodInicio.getDate();
+    }
+
+    public Date getProdFinal() {
+        return prodFinal.getDate();
+    }
+
     public char getGenero()
     {
         if(masculinoRadioButton.isSelected())
@@ -145,11 +195,13 @@ public class TheaterAdminView {
     public JButton getaddButton() {
         return addButton;
     }
+
+
     public void displayMessage(String message, boolean success) {
         JOptionPane.showMessageDialog(this.frame, message, success ? "EXITO" : "ERROR",
                 success ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE);
     }
-    public void clearFields()
+    public void clearFieldsAgente()
     {
         NombreField.setText("");
         direccionField.setText("");
@@ -160,6 +212,31 @@ public class TheaterAdminView {
         password.setText("");
         usuario.setText("");
         cedula.setText("");
+        try
+        {
+            date.setDate(new SimpleDateFormat("dd/MM/yyyy").parse("00/00/0000"));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+
+
+    }
+    public void clearFieldsProd()
+    {
+        produccion.setText("");
+        Descripcion.setText("");
+        try
+        {
+            prodInicio.setDate(new SimpleDateFormat("dd/MM/yyyy").parse("00/00/0000"));
+            prodFinal.setDate(new SimpleDateFormat("dd/MM/yyyy").parse("00/00/0000"));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
     }
     private void createUIComponents() {
