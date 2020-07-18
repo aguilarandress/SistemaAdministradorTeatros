@@ -79,6 +79,10 @@ public class SystemAdminView {
     private JLabel emailAgregarAdminLabel;
     private JLabel usuarioAgregarAdminLabel;
     private JLabel passwordAgregarAdminLabel;
+    private JLabel fechaNacimientoAgregarAdminLabel;
+    private JPanel fachaNacimientoJPanel;
+
+    private JDateChooser fechaNacimientoChooser = new JDateChooser();
 
     public SystemAdminView() {
         this.frame = new JFrame("Administrador de sistemas");
@@ -98,7 +102,11 @@ public class SystemAdminView {
         this.teatroAgregarAdminCBModel = new DefaultComboBoxModel<>();
         this.teatroAgregarAdminCB.setModel(teatroAgregarAdminCBModel);
 
+        this.fechaNacimientoChooser.setDateFormatString("yyyy-MM-dd");
+        this.fachaNacimientoJPanel.add(fechaNacimientoChooser);
+
         ButtonGroup radioBtnSexoGroup = new ButtonGroup();
+        this.hombreAgregarAdminRB.setSelected(true);
         radioBtnSexoGroup.add(this.hombreAgregarAdminRB);
         radioBtnSexoGroup.add(this.mujerAgregarAdminRB);
 

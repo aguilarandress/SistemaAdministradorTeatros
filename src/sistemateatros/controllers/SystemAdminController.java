@@ -31,8 +31,6 @@ public class SystemAdminController {
         this.systemAdminView.getCapacidadFilaField().addKeyListener(new CapacidadFieldListener());
         this.systemAdminView.getSeleccionarTeatroAgregarFilaBox().addItemListener(new SeleccionarTeatroAgregarFilaListener());
         this.systemAdminView.getAgregarAdminBtn().addActionListener(new AgregarAdminTeatroListener());
-//        this.systemAdminView.getHombreAgregarAdminRB().addItemListener(new SelectHombreItemListener());
-//        this.systemAdminView.getMujerAgregarAdminRB().addItemListener(new SelectMujerItemListener());
     }
 
     private class SelectHombreItemListener implements ItemListener {
