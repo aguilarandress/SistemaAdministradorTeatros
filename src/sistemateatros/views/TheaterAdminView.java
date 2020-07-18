@@ -1,14 +1,20 @@
 package sistemateatros.views;
 import com.toedter.calendar.JDateChooser;
+import com.toedter.components.JSpinField;
 import sistemateatros.models.AgentTheater;
+import sistemateatros.models.Produccion;
 import sun.security.krb5.internal.crypto.Des;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.text.DateFormatter;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class TheaterAdminView {
@@ -37,10 +43,21 @@ public class TheaterAdminView {
     private JButton prodAdd;
     private JPanel holderI;
     private JPanel holderF;
+    private JComboBox ProdPresen;
+    private JButton addPresentacion;
+    private JTable PresentacionesProduc;
+    private JPanel fechaHolderPrese;
+    private JPanel horaHolder;
+    private JPanel FechaPresen;
+    private JPanel horaHolderPresen;
     private String Admin;
+    private JSpinner horaSpinner;
     JDateChooser date = new JDateChooser();
     JDateChooser prodInicio = new JDateChooser();
     JDateChooser prodFinal = new JDateChooser();
+    JDateChooser presentacionFecha = new JDateChooser();
+
+
 
     public JButton getProdAdd() {
         return prodAdd;
@@ -50,16 +67,26 @@ public class TheaterAdminView {
         prodInicio.setDateFormatString("yyyy-MM-dd");
         prodFinal.setDateFormatString("yyyy-MM-dd");
         date.setDateFormatString("yyyy-MM-dd");
+        presentacionFecha.setDateFormatString("yyyy-MM-dd");
+
         this.frame = new JFrame("Aplicación de administración de teatros");
         this.frame.setContentPane(this.homeTAdm);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.pack();
         this.frame.setSize(700, 500);
+
         this.setAdmin(Admin);
         this.welcome_message.setText(welcome_message.getText() + getAdmin());
+
         CalendarHolder.add(date);
         holderI.add(prodInicio);
         holderF.add(prodFinal);
+        FechaPresen.add(presentacionFecha);
+
+        PresentacionesProduc.setModel(new DefaultTableModel(2,2));
+
+        setSpinner();
+
         //Configurar el field de cédula para que solo acepte números
         cedula.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent ke) {
@@ -84,10 +111,31 @@ public class TheaterAdminView {
         this.frame.setVisible(true);
     }
 
+    public void setSpinner()
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 24); // 24 == 12 PM == 00:00:00
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
 
+        SpinnerDateModel model = new SpinnerDateModel();
+        model.setValue(calendar.getTime());
+
+        JSpinner spinner = new JSpinner(model);
+
+        JSpinner.DateEditor editor = new JSpinner.DateEditor(spinner, "HH:mm");
+        DateFormatter formatter = (DateFormatter)editor.getTextField().getFormatter();
+        formatter.setAllowsInvalid(false); // this makes what you want
+        formatter.setOverwriteMode(true);
+
+        spinner.setEditor(editor);
+        this.horaSpinner=spinner;
+        horaHolder.add(spinner);
+    }
     public String getAdmin() {
         return Admin;
     }
+
     public void setCombo(ArrayList<String> tipos)
     {
         for (String tipo:
@@ -97,13 +145,26 @@ public class TheaterAdminView {
         }
 
     }
+    public void setComboProds(ArrayList<Produccion> produccions)
+    {
+        for (Produccion p:produccions
+             ) {
+            this.ProdPresen.addItem(p.getNombre());
+        }
+    }
+
     public void setAdmin(String admin) {
         Admin = admin;
     }
-     public void setTextTH(String Teatro)
+
+    public void setTextTH(String Teatro)
      {
          this.TheaterInfo.setText(TheaterInfo.getText()+" "+Teatro);
      }
+
+    public JTabbedPane getHomeTAdm() {
+        return homeTAdm;
+    }
 
     public String getNombreField() {
         return NombreField.getText();
@@ -158,6 +219,12 @@ public class TheaterAdminView {
         return tipoProd.getSelectedIndex()+1;
     }
 
+    public JPanel getFechaHolderPrese() { return fechaHolderPrese; }
+
+    public JPanel getHoraHolderPresen() { return horaHolderPresen; }
+
+    public JSpinner getHoraSpinner() { return horaSpinner; }
+
     public Date getProdInicio() {
         return prodInicio.getDate();
     }
@@ -196,6 +263,13 @@ public class TheaterAdminView {
         return addButton;
     }
 
+    public JComboBox getProdPresen() { return ProdPresen; }
+
+    public JTable getPresentacionesProduc() { return PresentacionesProduc; }
+
+    public JDateChooser getPresentacionFecha() { return presentacionFecha; }
+
+    public JButton getAddPresentacion() { return addPresentacion; }
 
     public void displayMessage(String message, boolean success) {
         JOptionPane.showMessageDialog(this.frame, message, success ? "EXITO" : "ERROR",
@@ -214,7 +288,7 @@ public class TheaterAdminView {
         cedula.setText("");
         try
         {
-            date.setDate(new SimpleDateFormat("dd/MM/yyyy").parse("00/00/0000"));
+            date.setDate(new SimpleDateFormat("yyyy-MM-dd").parse("0001/01/01"));
         }
         catch (Exception e)
         {

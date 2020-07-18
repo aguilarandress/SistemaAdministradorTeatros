@@ -1,21 +1,34 @@
 package sistemateatros.controllers;
 
+import net.proteanit.sql.DbUtils;
 import org.mindrot.jbcrypt.BCrypt;
 import sistemateatros.database.DatabaseConnection;
 import sistemateatros.jdbc.AgentesJDBC;
+import sistemateatros.jdbc.PresentacionesJDBC;
 import sistemateatros.jdbc.ProduccionesJDBC;
 import sistemateatros.jdbc.TeatrosJDBC;
 import sistemateatros.models.AgentTheater;
+import sistemateatros.models.Presentacion;
 import sistemateatros.models.Produccion;
 import sistemateatros.models.Teatro;
 import sistemateatros.validators.AgenteValidator;
 import sistemateatros.validators.ProduccionValidator;
 import sistemateatros.views.TheaterAdminView;
 
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.table.TableModel;
 import javax.xml.crypto.Data;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.sql.ResultSet;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class TheaterAdminController {
     private TheaterAdminView theaterAdminView;
@@ -25,6 +38,7 @@ public class TheaterAdminController {
     private AgentesJDBC agentesJDBC;
     private ProduccionesJDBC produccionesJDBC;
     private TeatrosJDBC teatrosJDBC;
+    private PresentacionesJDBC presentacionesJDBC;
 
 
 
@@ -41,13 +55,18 @@ public class TheaterAdminController {
         teatrosJDBC.setConnection(DatabaseConnection.getConnection());
         produccionesJDBC = new ProduccionesJDBC();
         produccionesJDBC.setConnection(DatabaseConnection.getConnection());
+        presentacionesJDBC = new PresentacionesJDBC();
+        presentacionesJDBC.setConnection(DatabaseConnection.getConnection());
 
         this.teatro = teatrosJDBC.getTeatroByID(idTeatro);
         theaterAdminView.setTextTH(teatro.getNombre());
         this.theaterAdminView.getProdAdd().addActionListener(new addProdListener());
         this.theaterAdminView.getaddButton().addActionListener(new addAgentListener());
-        ArrayList<String> tipos = produccionesJDBC.getTipos();
+        this.theaterAdminView.getHomeTAdm().addChangeListener(new cambiarPaneListener());
+        this.theaterAdminView.getProdPresen().addItemListener(new cargarPresentacionesListener());
+        this.theaterAdminView.getAddPresentacion().addActionListener(new addPresentacionListener());
 
+        ArrayList<String> tipos = produccionesJDBC.getTipos();
         this.theaterAdminView.setCombo(tipos);
 
 
@@ -122,6 +141,68 @@ public class TheaterAdminController {
             agentesJDBC.AddAgente(agentTheater);
             theaterAdminView.displayMessage("Añadido con éxito",true);
             theaterAdminView.clearFieldsAgente();
+        }
+    }
+    private class cambiarPaneListener implements ChangeListener {
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            // Verificar cual tabbed pane se esta cargando
+            if (theaterAdminView.getHomeTAdm().getSelectedIndex() == 2) {
+                theaterAdminView.getProdPresen().removeAllItems();
+                ArrayList<Produccion> produccions = produccionesJDBC.getProducciones();
+                theaterAdminView.setComboProds(produccions);
+
+
+            }
+        }
+    }
+    private  class cargarPresentacionesListener implements ItemListener
+    {
+
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                Produccion produccion = produccionesJDBC.getProdByName((String)theaterAdminView.getProdPresen().getSelectedItem());
+                ResultSet presentacions = presentacionesJDBC.getRawPresentByProdId(produccion.getId());
+                TableModel model= DbUtils.resultSetToTableModel(presentacions);
+                theaterAdminView.getPresentacionesProduc().setModel(model);
+                theaterAdminView.getPresentacionFecha().setMaxSelectableDate(produccion.getFechaF());
+                theaterAdminView.getPresentacionFecha().setMinSelectableDate(produccion.getFechaI());
+            }
+
+        }
+    }
+    private class addPresentacionListener implements  ActionListener
+    {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Presentacion presentacion = new Presentacion();
+            Object valorHora=theaterAdminView.getHoraSpinner().getValue();
+            Date date = (Date)valorHora;
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+            String time = format.format(date);
+            Produccion produccion = produccionesJDBC.getProdByName((String)theaterAdminView.getProdPresen().getSelectedItem());
+            presentacion.setHora(time);
+            presentacion.setFecha(theaterAdminView.getPresentacionFecha().getDate());
+            presentacion.setId(produccion.getId());
+            ArrayList<Presentacion>presentacions = presentacionesJDBC.getPresentByProdId(produccion.getId());
+            presentacion.setPresentId(presentacions.size()+1);
+            //TODO: VERIFICAR FECHA DIFERENTE
+            if(presentacionesJDBC.validateDate(presentacion))
+            {
+                theaterAdminView.displayMessage("Ya existe una presentación agendada",false);
+                return;
+            }
+            presentacionesJDBC.addPresentacion(presentacion);
+            theaterAdminView.displayMessage("Añadido con éxito",true);
+            ResultSet presentacionsRaw = presentacionesJDBC.getRawPresentByProdId(produccion.getId());
+            TableModel model= DbUtils.resultSetToTableModel(presentacionsRaw);
+            theaterAdminView.getPresentacionesProduc().setModel(model);
+
+
+
+
         }
     }
 }

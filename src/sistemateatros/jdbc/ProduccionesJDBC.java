@@ -1,8 +1,10 @@
 package sistemateatros.jdbc;
 
+import jdk.tools.jlink.internal.PathResourcePoolEntry;
 import sistemateatros.daos.ProduccionesDAO;
 import sistemateatros.models.Produccion;
 
+import javax.imageio.plugins.jpeg.JPEGImageReadParam;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -61,5 +63,80 @@ public class ProduccionesJDBC implements ProduccionesDAO {
         {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public ArrayList<Produccion> getProducciones() {
+
+        try
+        {
+            ArrayList<Produccion> producciones = new ArrayList<Produccion>() ;
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC getProducciones");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next())
+            {
+                Produccion produccion = new Produccion();
+                produccion.setNombre(resultSet.getString("Nombre"));
+                producciones.add(produccion);
+            }
+            return producciones;
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean validarNombre(String nombre) {
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC ValidateNameProducciones ?");
+            preparedStatement.setString(1,nombre);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            boolean prodFound = resultSet.next();
+            if (!prodFound) {
+
+                return false;
+            }
+            return true;
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    @Override
+    public Produccion getProdByName(String nombre) {
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByNombreProduccion ? ");
+            preparedStatement.setString(1,nombre);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            boolean prodFound = resultSet.next();
+            if(!prodFound)
+            {
+                return null;
+            }
+            Produccion produccion = new Produccion();
+            produccion.setNombre(resultSet.getString("Nombre"));
+            produccion.setId(resultSet.getInt("Id"));
+            produccion.setIdTeatro(resultSet.getInt("IdTeatro"));
+            produccion.setFechaI(resultSet.getDate("FechaInicial"));
+            produccion.setFechaF(resultSet.getDate("FechaFinal"));
+            produccion.setDescripcion(resultSet.getString("Descripcion"));
+            produccion.setIdEstado(resultSet.getInt("IdEstado"));
+            produccion.setIdTipo(resultSet.getInt("IdTipo"));
+            return produccion;
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

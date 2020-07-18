@@ -83,15 +83,12 @@ public class TeatrosJDBC implements TeatrosDAO {
     public Teatro getTeatroByID(int Id) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByIdTeatros ?");
-            System.out.println(Id);
             preparedStatement.setInt(1, Id);
             ResultSet resultSet = preparedStatement.executeQuery();
             boolean teatroFound = resultSet.next();
             if (!teatroFound) {
-                System.out.println("nada");
                 return null;
             }
-            System.out.println("algo");
             Teatro teatro = new Teatro();
             teatro.setNombre(resultSet.getString("Nombre"));
             return teatro   ;

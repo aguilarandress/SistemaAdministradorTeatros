@@ -63,14 +63,68 @@ Order By ID
 GO
 
 CREATE PROCEDURE CreateProduccion
+@name nvarchar(30),
 @desc text,
 @dateI DATE,
 @dateF DATE,
-@name nvarchar(30),
 @IdE int,
 @IdTe int,
 @IdTi int
 AS
 INSERT INTO Producciones(Descripcion,FechaInicial,FechaFinal,Nombre,IdEstado,IdTeatro,IdTipo)
 VALUES(@desc,@dateI,@dateF,@name,@IdE,@IdTe,@IdTi)
+GO
+
+CREATE PROCEDURE getProducciones
+AS
+SELECT * 
+FROM Producciones
+GO
+
+CREATE PROCEDURE ValidateNameProducciones
+@Nombre nvarchar(30)
+AS
+Select *
+FROM Producciones
+WHERE @Nombre = Nombre
+GO
+
+CREATE PROCEDURE GetByNombreProduccion	
+@nombre nvarchar(30)
+AS
+SELECT *
+FROM Producciones
+WHERE nombre =  @nombre
+GO
+
+CREATE PROCEDURE GetByProduccionIdPresentaciones
+@Id int
+AS
+SELECT *
+FROM Presentaciones
+WHERE ProduccionId = @Id
+Order by Fecha,Hora
+GO
+
+CREATE PROCEDURE CreatePresentacion
+@IdProd int,
+@Id int,
+@Fecha Date,
+@Hora Time
+
+AS
+	INSERT INTO Presentaciones(ProduccionId,PresentacionId,Fecha,Hora)
+	VALUES(@IdProd,@Id,@Fecha,@Hora)
+
+GO
+
+CREATE PROCEDURE ValidateDatePresentaciones
+@IdProd int,
+@fecha date,
+@hora time
+AS
+SELECT *
+FROM Presentaciones
+WHERE ProduccionId = @IdProd AND Fecha = @fecha AND Hora = @hora
+
 GO

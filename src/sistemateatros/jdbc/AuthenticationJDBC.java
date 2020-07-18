@@ -67,7 +67,6 @@ public class AuthenticationJDBC implements AuthenticationDAO {
             theaterAdmin.setPassword(resultSet.getString("Password"));
             theaterAdmin.setNombre(resultSet.getString("Nombre"));
             theaterAdmin.setIdTeatro(resultSet.getInt("IdTeatro"));
-            System.out.println(theaterAdmin.getNombre());
             return theaterAdmin;
         }
         catch (SQLException e)

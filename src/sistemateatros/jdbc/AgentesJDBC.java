@@ -84,7 +84,7 @@ public class AgentesJDBC implements AgentesDAO {
             preparedStatement.setInt(1,agentTheater.getCedula());
             preparedStatement.setString(2, agentTheater.getNombre());
             preparedStatement.setInt(3,agentTheater.getIdTeatro());
-            SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy");
+
             java.sql.Date date = new java.sql.Date(agentTheater.getFechaNacimiento().getTime());
             preparedStatement.setDate(4,date);
 
