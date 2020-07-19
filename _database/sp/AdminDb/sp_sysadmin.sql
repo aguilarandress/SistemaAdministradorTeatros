@@ -120,7 +120,7 @@ CREATE PROCEDURE GetByUsuarioTeatroAdministradores
 	@Usuario VARCHAR(20)
 AS
 	SELECT Id, Nombre, Direccion, TelefonoCasa, TelefonoCelular, TelefonoOtro,
-		Email, Sexo, FechaNacimiento, IdTeatro
+		Email, Sexo, FechaNacimiento, IdTeatro, Usuario
 	FROM TeatroAdministradores
 	WHERE Usuario = @Usuario;
 

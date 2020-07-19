@@ -15,9 +15,6 @@ public class TheaterAdmin extends User {
     private String email;
 
     public TheaterAdmin() { }
-  
-    public TheaterAdmin() {
-    }
 
     public int getId() {
         return id;

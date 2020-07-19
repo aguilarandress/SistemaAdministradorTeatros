@@ -1,11 +1,9 @@
 package sistemateatros.views;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.components.JSpinField;
-import org.graalvm.compiler.nodes.NodeView;
 import sistemateatros.models.AgentTheater;
 import sistemateatros.models.Bloque;
 import sistemateatros.models.Produccion;
-import sun.security.krb5.internal.crypto.Des;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

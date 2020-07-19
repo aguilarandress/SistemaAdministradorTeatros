@@ -1,6 +1,5 @@
 package sistemateatros.jdbc;
 
-import jdk.tools.jlink.internal.PathResourcePoolEntry;
 import sistemateatros.daos.ProduccionesDAO;
 import sistemateatros.models.Bloque;
 import sistemateatros.models.Produccion;

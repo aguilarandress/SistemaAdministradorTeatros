@@ -78,6 +78,7 @@ public class TheaterAdminValidator {
     }
 
     public static boolean validarPassword(String password) {
+        // 8 chars min, 1 minuscula, 1 mayuscula, 1 numero
         String patternStr = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}";
         Pattern pattern = Pattern.compile(patternStr);
         return pattern.matcher(password).matches();
