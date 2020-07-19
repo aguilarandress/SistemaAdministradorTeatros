@@ -42,5 +42,4 @@ public class Bloque {
     public String toString() {
         return this.nombre;
     }
-
 }

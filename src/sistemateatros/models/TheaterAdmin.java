@@ -1,9 +1,11 @@
 package sistemateatros.models;
 
-public class TheaterAdmin extends User{
+import java.util.Date;
+
+public class TheaterAdmin extends User {
     private int id;
     private String nombre;
-    private String fechaNacimiento;
+    private Date fechaNacimiento;
     private char sexo;
     private int idTeatro;
     private String direccion;
@@ -13,6 +15,9 @@ public class TheaterAdmin extends User{
     private String email;
 
     public TheaterAdmin() { }
+  
+    public TheaterAdmin() {
+    }
 
     public int getId() {
         return id;
@@ -22,7 +27,7 @@ public class TheaterAdmin extends User{
         return nombre;
     }
 
-    public String getFechaNacimiento() {
+    public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
 
@@ -58,7 +63,7 @@ public class TheaterAdmin extends User{
         this.nombre = nombre;
     }
 
-    public void setFechaNacimiento(String fechaNacimiento) {
+    public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
@@ -86,7 +91,11 @@ public class TheaterAdmin extends User{
         this.email = email;
     }
 
-    public int getIdTeatro() { return idTeatro; }
+    public int getIdTeatro() {
+        return idTeatro;
+    }
 
-    public void setIdTeatro(int idTeatro) { this.idTeatro = idTeatro; }
+    public void setIdTeatro(int idTeatro) {
+        this.idTeatro = idTeatro;
+    }
 }

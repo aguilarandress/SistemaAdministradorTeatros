@@ -48,8 +48,10 @@ public class AuthenticationController {
                 authenticationView.displayMessage("Incorrrect password", false);
                 return;
             }
-            authenticationView.displayMessage("Loggin in...", true);
-            // TODO Abrir el system admin controller
+            authenticationView.displayMessage("Se ha iniciado sesion correctamente...", true);
+            authenticationView.close();
+            // Abrir ventana para el administrador del sistema
+            SystemAdminController systemAdminController = new SystemAdminController();
         }
     }
 
