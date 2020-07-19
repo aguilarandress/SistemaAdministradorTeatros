@@ -138,6 +138,46 @@ public class SystemAdminView {
         return telefonoAdministracionField;
     }
 
+    public JTextField getCedulaAgregarAdminField() {
+        return cedulaAgregarAdminField;
+    }
+
+    public JTextField getNombreAgregarAdminField() {
+        return nombreAgregarAdminField;
+    }
+
+    public JTextField getDireccionAgregarAdminField() {
+        return direccionAgregarAdminField;
+    }
+
+    public JTextField getTelCelularAgregarAdminField() {
+        return telCelularAgregarAdminField;
+    }
+
+    public JTextField getTelCasaAgregarAdminField() {
+        return telCasaAgregarAdminField;
+    }
+
+    public JTextField getTelOtroAgregarAdminField() {
+        return telOtroAgregarAdminField;
+    }
+
+    public JTextField getEmailAgregarAdminField() {
+        return emailAgregarAdminField;
+    }
+
+    public JTextField getUsuarioAgregarAdminField() {
+        return usuarioAgregarAdminField;
+    }
+
+    public JPasswordField getPasswordAgregarAdminField() {
+        return passwordAgregarAdminField;
+    }
+
+    public JDateChooser getFechaNacimientoChooser() {
+        return fechaNacimientoChooser;
+    }
+
     public JTextField getTelefonoBoleteriaField() {
         return telefonoBoleteriaField;
     }
@@ -217,5 +257,9 @@ public class SystemAdminView {
 
     public JRadioButton getMujerAgregarAdminRB() {
         return mujerAgregarAdminRB;
+    }
+
+    public char getSexoValue() {
+        return hombreAgregarAdminRB.isSelected() ? 'M' : 'F';
     }
 }

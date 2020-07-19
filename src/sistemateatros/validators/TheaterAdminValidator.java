@@ -29,6 +29,9 @@ public class TheaterAdminValidator {
         if (theaterAdmin.getUsername().isEmpty() || theaterAdmin.getUsername().length() > 20) {
            errores.add("Username invalido");
         }
+        if (theaterAdmin.getFechaNacimiento() == null) {
+            errores.add("Fecha nacimiento invalida");
+        }
         if (theaterAdmin.getPassword().isEmpty() || !(validarPassword(theaterAdmin.getPassword())) ||
             theaterAdmin.getPassword().length() > 20) {
             errores.add("Password invalido");

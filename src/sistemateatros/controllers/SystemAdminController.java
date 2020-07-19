@@ -1,11 +1,15 @@
 package sistemateatros.controllers;
 
+import org.mindrot.jbcrypt.BCrypt;
 import sistemateatros.database.DatabaseConnection;
 import sistemateatros.jdbc.TeatrosJDBC;
+import sistemateatros.jdbc.TheaterAdminsJDBC;
 import sistemateatros.models.Bloque;
 import sistemateatros.models.Fila;
 import sistemateatros.models.Teatro;
+import sistemateatros.models.TheaterAdmin;
 import sistemateatros.validators.TeatroValidator;
+import sistemateatros.validators.TheaterAdminValidator;
 import sistemateatros.views.SystemAdminView;
 
 import javax.swing.event.ChangeEvent;
@@ -28,7 +32,8 @@ public class SystemAdminController {
         this.systemAdminView.getAgregarTeatroBtn().addActionListener(new AgregarTeatroListener());
         this.systemAdminView.getAgregarBloqueBtn().addActionListener(new AgregarBloqueListener());
         this.systemAdminView.getAgregarFilaBtn().addActionListener(new AgregarFilaListener());
-        this.systemAdminView.getCapacidadFilaField().addKeyListener(new CapacidadFieldListener());
+        this.systemAdminView.getCapacidadFilaField().addKeyListener(new NumeroEnteroFieldListener());
+        this.systemAdminView.getCedulaAgregarAdminField().addKeyListener(new NumeroEnteroFieldListener());
         this.systemAdminView.getSeleccionarTeatroAgregarFilaBox().addItemListener(new SeleccionarTeatroAgregarFilaListener());
         this.systemAdminView.getAgregarAdminBtn().addActionListener(new AgregarAdminTeatroListener());
     }
@@ -218,14 +223,51 @@ public class SystemAdminController {
     private class AgregarAdminTeatroListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            // Creaate theater admin
+            TheaterAdmin newTheaterAdmin = new TheaterAdmin();
+            // Verificar cedula vacia
+            if (systemAdminView.getCedulaAgregarAdminField().getText().isEmpty()) {
+                systemAdminView.displayMessage("Cedula invalida", false);
+                return;
+            }
+            newTheaterAdmin.setId(Integer.parseInt(systemAdminView.getCedulaAgregarAdminField().getText()));
+            newTheaterAdmin.setNombre(systemAdminView.getNombreAgregarAdminField().getText());
+            // Obtener teatro
+            Teatro teatroSeleccionado = (Teatro) systemAdminView.getTeatroAgregarAdminCB().getSelectedItem();
+            newTheaterAdmin.setIdTeatro(teatroSeleccionado.getId());
+            newTheaterAdmin.setFechaNacimiento(systemAdminView.getFechaNacimientoChooser().getDate());
+            newTheaterAdmin.setSexo(systemAdminView.getSexoValue());
+            newTheaterAdmin.setDireccion(systemAdminView.getDireccionAgregarAdminField().getText());
+            newTheaterAdmin.setTelefonoCasa(
+                    systemAdminView.getTelCasaAgregarAdminField().getText().isEmpty() ? null : systemAdminView.getTelCasaAgregarAdminField().getText());
+            newTheaterAdmin.setTelefonoCelular(
+                    systemAdminView.getTelCelularAgregarAdminField().getText().isEmpty() ? null : systemAdminView.getTelCelularAgregarAdminField().getText());
+            newTheaterAdmin.setTelefonoOtro(
+                    systemAdminView.getTelOtroAgregarAdminField().getText().isEmpty() ? null : systemAdminView.getTelOtroAgregarAdminField().getText());
+            newTheaterAdmin.setEmail(systemAdminView.getEmailAgregarAdminField().getText());
+            newTheaterAdmin.setUsername(systemAdminView.getUsuarioAgregarAdminField().getText());
+            newTheaterAdmin.setPassword(String.valueOf(systemAdminView.getPasswordAgregarAdminField().getPassword()));
+            // Validar informacion
+            ArrayList<String> errores = TheaterAdminValidator.validarTheaterAdmin(newTheaterAdmin);
+            if (errores.size() > 0) {
+                systemAdminView.displayMessage(errores.get(0), false);
+                return;
+            }
+            // Encriptar contrasena
+            newTheaterAdmin.setPassword(BCrypt.hashpw(newTheaterAdmin.getPassword(), BCrypt.gensalt(4)));
+            // Crear administrador en la base de datos
+            TheaterAdminsJDBC theaterAdminsJDBC = new TheaterAdminsJDBC();
+            theaterAdminsJDBC.setConnection(DatabaseConnection.getConnection());
+            theaterAdminsJDBC.createTheaterAdmin(newTheaterAdmin);
+            systemAdminView.displayMessage("Administrador de teatro creado!", true);
+            // TODO: Limpiar campos
         }
     }
 
     /**
      * Listener para solo permitir escribir digitos
      */
-    private class CapacidadFieldListener extends KeyAdapter {
+    private class NumeroEnteroFieldListener extends KeyAdapter {
         @Override
         public void keyTyped(KeyEvent e) {
             char c = e.getKeyChar();
