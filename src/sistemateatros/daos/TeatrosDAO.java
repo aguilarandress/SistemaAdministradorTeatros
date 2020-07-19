@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public interface TeatrosDAO {
     public void setConnection(Connection connection);
     public Teatro getTeatroByNombre(String nombre);
+    public Teatro getTeatroByID(int Id);
     public ArrayList<Teatro> getTeatros();
     public Bloque getBloqueByNombre(int idTeatro, String nombre);
     public ArrayList<Bloque> getBloquesByIdTeatro(int idTeatro);

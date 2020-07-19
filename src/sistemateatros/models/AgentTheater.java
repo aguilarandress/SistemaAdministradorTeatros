@@ -2,8 +2,8 @@ package sistemateatros.models;
 
 import java.util.Date;
 
-public class TheaterAdmin extends User {
-    private int id;
+public class AgentTheater {
+    private int cedula;
     private String nombre;
     private Date fechaNacimiento;
     private char sexo;
@@ -13,14 +13,13 @@ public class TheaterAdmin extends User {
     private String telefonoCelular;
     private String telefonoOtro;
     private String email;
+    private String username;
+    private char[] password;
 
-    public TheaterAdmin() { }
-  
-    public TheaterAdmin() {
-    }
+    public AgentTheater() { }
 
-    public int getId() {
-        return id;
+    public int getCedula() {
+        return cedula;
     }
 
     public String getNombre() {
@@ -55,8 +54,8 @@ public class TheaterAdmin extends User {
         return email;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCedula(int cedula) {
+        this.cedula = cedula;
     }
 
     public void setNombre(String nombre) {
@@ -91,11 +90,15 @@ public class TheaterAdmin extends User {
         this.email = email;
     }
 
-    public int getIdTeatro() {
-        return idTeatro;
-    }
+    public int getIdTeatro() { return idTeatro; }
 
-    public void setIdTeatro(int idTeatro) {
-        this.idTeatro = idTeatro;
-    }
+    public void setIdTeatro(int idTeatro) { this.idTeatro = idTeatro; }
+
+    public String getUsername() { return username; }
+
+    public void setUsername(String username) { this.username = username; }
+
+    public char[] getPassword() { return password; }
+
+    public void setPassword(char[] password) { this.password = password; }
 }

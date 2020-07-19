@@ -78,6 +78,27 @@ public class TeatrosJDBC implements TeatrosDAO {
         return null;
     }
 
+    @Override
+    public Teatro getTeatroByID(int Id) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByIdTeatros ?");
+            preparedStatement.setInt(1, Id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            boolean teatroFound = resultSet.next();
+            if (!teatroFound) {
+                return null;
+            }
+            Teatro teatro = new Teatro();
+            teatro.setNombre(resultSet.getString("Nombre"));
+            return teatro   ;
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return  null;
+    }
+  
     /**
      * Crea un teatro nuevo
      * @param teatro El teatro nuevo

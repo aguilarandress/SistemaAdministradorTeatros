@@ -2,6 +2,7 @@ package sistemateatros.jdbc;
 
 import sistemateatros.daos.AuthenticationDAO;
 import sistemateatros.models.SystemAdmin;
+import sistemateatros.models.TheaterAdmin;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -47,5 +48,31 @@ public class AuthenticationJDBC implements AuthenticationDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public TheaterAdmin getTheaterAdminByUsername(String username)
+    {
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByUsernameSistemaTeatroAdmin ?");
+            preparedStatement.setString(1,username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            boolean userFound = resultSet.next();
+            if (!userFound) {
+                return null;
+            }
+            TheaterAdmin theaterAdmin = new TheaterAdmin();
+            theaterAdmin.setUsername(resultSet.getString("Usuario"));
+            theaterAdmin.setPassword(resultSet.getString("Password"));
+            theaterAdmin.setNombre(resultSet.getString("Nombre"));
+            theaterAdmin.setIdTeatro(resultSet.getInt("IdTeatro"));
+            return theaterAdmin;
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return  null;
     }
 }

@@ -1,6 +1,8 @@
 package sistemateatros.views;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Vista para iniciar sesion
@@ -14,6 +16,10 @@ public class AuthenticationView {
     private JButton loginSysAdminBtn;
     private JPasswordField sysAdminPasswordField;
     private JLabel sysAdminLoginTitle;
+    private JTextField teaAdminUsernameField;
+    private JPasswordField teaAdminPasswordField;
+    private JButton loginTeaAdminBtn;
+    private JLabel teaAdminLoginTitle;
 
     public AuthenticationView() {
         this.frame = new JFrame("Iniciar Sesion");
@@ -21,11 +27,15 @@ public class AuthenticationView {
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.pack();
         this.frame.setSize(700, 500);
+
     }
 
     public void setVisible() {
         this.frame.setVisible(true);
     }
+    public void hide() { this.frame.setVisible(false);
+    }
+
 
     public void displayMessage(String message, boolean success) {
         JOptionPane.showMessageDialog(this.frame, message, success ? "EXITO" : "ERROR",
@@ -46,5 +56,17 @@ public class AuthenticationView {
 
     public JButton getLoginSysAdminBtn() {
         return loginSysAdminBtn;
+    }
+
+    public String getTheaterUsername() {
+        return this.teaAdminUsernameField.getText();
+    }
+
+    public String getTheaterPassword() {
+        return new String(this.teaAdminPasswordField.getPassword());
+    }
+
+    public JButton getLoginTeaAdminBtn() {
+        return loginTeaAdminBtn;
     }
 }
