@@ -256,7 +256,7 @@ public class TheaterAdminController {
             presentacion.setId(produccion.getId());
             ArrayList<Presentacion>presentacions = presentacionesJDBC.getPresentByProdId(produccion.getId());
             presentacion.setPresentId(presentacions.size()+1);
-
+            //TODO: PUEDEN HABER PRESENTACIONES A LA MISMA HORA DE DIFERENTES PRODUCCIONES
 
             presentacionesJDBC.addPresentacion(presentacion);
             theaterAdminView.displayMessage("Añadido con éxito",true);
