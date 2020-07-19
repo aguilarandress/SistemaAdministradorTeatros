@@ -341,7 +341,7 @@ public class TheaterAdminView {
             int filas = getTablaBloques().getRowCount();
             for(int i = 0 ; i<filas ; i++)
             {
-                getTablaBloques().setValueAt(0,0,0);
+                getTablaBloques().setValueAt(0,1,1);
                 getTablaBloques().setValueAt(0,0,1);
             }
 

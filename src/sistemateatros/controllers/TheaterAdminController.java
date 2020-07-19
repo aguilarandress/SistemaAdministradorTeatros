@@ -126,7 +126,8 @@ public class TheaterAdminController {
                 return;
             }
             produccionesJDBC.AddProd(produccion);
-            produccionesJDBC.AddBloquePrecio(bloques);
+            produccion = produccionesJDBC.getProdByName(produccion.getNombre());
+            produccionesJDBC.AddBloquePrecio(bloques,produccion.getId());
             theaterAdminView.displayMessage("Añadido con éxito",true);
             theaterAdminView.clearFieldsProd();
 

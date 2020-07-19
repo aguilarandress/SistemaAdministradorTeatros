@@ -203,7 +203,7 @@ public class ProduccionesJDBC implements ProduccionesDAO {
     }
 
     @Override
-    public void AddBloquePrecio(ArrayList<Bloque> bloques) {
+    public void AddBloquePrecio(ArrayList<Bloque> bloques,int idProd) {
         try {
 
 
@@ -213,7 +213,8 @@ public class ProduccionesJDBC implements ProduccionesDAO {
                 BigDecimal bd = new BigDecimal(bloque.getPrecio()).setScale(2, RoundingMode.HALF_UP);
                 preparedStatement.setBigDecimal(1,bd);
                 preparedStatement.setInt(2,bloque.getId());
-                preparedStatement.setInt(3,bloque.getIdTeatro());
+                System.out.println(idProd);
+                preparedStatement.setInt(3,idProd);
                 preparedStatement.execute();
             }
         }
