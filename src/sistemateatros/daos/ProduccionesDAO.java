@@ -1,5 +1,6 @@
 package sistemateatros.daos;
 
+import sistemateatros.models.Bloque;
 import sistemateatros.models.Produccion;
 
 import java.sql.Connection;
@@ -12,5 +13,9 @@ public interface ProduccionesDAO {
     public ArrayList<Produccion> getProducciones();
     public boolean validarNombre (String nombre);
     public Produccion getProdByName(String nombre);
+    public ArrayList<String> getEstados();
+    public String getEstadoById(int Id);
+    public void updateEstado(Produccion produccion);
+    public void AddBloquePrecio(ArrayList<Bloque> bloques);
 
 }

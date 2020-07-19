@@ -128,3 +128,37 @@ FROM Presentaciones
 WHERE ProduccionId = @IdProd AND Fecha = @fecha AND Hora = @hora
 
 GO
+
+CREATE PROCEDURE GetProduccionEstados
+AS
+SELECT *
+FROM ProduccionEstados
+Order by Id 
+GO
+
+CREATE PROCEDURE GetByIdProduccionEstados
+@Id int
+AS
+SELECT *
+FROM ProduccionEstados
+Where Id = @Id
+GO
+
+CREATE PROCEDURE UpdateIdEstadoProduccion
+@Id int,
+@Estado int
+AS
+UPDATE Producciones
+SET IdEstado = @Estado
+WHERE Id = @Id
+
+GO
+
+CREATE PROCEDURE CreateBloquePrecios
+@Monto Decimal(10,2),
+@IdBloque INT,
+@IdProduccion INT
+AS
+INSERT INTO BloquePrecios(Monto,IdBloque,IdProduccion)
+VALUES (@Monto,@IdBloque,@IdProduccion)
+GO

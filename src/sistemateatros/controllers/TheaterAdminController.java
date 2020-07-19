@@ -7,17 +7,17 @@ import sistemateatros.jdbc.AgentesJDBC;
 import sistemateatros.jdbc.PresentacionesJDBC;
 import sistemateatros.jdbc.ProduccionesJDBC;
 import sistemateatros.jdbc.TeatrosJDBC;
-import sistemateatros.models.AgentTheater;
-import sistemateatros.models.Presentacion;
-import sistemateatros.models.Produccion;
-import sistemateatros.models.Teatro;
+import sistemateatros.mapper.TableBloquesMapper;
+import sistemateatros.models.*;
 import sistemateatros.validators.AgenteValidator;
+import sistemateatros.validators.BloquePrecioValidator;
 import sistemateatros.validators.ProduccionValidator;
 import sistemateatros.views.TheaterAdminView;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.table.TableModel;
 import javax.xml.crypto.Data;
 import java.awt.event.ActionEvent;
@@ -65,7 +65,8 @@ public class TheaterAdminController {
         this.theaterAdminView.getHomeTAdm().addChangeListener(new cambiarPaneListener());
         this.theaterAdminView.getProdPresen().addItemListener(new cargarPresentacionesListener());
         this.theaterAdminView.getAddPresentacion().addActionListener(new addPresentacionListener());
-
+        this.theaterAdminView.getProduccionesEstados().addItemListener(new refresEstadoListener());
+        this.theaterAdminView.getCambiarEstadoButton().addActionListener(new changeEstadoListener());
         ArrayList<String> tipos = produccionesJDBC.getTipos();
         this.theaterAdminView.setCombo(tipos);
 
@@ -105,9 +106,30 @@ public class TheaterAdminController {
                 theaterAdminView.displayMessage(errores.get(0),false);
                 return;
             }
+            ArrayList<Bloque> bloques = new ArrayList<Bloque>();
+            int filas = theaterAdminView.getTablaBloques().getRowCount();
+            if(filas==0)
+            {
+                theaterAdminView.displayMessage("Dado que el teatro no tiene bloques no se puede continuar",false);
+                return;
+            }
+            for(int i = 0 ; i<filas ; i++)
+            {
+                Bloque bloque=(Bloque)theaterAdminView.getTablaBloques().getValueAt(i,0);
+                bloque.setPrecio((Integer) theaterAdminView.getTablaBloques().getValueAt(i,1));
+                bloques.add(bloque);
+            }
+            errores = BloquePrecioValidator.validateBloques(bloques);
+            if (errores.size()>0)
+            {
+                theaterAdminView.displayMessage(errores.get(0),false);
+                return;
+            }
             produccionesJDBC.AddProd(produccion);
+            produccionesJDBC.AddBloquePrecio(bloques);
             theaterAdminView.displayMessage("Añadido con éxito",true);
             theaterAdminView.clearFieldsProd();
+
 
 
         }
@@ -147,7 +169,27 @@ public class TheaterAdminController {
         @Override
         public void stateChanged(ChangeEvent e) {
             // Verificar cual tabbed pane se esta cargando
-            if (theaterAdminView.getHomeTAdm().getSelectedIndex() == 2) {
+            if (theaterAdminView.getHomeTAdm().getSelectedIndex() == 1)
+            {
+
+                //query bloques
+                ArrayList<Bloque> bloques = teatrosJDBC.getBloquesByIdTeatro(idTeatro);
+                ModelTablaBloques model =  TableBloquesMapper.mapRows(bloques);
+                theaterAdminView.getTablaBloques().setModel(model);
+
+
+
+            }
+            else if (theaterAdminView.getHomeTAdm().getSelectedIndex() == 2)
+            {
+                theaterAdminView.getProduccionesEstados().removeAllItems();
+                ArrayList<Produccion> produccions = produccionesJDBC.getProducciones();
+                theaterAdminView.setComboProdsEs(produccions);
+                theaterAdminView.getComboEstados().removeAllItems();
+                ArrayList<String> estados = produccionesJDBC.getEstados();
+                theaterAdminView.setComboEstados(estados);
+            }
+            else if (theaterAdminView.getHomeTAdm().getSelectedIndex() == 3) {
                 theaterAdminView.getProdPresen().removeAllItems();
                 ArrayList<Produccion> produccions = produccionesJDBC.getProducciones();
                 theaterAdminView.setComboProds(produccions);
@@ -172,6 +214,32 @@ public class TheaterAdminController {
 
         }
     }
+    private class refresEstadoListener implements  ItemListener
+    {
+
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                Produccion produccion = produccionesJDBC.getProdByName((String)theaterAdminView.getProduccionesEstados().getSelectedItem());
+                String estado = produccionesJDBC.getEstadoById(produccion.getIdEstado());
+                theaterAdminView.getLabelEstado().setText("La produccion se encuentra : "+estado);
+            }
+        }
+    }
+    private class changeEstadoListener implements  ActionListener
+    {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Produccion produccion = produccionesJDBC.getProdByName((String)theaterAdminView.getProduccionesEstados().getSelectedItem());
+            produccion.setIdEstado(theaterAdminView.getComboEstados().getSelectedIndex()+1);
+            produccionesJDBC.updateEstado(produccion);
+            theaterAdminView.getLabelEstado().setText("La produccion se encuentra : "+(String)theaterAdminView.getComboEstados().getSelectedItem());
+            theaterAdminView.displayMessage("Actualizado con éxito",true);
+
+
+        }
+    }
     private class addPresentacionListener implements  ActionListener
     {
 
@@ -188,12 +256,8 @@ public class TheaterAdminController {
             presentacion.setId(produccion.getId());
             ArrayList<Presentacion>presentacions = presentacionesJDBC.getPresentByProdId(produccion.getId());
             presentacion.setPresentId(presentacions.size()+1);
-            //TODO: VERIFICAR FECHA DIFERENTE
-            if(presentacionesJDBC.validateDate(presentacion))
-            {
-                theaterAdminView.displayMessage("Ya existe una presentación agendada",false);
-                return;
-            }
+
+
             presentacionesJDBC.addPresentacion(presentacion);
             theaterAdminView.displayMessage("Añadido con éxito",true);
             ResultSet presentacionsRaw = presentacionesJDBC.getRawPresentByProdId(produccion.getId());

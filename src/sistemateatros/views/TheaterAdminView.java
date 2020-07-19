@@ -1,7 +1,9 @@
 package sistemateatros.views;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.components.JSpinField;
+import org.graalvm.compiler.nodes.NodeView;
 import sistemateatros.models.AgentTheater;
+import sistemateatros.models.Bloque;
 import sistemateatros.models.Produccion;
 import sun.security.krb5.internal.crypto.Des;
 
@@ -49,6 +51,11 @@ public class TheaterAdminView {
     private JPanel fechaHolderPrese;
     private JPanel horaHolder;
     private JPanel FechaPresen;
+    private JComboBox ProduccionesEstados;
+    private JComboBox comboEstados;
+    private JButton cambiarEstadoButton;
+    private JLabel labelEstado;
+    private JTable tablaBloques;
     private JPanel horaHolderPresen;
     private String Admin;
     private JSpinner horaSpinner;
@@ -152,6 +159,23 @@ public class TheaterAdminView {
             this.ProdPresen.addItem(p.getNombre());
         }
     }
+    public void setComboProdsEs(ArrayList<Produccion> produccions)
+    {
+        for (Produccion p:produccions
+        ) {
+            this.ProduccionesEstados.addItem(p.getNombre());
+        }
+    }
+
+    public void setComboEstados(ArrayList<String> estados)
+    {
+        for (String s:estados
+        ) {
+            this.comboEstados.addItem(s);
+        }
+    }
+
+
 
     public void setAdmin(String admin) {
         Admin = admin;
@@ -271,6 +295,16 @@ public class TheaterAdminView {
 
     public JButton getAddPresentacion() { return addPresentacion; }
 
+    public JComboBox getProduccionesEstados() { return ProduccionesEstados; }
+
+    public JComboBox getComboEstados() { return comboEstados; }
+
+    public JButton getCambiarEstadoButton() { return cambiarEstadoButton; }
+
+    public JLabel getLabelEstado() { return labelEstado; }
+
+    public JTable getTablaBloques() { return tablaBloques; }
+
     public void displayMessage(String message, boolean success) {
         JOptionPane.showMessageDialog(this.frame, message, success ? "EXITO" : "ERROR",
                 success ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE);
@@ -302,10 +336,17 @@ public class TheaterAdminView {
     {
         produccion.setText("");
         Descripcion.setText("");
-        try
-        {
+        try {
             prodInicio.setDate(new SimpleDateFormat("dd/MM/yyyy").parse("00/00/0000"));
             prodFinal.setDate(new SimpleDateFormat("dd/MM/yyyy").parse("00/00/0000"));
+
+            int filas = getTablaBloques().getRowCount();
+            for(int i = 0 ; i<filas ; i++)
+            {
+                getTablaBloques().setValueAt(0,0,0);
+                getTablaBloques().setValueAt(0,0,1);
+            }
+
         }
         catch (Exception e)
         {
@@ -313,6 +354,8 @@ public class TheaterAdminView {
         }
 
     }
+
+
     private void createUIComponents() {
         // TODO: place custom component creation code here
     }

@@ -2,9 +2,13 @@ package sistemateatros.jdbc;
 
 import jdk.tools.jlink.internal.PathResourcePoolEntry;
 import sistemateatros.daos.ProduccionesDAO;
+import sistemateatros.models.Bloque;
 import sistemateatros.models.Produccion;
 
 import javax.imageio.plugins.jpeg.JPEGImageReadParam;
+import javax.naming.PartialResultException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -138,5 +142,85 @@ public class ProduccionesJDBC implements ProduccionesDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public ArrayList<String> getEstados() {
+
+        ArrayList<String> estados = new ArrayList<String>();
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetProduccionEstados");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next())
+            {
+                estados.add(resultSet.getString("Nombre"));
+            }
+
+        }
+
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return estados;
+    }
+
+    @Override
+    public String getEstadoById(int Id) {
+
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByIdProduccionEstados ?");
+            preparedStatement.setInt(1,Id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            boolean found= resultSet.next();
+            if(!found)
+            {
+                return null;
+            }
+            return resultSet.getString("Nombre");
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public void updateEstado(Produccion produccion) {
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC UpdateIdEstadoProduccion ? , ?");
+            preparedStatement.setInt(1,produccion.getId());
+            preparedStatement.setInt(2,produccion.getIdEstado());
+            preparedStatement.execute();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void AddBloquePrecio(ArrayList<Bloque> bloques) {
+        try {
+
+
+            for (Bloque bloque : bloques) {
+
+                PreparedStatement preparedStatement = connection.prepareStatement("EXEC CreateBloquePrecios ?,?,?");
+                BigDecimal bd = new BigDecimal(bloque.getPrecio()).setScale(2, RoundingMode.HALF_UP);
+                preparedStatement.setBigDecimal(1,bd);
+                preparedStatement.setInt(2,bloque.getId());
+                preparedStatement.setInt(3,bloque.getIdTeatro());
+                preparedStatement.execute();
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
     }
 }

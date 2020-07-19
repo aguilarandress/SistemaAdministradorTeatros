@@ -4,6 +4,7 @@ public class Bloque {
     private int id;
     private String nombre;
     private int idTeatro;
+    private float precio;
 
     public Bloque() {
 
@@ -33,8 +34,13 @@ public class Bloque {
         this.idTeatro = idTeatro;
     }
 
+    public float getPrecio() { return precio; }
+
+    public void setPrecio(float precio) { this.precio = precio; }
+
     @Override
     public String toString() {
         return this.nombre;
     }
+
 }
