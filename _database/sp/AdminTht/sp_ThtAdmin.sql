@@ -1,3 +1,6 @@
+USE SISTEMA_TEATROS
+GO
+
 
 CREATE PROCEDURE GetByUsernameSistemaTeatroAdmin @Usuario nvarchar(20)
 AS

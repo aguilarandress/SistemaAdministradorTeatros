@@ -12,6 +12,50 @@ CREATE TABLE Teatros (
 		CONSTRAINT UnTeatros_Nombre UNIQUE(Nombre)
 );
 
+CREATE TABLE Empleados (
+	Id INT NOT NULL,
+	Nombre VARCHAR(30) NOT NULL,
+	FechaNacimiento DATE NOT NULL,
+	Sexo CHAR NOT NULL,
+	Direccion VARCHAR(40) NOT NULL,
+	TelefonoCasa VARCHAR(9),
+	TelefonoCelular VARCHAR(9),
+	TelefonoOtro VARCHAR(9),
+	Email VARCHAR(40) NOT NULL,
+	Usuario VARCHAR(20) NOT NULL,
+	Password CHAR(60) NOT NULL
+		CONSTRAINT PkEmpleados_Id PRIMARY KEY(Id),
+		CONSTRAINT UnEmpleados_Nombre UNIQUE(Nombre),
+		CONSTRAINT UnEmpleados_Usuario UNIQUE(Usuario)
+);
+
+CREATE TABLE SistemaAdministradores (
+	Id INT NOT NULL
+	CONSTRAINT PkSistemaAdministradores_Id PRIMARY KEY (Id),
+	CONSTRAINT FkSistemaAdministradores_Id
+		FOREIGN KEY (Id) REFERENCES Empleados(Id)
+);
+
+CREATE TABLE TeatroAdministradores (
+    Id INT NOT NULL,
+    IdTeatro INT NOT NULL,
+    CONSTRAINT PkTeatroAdministradores PRIMARY KEY(Id),
+    CONSTRAINT FkTeatroAdministradores_Id 
+			FOREIGN KEY (Id) REFERENCES Empleados(Id),
+    CONSTRAINT FkTeatroAdministradores_IdTeatro
+            FOREIGN KEY (IdTeatro) REFERENCES Teatros(Id)
+);
+
+CREATE TABLE TeatroAgentes (
+    Id INT NOT NULL,
+    IdTeatro INT NOT NULL,
+    CONSTRAINT PkTeatroAgentes PRIMARY KEY(Id),
+	CONSTRAINT FkTeatroAgentes_Id 
+			FOREIGN KEY (Id) REFERENCES Empleados(Id),
+    CONSTRAINT FkTeatroAgentes_IdTeatro
+        FOREIGN KEY (IdTeatro) REFERENCES Teatros(Id)
+);
+/*
 CREATE TABLE SistemaAdministradores (
 	Id INT NOT NULL,
 	Nombre nVARCHAR(30) NOT NULL,
@@ -68,7 +112,7 @@ CREATE TABLE TeatroAgentes (
         CONSTRAINT FkTeatroAgentes_IdTeatro
             FOREIGN KEY (IdTeatro) REFERENCES Teatros(Id)
 );
-
+*/
 CREATE TABLE ProduccionEstados (
 	Id INT IDENTITY (1, 1) NOT NULL,
 	Nombre nVARCHAR(30) NOT NULL
