@@ -7,6 +7,8 @@ import sistemateatros.models.Teatro;
 
 import java.util.ArrayList;
 
+import static sistemateatros.validators.TheaterAdminValidator.*;
+
 public class AgenteValidator {
     public static ArrayList<String> validarAgente (AgentTheater agente) {
         ArrayList<String> errores = new ArrayList<String>();
@@ -36,9 +38,18 @@ public class AgenteValidator {
         {
             errores.add("Dirección inválida");
         }
-        if(agente.getEmail().isEmpty()||agente.getEmail().length()>20)
+        if(agente.getEmail().isEmpty()||agente.getEmail().length()>40 ||!validarCorreo(agente.getEmail()))
         {
             errores.add("Correo electrónico inválido");
+        }
+        if (agente.getTelefonoCasa() != null && !validarTelefono(agente.getTelefonoCasa())) {
+            errores.add("Telefono Casa invalido");
+        }
+        if (agente.getTelefonoCelular() != null && !validarTelefono(agente.getTelefonoCelular())) {
+            errores.add("Telefono celular invalido");
+        }
+        if (agente.getTelefonoOtro() != null && !validarTelefono(agente.getTelefonoOtro())) {
+            errores.add("Telefono otro invalido");
         }
         if(agente.getUsername().isEmpty() || agente.getUsername().length()>20 )
         {
@@ -48,7 +59,9 @@ public class AgenteValidator {
         {
             errores.add("Este usuario ya existe");
         }
-        if(agente.getPassword().length>60 || agente.getPassword().length<8)
+        String password = String.valueOf(agente.getPassword());
+        if(password.isEmpty() || !(validarPassword(password)) ||
+               password.length() > 20)
         {
             errores.add("Contraseña inválida");
         }

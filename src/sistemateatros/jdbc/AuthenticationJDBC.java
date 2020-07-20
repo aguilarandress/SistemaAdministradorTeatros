@@ -55,7 +55,7 @@ public class AuthenticationJDBC implements AuthenticationDAO {
     {
         try
         {
-            PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByUsernameSistemaTeatroAdmin ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByUsuarioTeatroAdministradores ?");
             preparedStatement.setString(1,username);
             ResultSet resultSet = preparedStatement.executeQuery();
             boolean userFound = resultSet.next();
