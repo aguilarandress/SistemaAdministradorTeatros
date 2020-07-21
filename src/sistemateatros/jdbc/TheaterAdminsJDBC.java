@@ -84,7 +84,7 @@ public class TheaterAdminsJDBC implements TeatroAdminsDAO {
     public TheaterAdmin getTheaterAdminByUsername(String username) {
         try {
             // Prepare query
-            PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByUsuarioTeatroAdministradores ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC ValidateUsername ?");
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
             // Verificar si existe
