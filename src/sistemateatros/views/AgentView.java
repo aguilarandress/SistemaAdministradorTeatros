@@ -10,6 +10,11 @@ public class AgentView {
     private JTabbedPane tabbedPane1;
     private JLabel welcome_message;
     private JLabel TheaterInfo;
+    private JComboBox comboBox1;
+    private JTable table1;
+    private JTable table2;
+    private JTable table3;
+    private JButton comprarButton;
     private String Agente;
     private int TeatroId;
 
