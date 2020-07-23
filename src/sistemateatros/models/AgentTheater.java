@@ -14,7 +14,7 @@ public class AgentTheater {
     private String telefonoOtro;
     private String email;
     private String username;
-    private char[] password;
+    private String password;
 
     public AgentTheater() { }
 
@@ -98,7 +98,7 @@ public class AgentTheater {
 
     public void setUsername(String username) { this.username = username; }
 
-    public char[] getPassword() { return password; }
+    public String getPassword() { return password; }
 
-    public void setPassword(char[] password) { this.password = password; }
+    public void setPassword(String password) { this.password = password; }
 }

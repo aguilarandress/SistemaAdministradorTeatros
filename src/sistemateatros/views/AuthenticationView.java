@@ -20,6 +20,16 @@ public class AuthenticationView {
     private JPasswordField teaAdminPasswordField;
     private JButton loginTeaAdminBtn;
     private JLabel teaAdminLoginTitle;
+    private JLabel labelAE;
+    private JTextField agenteUsername;
+    private JPasswordField agentePassword;
+    private JButton loginAgenteBtn;
+
+    public JFrame getFrame() {
+        return frame;
+    }
+
+
 
     public AuthenticationView() {
         this.frame = new JFrame("Iniciar Sesion");
@@ -66,7 +76,15 @@ public class AuthenticationView {
         return new String(this.teaAdminPasswordField.getPassword());
     }
 
-    public JButton getLoginTeaAdminBtn() {
-        return loginTeaAdminBtn;
+    public JButton getLoginTeaAdminBtn() { return loginTeaAdminBtn; }
+
+    public JButton getLoginAgenteBtn() { return loginAgenteBtn; }
+
+    public String getAgenteUsername() {
+        return agenteUsername.getText();
+    }
+
+    public String getAgentePassword() {
+        return new String(agentePassword.getPassword());
     }
 }

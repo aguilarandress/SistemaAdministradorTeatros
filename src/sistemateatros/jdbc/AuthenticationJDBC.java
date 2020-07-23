@@ -1,6 +1,7 @@
 package sistemateatros.jdbc;
 
 import sistemateatros.daos.AuthenticationDAO;
+import sistemateatros.models.AgentTheater;
 import sistemateatros.models.SystemAdmin;
 import sistemateatros.models.TheaterAdmin;
 
@@ -74,5 +75,30 @@ public class AuthenticationJDBC implements AuthenticationDAO {
             e.printStackTrace();
         }
         return  null;
+    }
+
+    @Override
+    public AgentTheater getTheaterAgentByUsername(String username) {
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByUsuarioAgente ?");
+            preparedStatement.setString(1,username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            boolean userFound = resultSet.next();
+            if (!userFound) {
+                return null;
+            }
+            AgentTheater agente = new AgentTheater();
+            agente.setUsername(resultSet.getString("Usuario"));
+            agente.setPassword(resultSet.getString("Password"));
+            agente.setNombre(resultSet.getString("Nombre"));
+            agente.setIdTeatro(resultSet.getInt("IdTeatro"));
+            return agente;
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

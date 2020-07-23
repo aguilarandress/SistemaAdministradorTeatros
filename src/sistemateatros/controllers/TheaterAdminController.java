@@ -161,8 +161,8 @@ public class TheaterAdminController {
                 theaterAdminView.displayMessage(errores.get(0),false);
                 return;
             }
-            char[] pass=agentTheater.getPassword();
-            agentTheater.setPassword((BCrypt.hashpw(pass.toString(),BCrypt.gensalt(4))).toCharArray());
+            String pass=agentTheater.getPassword();
+            agentTheater.setPassword((BCrypt.hashpw(pass.toString(),BCrypt.gensalt(4))));
             agentTheater.setIdTeatro(idTeatro);
             agentesJDBC.AddAgente(agentTheater);
             theaterAdminView.displayMessage("Añadido con éxito",true);
