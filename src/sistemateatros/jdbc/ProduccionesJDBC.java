@@ -49,14 +49,13 @@ public class ProduccionesJDBC implements ProduccionesDAO {
         try
         {
             PreparedStatement preparedStatement = connection.prepareStatement("EXEC  CreateProduccion ? ,?, ?, ?, ?, ?, ?");
-
-            preparedStatement.setString(1,produccion.getDescripcion());
+            preparedStatement.setString(1,produccion.getNombre());
+            preparedStatement.setString(2,produccion.getDescripcion());
             SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy");
             java.sql.Date dateI = new java.sql.Date(produccion.getFechaI().getTime());
-            preparedStatement.setDate(2,dateI);
+            preparedStatement.setDate(3,dateI);
             java.sql.Date dateF = new java.sql.Date(produccion.getFechaF().getTime());
-            preparedStatement.setDate(3,dateF);
-            preparedStatement.setString(4,produccion.getNombre());
+            preparedStatement.setDate(4,dateF);
             preparedStatement.setInt(5,produccion.getIdEstado());
             preparedStatement.setInt(6,produccion.getIdTeatro());
             preparedStatement.setInt(7,produccion.getIdTipo());
