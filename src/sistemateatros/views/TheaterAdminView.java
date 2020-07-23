@@ -69,10 +69,14 @@ public class TheaterAdminView {
     }
 
     public TheaterAdminView(String Admin) {
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
+        Date date2 = new Date(System.currentTimeMillis());
+
         prodInicio.setDateFormatString("yyyy-MM-dd");
         prodFinal.setDateFormatString("yyyy-MM-dd");
         date.setDateFormatString("yyyy-MM-dd");
         presentacionFecha.setDateFormatString("yyyy-MM-dd");
+        date.setDate(date2);
 
         this.frame = new JFrame("Aplicación de administración de teatros");
         this.frame.setContentPane(this.homeTAdm);
@@ -320,7 +324,7 @@ public class TheaterAdminView {
         cedula.setText("");
         try
         {
-            date.setDate(new SimpleDateFormat("yyyy-MM-dd").parse("0001/01/01"));
+            date.setDate(new SimpleDateFormat("dd/MM/yyyy").parse("00/00/0000"));
         }
         catch (Exception e)
         {

@@ -38,7 +38,7 @@ public class AgentesJDBC implements AgentesDAO {
     @Override
     public boolean verificarUsername(String username) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("EXEC ValidateUsernameTeatroAgentes ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC ValidateUsername ?");
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
             boolean agenteFound = resultSet.next();

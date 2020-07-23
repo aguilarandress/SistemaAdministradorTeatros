@@ -38,26 +38,6 @@ public class SystemAdminController {
         this.systemAdminView.getAgregarAdminBtn().addActionListener(new AgregarAdminTeatroListener());
     }
 
-    private class SelectHombreItemListener implements ItemListener {
-        @Override
-        public void itemStateChanged(ItemEvent e) {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                systemAdminView.getMujerAgregarAdminRB().setSelected(true);
-                systemAdminView.getHombreAgregarAdminRB().setSelected(false);
-            }
-        }
-    }
-
-    private class SelectMujerItemListener implements ItemListener {
-        @Override
-        public void itemStateChanged(ItemEvent e) {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                systemAdminView.getHombreAgregarAdminRB().setSelected(true);
-                systemAdminView.getMujerAgregarAdminRB().setSelected(false);
-            }
-        }
-    }
-
     /**
      * Change listener para cuando se cambia de tab
      */

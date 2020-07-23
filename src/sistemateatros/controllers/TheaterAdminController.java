@@ -141,6 +141,10 @@ public class TheaterAdminController {
         @Override
         public void actionPerformed(ActionEvent e) {
             //Get agent info
+            if (theaterAdminView.getCedula().isEmpty()) {
+                theaterAdminView.displayMessage("Cedula invalida", false);
+                return;
+            }
             AgentTheater agentTheater = new AgentTheater();
             agentTheater.setNombre(theaterAdminView.getNombreField());
             agentTheater.setDireccion(theaterAdminView.getDireccionField());
@@ -151,7 +155,6 @@ public class TheaterAdminController {
             agentTheater.setUsername(theaterAdminView.getUsuario());
             agentTheater.setPassword(theaterAdminView.getPassword());
             agentTheater.setCedula(Integer.parseInt(theaterAdminView.getCedula()));
-
             ArrayList<String> errores = AgenteValidator.validarAgente(agentTheater);
             if (errores.size()>0)
             {

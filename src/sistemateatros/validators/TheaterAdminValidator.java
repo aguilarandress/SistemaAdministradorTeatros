@@ -18,12 +18,11 @@ public class TheaterAdminValidator {
         if (theaterAdmin.getNombre().isEmpty() || theaterAdmin.getNombre().length() > 30) {
             errores.add("Nombre invalido");
         }
-        // TODO: Ver como se valida la fecha si esta vacia
         if (theaterAdmin.getDireccion().isEmpty() || theaterAdmin.getDireccion().length() > 40) {
             errores.add("Direccion invalida");
         }
         if (theaterAdmin.getEmail().isEmpty() || !validarCorreo(theaterAdmin.getEmail())
-                || theaterAdmin.getEmail().length() > 20) {
+                || theaterAdmin.getEmail().length() > 40) {
             errores.add("Email invalido");
         }
         if (theaterAdmin.getUsername().isEmpty() || theaterAdmin.getUsername().length() > 20) {
@@ -32,6 +31,7 @@ public class TheaterAdminValidator {
         if (theaterAdmin.getFechaNacimiento() == null) {
             errores.add("Fecha nacimiento invalida");
         }
+        // TODO: Talvez agregar un campo para confirmar contra
         if (theaterAdmin.getPassword().isEmpty() || !(validarPassword(theaterAdmin.getPassword())) ||
             theaterAdmin.getPassword().length() > 20) {
             errores.add("Password invalido");
@@ -48,7 +48,7 @@ public class TheaterAdminValidator {
         if (errores.size() > 0) {
             return errores;
         }
-
+        // Conectar a la base de datos
         TheaterAdminsJDBC theaterAdminsJDBC = new TheaterAdminsJDBC();
         theaterAdminsJDBC.setConnection(DatabaseConnection.getConnection());
         // Validar cedula repetida
@@ -77,6 +77,11 @@ public class TheaterAdminValidator {
         return pattern.matcher(telefono).matches();
     }
 
+    /**
+     * Valida el formato de las contrasennas
+     * @param password El password del usuario
+     * @return Si el password es valido o no
+     */
     public static boolean validarPassword(String password) {
         // 8 chars min, 1 minuscula, 1 mayuscula, 1 numero
         String patternStr = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}";
