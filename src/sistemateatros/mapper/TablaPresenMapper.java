@@ -1,5 +1,6 @@
 package sistemateatros.mapper;
 
+import sistemateatros.models.ModelTablaBloques;
 import sistemateatros.models.ModelTablaProd;
 import sistemateatros.models.Presentacion;
 import sistemateatros.models.Produccion;

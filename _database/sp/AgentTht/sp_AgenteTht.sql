@@ -65,7 +65,7 @@ CREATE PROCEDURE GetByProdIdBloquePrecios
 AS
 SELECT * ,Bloques.Nombre as BloqueNombre , Bloques.Id as BloqueId
 FROM BloquePrecios
-INNER JOIN Bloques ON (Bloques.Id = BloquePrecios.Id)
+INNER JOIN Bloques ON (Bloques.Id = BloquePrecios.IdBloque)
 WHERE BloquePrecios.IdProduccion = @ProdId
 GO
 

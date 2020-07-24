@@ -118,6 +118,7 @@ public class TheaterAdminController {
                 Bloque bloque=(Bloque)theaterAdminView.getTablaBloques().getValueAt(i,0);
                 bloque.setPrecio((Integer) theaterAdminView.getTablaBloques().getValueAt(i,1));
                 bloques.add(bloque);
+                System.out.println(i);
             }
             errores = BloquePrecioValidator.validateBloques(bloques);
             if (errores.size()>0)
@@ -180,7 +181,6 @@ public class TheaterAdminController {
                 ArrayList<Bloque> bloques = teatrosJDBC.getBloquesByIdTeatro(idTeatro);
                 ModelTablaBloques model =  TableBloquesMapper.mapRows(bloques);
                 theaterAdminView.getTablaBloques().setModel(model);
-                CheckBoxSelectionTableModel.register(theaterAdminView.getTablaBloques());
 
 
 

@@ -33,6 +33,7 @@ public class TheaterAgenteController {
     private PresentacionesJDBC presentacionesJDBC;
     public  TheaterAgenteController(int IdTeatro,String agente)
     {
+        //TODO: SOLUCIONAR PROBLEMA SELECCIÓN FILAS MÚLTIPLES
         this.agente=agente;
         this.IdTeatro=IdTeatro;
         agentView = new AgentView(IdTeatro,agente);
@@ -62,6 +63,9 @@ public class TheaterAgenteController {
         this.agentView.getTablaFilas().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         selectionModel = this.agentView.getTablaFilas().getSelectionModel();
         selectionModel.addListSelectionListener(new compraTeatroFilaListener());
+        this.agentView.getTablaAsientos().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        selectionModel = this.agentView.getTablaFilas().getSelectionModel();
+
 
 
 
@@ -81,10 +85,12 @@ public class TheaterAgenteController {
                 agentView.getTablaProds().setModel(model);
                 ModelTablaProd model2 = TablaPresenMapper.mapRows(new ArrayList<Presentacion>());
                 agentView.getTablaPresent().setModel(model2);
-                ModelTablaBloquePrecios model3 = TablaBloquePreciosMapper.mapRows(new ArrayList<Bloque>());
+                ModelTablaProd model3 = TablaBloquePreciosMapper.mapRows(new ArrayList<Bloque>());
                 agentView.getTablaBloques().setModel(model3);
-                ModelTablaBloques model4 = TablaFilasMapper.mapRows(new ArrayList<Fila>());
+                ModelTablaProd model4 = TablaFilasMapper.mapRows(new ArrayList<Fila>());
                 agentView.getTablaFilas().setModel(model4);
+                ModelTablaProd model5 = TablaAsientosMapper.mapRows(new ArrayList<Asiento>());
+                agentView.getTablaAsientos().setModel(model5);
             }
         }
     }
@@ -99,10 +105,12 @@ public class TheaterAgenteController {
                 agentView.getTablaProds().setModel(model);
                 ModelTablaProd model2 = TablaPresenMapper.mapRows(new ArrayList<Presentacion>());
                 agentView.getTablaPresent().setModel(model2);
-                ModelTablaBloquePrecios model3 = TablaBloquePreciosMapper.mapRows(new ArrayList<Bloque>());
+                ModelTablaProd model3 = TablaBloquePreciosMapper.mapRows(new ArrayList<Bloque>());
                 agentView.getTablaBloques().setModel(model3);
-                ModelTablaBloques model4 = TablaFilasMapper.mapRows(new ArrayList<Fila>());
+                ModelTablaProd model4 = TablaFilasMapper.mapRows(new ArrayList<Fila>());
                 agentView.getTablaFilas().setModel(model4);
+                ModelTablaProd model5 = TablaAsientosMapper.mapRows(new ArrayList<Asiento>());
+                agentView.getTablaAsientos().setModel(model5);
             }
         }
     }
@@ -117,10 +125,12 @@ public class TheaterAgenteController {
                 ArrayList<Presentacion> presentacions = presentacionesJDBC.getPresentByProdIdView(produccion);
                 ModelTablaProd model = TablaPresenMapper.mapRows(presentacions);
                 agentView.getTablaPresent().setModel(model);
-                ModelTablaBloquePrecios model3 = TablaBloquePreciosMapper.mapRows(new ArrayList<Bloque>());
+                ModelTablaProd model3 = TablaBloquePreciosMapper.mapRows(new ArrayList<Bloque>());
                 agentView.getTablaBloques().setModel(model3);
-                ModelTablaBloques model4 = TablaFilasMapper.mapRows(new ArrayList<Fila>());
+                ModelTablaProd model4 = TablaFilasMapper.mapRows(new ArrayList<Fila>());
                 agentView.getTablaFilas().setModel(model4);
+                ModelTablaProd model5 = TablaAsientosMapper.mapRows(new ArrayList<Asiento>());
+                agentView.getTablaAsientos().setModel(model5);
 
             }
         }
@@ -133,10 +143,12 @@ public class TheaterAgenteController {
             {
                 Presentacion presentacion = (Presentacion) agentView.getTablaPresent().getValueAt(agentView.getTablaPresent().getSelectedRow(),0);
                 ArrayList<Bloque> bloques = agentesJDBC.getBloquePreciosByProdId(presentacion.getId());
-                ModelTablaBloquePrecios model = TablaBloquePreciosMapper.mapRows(bloques);
+                ModelTablaProd model = TablaBloquePreciosMapper.mapRows(bloques);
                 agentView.getTablaBloques().setModel(model);
-                ModelTablaBloques model4 = TablaFilasMapper.mapRows(new ArrayList<Fila>());
+                ModelTablaProd model4 = TablaFilasMapper.mapRows(new ArrayList<Fila>());
                 agentView.getTablaFilas().setModel(model4);
+                ModelTablaProd model5 = TablaAsientosMapper.mapRows(new ArrayList<Asiento>());
+                agentView.getTablaAsientos().setModel(model5);
             }
         }
     }
@@ -148,8 +160,10 @@ public class TheaterAgenteController {
             {
                 Bloque bloque = (Bloque) agentView.getTablaBloques().getValueAt(agentView.getTablaBloques().getSelectedRow(),0);
                 ArrayList<Fila> filas = teatrosJDBC.getFilasByBloque(bloque);
-                ModelTablaBloques model = TablaFilasMapper.mapRows(filas);
+                ModelTablaProd model = TablaFilasMapper.mapRows(filas);
                 agentView.getTablaFilas().setModel(model);
+                ModelTablaProd model5 = TablaAsientosMapper.mapRows(new ArrayList<Asiento>());
+                agentView.getTablaAsientos().setModel(model5);
             }
         }
     }
@@ -162,7 +176,7 @@ public class TheaterAgenteController {
                 Fila fila = (Fila) agentView.getTablaFilas().getValueAt(agentView.getTablaFilas().getSelectedRow(),0);
                 Presentacion presentacion = (Presentacion) agentView.getTablaPresent().getValueAt(agentView.getTablaPresent().getSelectedRow(),0);
                 ArrayList<Asiento> asientos = teatrosJDBC.getAsientosByFila(fila,presentacion);
-                ModelTablaBloques model = TablaAsientosMapper.mapRows(asientos);
+                ModelTablaProd model = TablaAsientosMapper.mapRows(asientos);
                 agentView.getTablaAsientos().setModel(model);
             }
         }

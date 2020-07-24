@@ -42,12 +42,14 @@ public class AgentesJDBC implements AgentesDAO {
     public ArrayList<Bloque> getBloquePreciosByProdId(int ProdId) {
         try
         {
+
         ArrayList<Bloque> bloques = new ArrayList<Bloque>() ;
         PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByProdIdBloquePrecios ?");
         preparedStatement.setInt(1,ProdId);
         ResultSet resultSet = preparedStatement.executeQuery();
         while(resultSet.next())
         {
+            System.out.println(ProdId);
             Bloque bloque = new Bloque();
             bloque.setNombre(resultSet.getString("BloqueNombre"));
             bloque.setPrecio(resultSet.getBigDecimal("Monto").floatValue());

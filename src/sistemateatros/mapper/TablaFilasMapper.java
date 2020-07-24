@@ -7,7 +7,7 @@ import sistemateatros.models.ModelTablaProd;
 import java.util.ArrayList;
 
 public class TablaFilasMapper {
-    public static ModelTablaBloques mapRows(ArrayList<Fila> Filas) {
+    public static ModelTablaProd mapRows(ArrayList<Fila> Filas) {
         Object row[][] = new Object[Filas.size()][2];
         for (int i = 0; i < Filas.size(); i++) {
             row[i][0] = Filas.get(i);
@@ -15,7 +15,7 @@ public class TablaFilasMapper {
 
         }
         String[] columnNames = {"Letra", "Cantidad de asientos"};
-        ModelTablaBloques model = new ModelTablaBloques(row, columnNames);
+        ModelTablaProd model = new ModelTablaProd(row, columnNames);
         return model;
     }
 }
