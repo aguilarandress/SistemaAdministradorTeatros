@@ -79,6 +79,7 @@ public class ProduccionesJDBC implements ProduccionesDAO {
             {
                 Produccion produccion = new Produccion();
                 produccion.setNombre(resultSet.getString("Nombre"));
+                produccion.setId(resultSet.getInt("Id"));
                 producciones.add(produccion);
             }
             return producciones;
@@ -221,5 +222,33 @@ public class ProduccionesJDBC implements ProduccionesDAO {
         {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public ArrayList<Produccion> getProdTIdView(int TeatroId) {
+        try
+        {
+            ArrayList<Produccion> producciones = new ArrayList<Produccion>() ;
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByTeatroIdProduccionView ?");
+            preparedStatement.setInt(1,TeatroId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next())
+            {
+                Produccion produccion = new Produccion();
+                produccion.setNombre(resultSet.getString("Nombre"));
+                produccion.setId(resultSet.getInt("ProduccionId"));
+                produccion.setDescripcion(resultSet.getString("Descripcion"));
+                produccion.setFechaI(resultSet.getDate("FechaInicial"));
+                produccion.setFechaF(resultSet.getDate("FechaFinal"));
+                produccion.setTipo(resultSet.getString("tipoProd"));
+                producciones.add(produccion);
+            }
+            return producciones;
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -172,7 +172,7 @@ public class TheaterAdminController {
     private class cambiarPaneListener implements ChangeListener {
         @Override
         public void stateChanged(ChangeEvent e) {
-            // Verificar cual tabbed pane se esta cargando
+                // Verificar cual tabbed pane se esta cargando
             if (theaterAdminView.getHomeTAdm().getSelectedIndex() == 1)
             {
 
@@ -180,6 +180,8 @@ public class TheaterAdminController {
                 ArrayList<Bloque> bloques = teatrosJDBC.getBloquesByIdTeatro(idTeatro);
                 ModelTablaBloques model =  TableBloquesMapper.mapRows(bloques);
                 theaterAdminView.getTablaBloques().setModel(model);
+                CheckBoxSelectionTableModel.register(theaterAdminView.getTablaBloques());
+
 
 
 
@@ -227,6 +229,7 @@ public class TheaterAdminController {
                 Produccion produccion = produccionesJDBC.getProdByName((String)theaterAdminView.getProduccionesEstados().getSelectedItem());
                 String estado = produccionesJDBC.getEstadoById(produccion.getIdEstado());
                 theaterAdminView.getLabelEstado().setText("La produccion se encuentra : "+estado);
+
             }
         }
     }

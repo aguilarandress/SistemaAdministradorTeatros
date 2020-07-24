@@ -115,5 +115,6 @@ public class AuthenticationController {
             TheaterAgenteController theaterAgenteController= new TheaterAgenteController(agentTheater.getIdTeatro(),agentTheater.getNombre());
             authenticationView.hide();
         }
+
     }
 }

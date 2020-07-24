@@ -2,9 +2,12 @@ package sistemateatros.jdbc;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 import sistemateatros.daos.AgentesDAO;
 import sistemateatros.models.AgentTheater;
+import sistemateatros.models.Bloque;
+import sistemateatros.models.Produccion;
 
 public class AgentesJDBC implements AgentesDAO {
     private Connection connection;
@@ -33,6 +36,32 @@ public class AgentesJDBC implements AgentesDAO {
             e.printStackTrace();
         }
         return true;
+    }
+
+    @Override
+    public ArrayList<Bloque> getBloquePreciosByProdId(int ProdId) {
+        try
+        {
+        ArrayList<Bloque> bloques = new ArrayList<Bloque>() ;
+        PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByProdIdBloquePrecios ?");
+        preparedStatement.setInt(1,ProdId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while(resultSet.next())
+        {
+            Bloque bloque = new Bloque();
+            bloque.setNombre(resultSet.getString("BloqueNombre"));
+            bloque.setPrecio(resultSet.getBigDecimal("Monto").floatValue());
+            bloque.setId(resultSet.getInt("BloqueId"));
+            bloque.setIdProd(resultSet.getInt("IdProduccion"));
+            bloques.add(bloque);
+        }
+        return bloques;
+    }
+        catch (SQLException e)
+    {
+        e.printStackTrace();
+    }
+        return null;
     }
 
     @Override

@@ -11,6 +11,9 @@ public class Produccion {
     private int IdEstado;
     private int IdTeatro;
     private int IdTipo;
+    private String Tipo;
+
+
 
     public int getId() {
         return Id;
@@ -74,5 +77,17 @@ public class Produccion {
 
     public void setIdTipo(int idTipo) {
         IdTipo = idTipo;
+    }
+
+    public String getTipo() {
+        return Tipo;
+    }
+
+    public void setTipo(String tipo) {
+        Tipo = tipo;
+    }
+    @Override
+    public String toString() {
+        return this.getNombre();
     }
 }

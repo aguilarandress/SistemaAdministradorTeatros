@@ -2,6 +2,7 @@ package sistemateatros.jdbc;
 
 import sistemateatros.daos.PresentacionesDAO;
 import sistemateatros.models.Presentacion;
+import sistemateatros.models.Produccion;
 
 import java.sql.*;
 import java.text.ParseException;
@@ -124,5 +125,33 @@ public class PresentacionesJDBC implements PresentacionesDAO {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public ArrayList<Presentacion> getPresentByProdIdView(Produccion produccion) {
+        ArrayList<Presentacion> presentacions = new ArrayList<Presentacion>();
+        try
+        {
+
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByProduccionIdPresentacionView ?");
+            preparedStatement.setInt(1, produccion.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next())
+            {
+                Presentacion presentacion = new Presentacion();
+                presentacion.setId(resultSet.getInt("ProduccionId"));
+                presentacion.setPresentId(resultSet.getInt("PresentacionId"));
+                presentacion.setFecha(resultSet.getDate("Fecha"));
+                presentacion.setHora(resultSet.getString("Hora"));
+                presentacions.add(presentacion);
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return presentacions;
+
+
     }
 }

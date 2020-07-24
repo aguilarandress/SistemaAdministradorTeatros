@@ -17,5 +17,5 @@ public interface ProduccionesDAO {
     public String getEstadoById(int Id);
     public void updateEstado(Produccion produccion);
     public void AddBloquePrecio(ArrayList<Bloque> bloques,int Id);
-
+    public ArrayList<Produccion> getProdTIdView(int TeatroId);
 }
