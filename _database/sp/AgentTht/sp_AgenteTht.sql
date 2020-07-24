@@ -89,8 +89,7 @@ WHERE NOT EXISTS(
 	SELECT *
 	FROM Asientos
 	INNER JOIN AsientosxReservaciones ON (AsientosxReservaciones.BloqueId = @BId AND AsientosxReservaciones.FilaId = @FId)
-	INNER JOIN Reservaciones ON (Reservaciones.PresentacionId = @PId AND Reservaciones.ProduccionId = @PSId)
-
+	INNER JOIN Reservaciones ON (Reservaciones.PresentacionId = @PSId AND Reservaciones.ProduccionId = @PId)
 	) 
 	AND Asientos.FilaId = @FId AND Asientos.BloqueId = @BId
 GO
