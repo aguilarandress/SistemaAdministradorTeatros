@@ -3,6 +3,7 @@ package sistemateatros.views;
 import sistemateatros.models.Teatro;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 
 public class AgentView {
@@ -15,23 +16,29 @@ public class AgentView {
     private JTable tablaProds;
     private JTable tablaPresent;
     private JTable tablaBloques;
-    private JButton comprarButton;
+    private JButton BoletosButton;
     private JTable tablaFilas;
     private JTable tablaAsientos;
+    private JList listaAsientos;
+    private JButton realizarCompraButton;
     private String Agente;
     private int TeatroId;
+    private DefaultListModel valoresLista;
 
     public AgentView (int TeatroId,String Agente)
     {
-        this.frame = new JFrame("Administrador de sistemas");
+        this.frame = new JFrame("Agente de teatro");
         this.frame.setContentPane(this.panel1);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.pack();
-        this.frame.setSize(800, 600);
+        this.frame.setSize(800, 700);
 
         this.setAgente(Agente);
         this.setTeatroId(TeatroId);
         setWelcome_message(Agente);
+        DefaultListModel model =new DefaultListModel();
+        this.listaAsientos.setModel(model);
+        this.valoresLista= model;
 
     }
 
@@ -62,11 +69,17 @@ public class AgentView {
 
     public JTable getTablaBloques() { return tablaBloques; }
 
-    public JButton getComprarButton() { return comprarButton; }
+    public JButton getBoletosButton() { return BoletosButton; }
 
     public JTable getTablaFilas() { return tablaFilas; }
 
     public JTable getTablaAsientos() { return tablaAsientos; }
+
+    public JButton getRealizarCompraButton() { return realizarCompraButton; }
+
+    public JList getListaAsientos() { return listaAsientos; }
+
+    public DefaultListModel getValoresLista() { return valoresLista; }
 
     public void setComboTeatros(ArrayList<Teatro> teatros)
     {
@@ -74,6 +87,11 @@ public class AgentView {
              ) {
             this.comboTeatros.addItem(t);
         }
+    }
+
+    public void displayMessage(String message, boolean success) {
+        JOptionPane.showMessageDialog(this.frame, message, success ? "EXITO" : "ERROR",
+                success ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE);
     }
 
     public void setTheaterInfo(String Nombre) {

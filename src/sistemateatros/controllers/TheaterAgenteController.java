@@ -9,6 +9,7 @@ import sistemateatros.jdbc.TeatrosJDBC;
 import sistemateatros.mapper.*;
 import sistemateatros.models.*;
 import sistemateatros.views.AgentView;
+import sistemateatros.views.FormularioCliente;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -16,6 +17,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.ResultSet;
@@ -51,20 +54,30 @@ public class TheaterAgenteController {
 
         this.agentView.getTabbedAgente().addChangeListener(new changeTabListener());
         this.agentView.getComboTeatros().addItemListener(new compraTeatroListener());
+
+        this.agentView.getTablaProds().setColumnSelectionAllowed(false);
         this.agentView.getTablaProds().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         ListSelectionModel selectionModel = this.agentView.getTablaProds().getSelectionModel();
         selectionModel.addListSelectionListener(new compraTeatroProdsListener());
+
         this.agentView.getTablaPresent().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         selectionModel = this.agentView.getTablaPresent().getSelectionModel();
         selectionModel.addListSelectionListener(new compraTeatroPresentListener());
+
         this.agentView.getTablaBloques().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         selectionModel = this.agentView.getTablaBloques().getSelectionModel();
         selectionModel.addListSelectionListener(new compraTeatroBloqueListener());
+
         this.agentView.getTablaFilas().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         selectionModel = this.agentView.getTablaFilas().getSelectionModel();
         selectionModel.addListSelectionListener(new compraTeatroFilaListener());
+
         this.agentView.getTablaAsientos().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         selectionModel = this.agentView.getTablaFilas().getSelectionModel();
+
+        this.agentView.getBoletosButton().addActionListener(new compraBoletosBtnListener());
+
+        this.agentView.getRealizarCompraButton().addActionListener(new compraDatosBtnListener());
 
 
 
@@ -179,6 +192,70 @@ public class TheaterAgenteController {
                 ModelTablaProd model = TablaAsientosMapper.mapRows(asientos);
                 agentView.getTablaAsientos().setModel(model);
             }
+        }
+    }
+
+    private class compraBoletosBtnListener implements ActionListener
+    {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int [] selectedRows = agentView.getTablaAsientos().getSelectedRows();
+            if(agentView.getTablaAsientos().getRowCount() < 1)
+            {
+                agentView.displayMessage("No hay asientos seleccionados",false);
+                return;
+            }
+            else if (selectedRows.length == 0)
+            {
+                agentView.displayMessage("No hay asientos seleccionados",false);
+                return;
+            }
+            else if  (agentView.getValoresLista().getSize()+selectedRows.length > 8)
+            {
+                agentView.displayMessage("La cantidad de asientos super el máximo de 8",false);
+                return;
+            }
+            boolean repetido = false;
+            for (int i=0 ; i<selectedRows.length ; i++)
+            {
+                repetido=false;
+                Asiento asiento = (Asiento) agentView.getTablaAsientos().getValueAt(selectedRows[i],0);
+                for(int o=0 ; o<agentView.getValoresLista().getSize() ;o++ )
+                {
+                    Asiento asiento2 = (Asiento) agentView.getValoresLista().get(o);
+                    if (asiento.getBloqueId() == asiento2.getBloqueId() && asiento.getFilaId().equals(asiento2.getFilaId())
+                    && asiento.getAsientoId() == asiento2.getAsientoId())
+                    {
+                        repetido=true;
+
+                    }
+                }
+                if (repetido)
+                    continue;
+                agentView.getValoresLista().addElement(asiento);
+            }
+            if (repetido)
+            {
+                agentView.displayMessage("No se agregaron los asientos repetidos",false);
+
+            }
+
+        }
+    }
+    private class compraDatosBtnListener implements  ActionListener
+    {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(!(agentView.getValoresLista().getSize()>0))
+            {
+                agentView.displayMessage("Debe agregar asientos",false);
+                return;
+            }
+            FormularioCliente formularioCliente = new FormularioCliente();
+            formularioCliente.setVisible();
+
         }
     }
 }
