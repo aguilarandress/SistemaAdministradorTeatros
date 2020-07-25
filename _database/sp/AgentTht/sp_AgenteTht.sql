@@ -93,3 +93,133 @@ WHERE NOT EXISTS(
 	) 
 	AND Asientos.FilaId = @FId AND Asientos.BloqueId = @BId
 GO
+
+CREATE TYPE TablaAsientos AS TABLE(BloqueId int not null,FilaId char not null,AsientoId INT not null, Primary Key (BloqueId,FilaId,AsientoId))
+GO
+DROP PROCEDURE RealizarCompraTarjeta
+CREATE PROCEDURE RealizarCompraTarjeta 
+@nombre NVARCHAR(30),
+@telefono VARCHAR(9),
+@CVC INT,
+@Pago DECIMAL(10,2),
+@Asientos TablaAsientos READONLY,
+@PId int,
+@PSId int,
+@Success bit OUTPUT,
+@NumAprob int OUTPUT ,
+@DateDone DATETIME OUTPUT
+AS
+BEGIN
+DECLARE @IDCliente INT
+DECLARE @IDReservacion INT
+BEGIN TRANSACTION
+	INSERT INTO CLIENTES(Nombre,Telefono)
+	VALUES( @nombre , @telefono)
+	SELECT @NumAprob = FLOOR(RAND()*(999999-100000+1))+100000;
+	SET @IDCliente = SCOPE_IDENTITY()
+	SET @DateDone =GETDATE()
+	INSERT INTO Reservaciones(IdCliente,Comprobante,Fecha,ProduccionId,PresentacionId,Monto)
+	VALUES(@IDCliente,@NumAprob,@DateDone,@PId,@PSId,@Pago)
+	SET @IDReservacion = SCOPE_IDENTITY()
+
+	DECLARE cur_asientos CURSOR FOR
+	SELECT BloqueId , FilaId , AsientoId
+	FROM @Asientos
+
+	OPEN cur_asientos
+	DECLARE @BloqId INT;
+	DECLARE @FilaId Char;
+	DECLARE @AsienId INT
+	FETCH NEXT FROM cur_asientos INTO @BloqId , @FilaId ,@AsienId ;
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+	INSERT INTO AsientosxReservaciones(ReservacionId,BloqueId,FilaId,AsientoId)
+	VALUES(@IDReservacion,@BloqId,@FilaId,@AsienId)
+	FETCH NEXT FROM cur_asientos INTO @BloqId , @FilaId ,@AsienId;
+	END
+
+	CLOSE cur_asientos
+	DEALLOCATE cur_asientos
+
+	IF NOT(((@CVC%2)= 0 AND (@Pago%2 != 0)) OR (@CVC%2)!= 0 AND (@Pago%2 = 0))
+	BEGIN
+	ROLLBACK TRANSACTION
+	SET @NumAprob = -1
+	SET @Success = 0
+	SET @DateDone = NULL
+	RETURN 
+	END
+	
+	SET @Success = 1
+	COMMIT TRANSACTION
+END 
+GO
+
+DECLARE @Asientos TablaAsientos 
+INSERT INTO @Asientos (BloqueId,FilaId,AsientoId)
+VALUES(1,'A',1),(1,'A',2)
+
+
+DECLARE @A BIT;
+DECLARE @B INT ;
+DECLARE @C DATETIME;
+EXEC  RealizarCompraTarjeta 'PIPITITIN','8888-8888',343,20005,@Asientos,3,2 ,@A,@B,@C
+Print @A
+
+
+GO
+Create TRIGGER [dbo].[Trg_SistemaAdministradoresInsUpd]
+    ON [dbo].[SistemaAdministradores]
+    FOR INSERT, UPDATE
+    AS
+    IF EXISTS (SELECT * 
+                FROM TeatroAdministradores
+                INNER JOIN inserted ON inserted.Id = TeatroAdministradores.Id
+                WHERE TeatroAdministradores.Id IS NOT NULL)
+       OR EXISTS (SELECT * 
+                    FROM TeatroAgentes
+                    INNER JOIN inserted ON inserted.Id = TeatroAgentes.Id
+                    WHERE TeatroAgentes.Id IS NOT NULL)
+    BEGIN
+        RAISERROR('Administrador del sistema no puede ser admin del teatro o agente', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+go
+CREATE TRIGGER [dbo].[Trg_TeatroAdministradoresInsUpd]
+ON [dbo].[TeatroAdministradores]
+FOR INSERT, UPDATE
+AS
+IF EXISTS (SELECT * 
+            FROM SistemaAdministradores
+            INNER JOIN inserted ON inserted.Id = SistemaAdministradores.Id
+            WHERE SistemaAdministradores.Id IS NOT NULL)
+    OR EXISTS (SELECT * 
+                FROM TeatroAgentes
+                INNER JOIN inserted ON inserted.Id = TeatroAgentes.Id
+                WHERE TeatroAgentes.Id IS NOT NULL)
+BEGIN
+    RAISERROR('Administrador del teatro no puede ser admin del sistema o agente', 16, 1);
+    ROLLBACK TRANSACTION;
+    RETURN;
+END
+
+GO
+
+CREATE TRIGGER [dbo].[Trg_TeatroAgentesInsUpd]
+    ON [dbo].[TeatroAgentes]
+    FOR INSERT, UPDATE
+    AS
+    IF EXISTS (SELECT * 
+                FROM SistemaAdministradores
+                INNER JOIN inserted ON inserted.Id = SistemaAdministradores.Id
+                WHERE SistemaAdministradores.Id IS NOT NULL)
+       OR EXISTS (SELECT * 
+                    FROM TeatroAdministradores
+                    INNER JOIN inserted ON inserted.Id = TeatroAdministradores.Id
+                    WHERE TeatroAdministradores.Id IS NOT NULL)
+    BEGIN
+        RAISERROR('Agente del teatro no puede ser admin del sistema o del teatro', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END

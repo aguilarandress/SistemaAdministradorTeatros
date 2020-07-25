@@ -8,6 +8,7 @@ import sistemateatros.jdbc.ProduccionesJDBC;
 import sistemateatros.jdbc.TeatrosJDBC;
 import sistemateatros.mapper.*;
 import sistemateatros.models.*;
+import sistemateatros.validators.ClienteValidator;
 import sistemateatros.views.AgentView;
 import sistemateatros.views.FormularioCliente;
 
@@ -30,6 +31,7 @@ public class TheaterAgenteController {
     int IdTeatro;
     AgentView agentView;
     Teatro teatro;
+    FormularioCliente formularioCliente;
     private AgentesJDBC agentesJDBC;
     private ProduccionesJDBC produccionesJDBC;
     private TeatrosJDBC teatrosJDBC;
@@ -253,9 +255,38 @@ public class TheaterAgenteController {
                 agentView.displayMessage("Debe agregar asientos",false);
                 return;
             }
-            FormularioCliente formularioCliente = new FormularioCliente();
-            formularioCliente.setVisible();
+            FormularioCliente view = new FormularioCliente();
+            view.setVisible();
+            formularioCliente=view;
 
+
+
+        }
+    }
+    private class comprarFinalBtn implements ActionListener
+    {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            Reservacion reservacion = new Reservacion();
+            reservacion.setNombreCliente(formularioCliente.getNombre().getText());
+            reservacion.setCorreo(formularioCliente.getCorreo().getText());
+            reservacion.setTelefono(formularioCliente.getTelefono().getText());
+            if(!formularioCliente.esEfectivo())
+            {
+                reservacion.setNumeroTarjeta(formularioCliente.getTarjeta().getText());
+                reservacion.setCVC(Integer.parseInt(formularioCliente.getCvc().getText()));
+                reservacion.setExpiracion(formularioCliente.getDate().getDate());
+                reservacion.setEfectivo(false);
+            }
+            ArrayList<String> errores = ClienteValidator.validarCliente(reservacion);
+            if(errores.size()>0)
+            {
+                //TODO: DISPLAY MESSAGE
+                return;
+            }
+            //TODO: TRANSACCIÓN
         }
     }
 }
