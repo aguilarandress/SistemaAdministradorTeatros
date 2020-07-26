@@ -17,6 +17,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,6 +40,7 @@ public class TheaterAgenteController {
     private ProduccionesJDBC produccionesJDBC;
     private TeatrosJDBC teatrosJDBC;
     private PresentacionesJDBC presentacionesJDBC;
+    private ArrayList<PresentacionCartelera> presentaciones = new ArrayList<>();
     public  TheaterAgenteController(int IdTeatro,String agente)
     {
         this.agente=agente;
@@ -96,6 +98,10 @@ public class TheaterAgenteController {
 
         this.agentView.getTablaAsientos().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         selectionModel = this.agentView.getTablaAsientos().getSelectionModel();
+        //Listener cartelera
+        this.agentView.getBuscarCarteleraBtn().addActionListener(new BuscarCarteleraListener());
+        this.agentView.getObtenerPreciosCarteleraBtn().addActionListener(new ObtenerPreciosCarteleraListener());
+
         //Setup tablas
         agentView.getTablaProds().setEnabled(true);
         agentView.getTablaPresent().setEnabled(true);
@@ -529,6 +535,69 @@ public class TheaterAgenteController {
                 ModelTablaProd model = TablaAsientosMapper.mapRows(asientos);
                 agentView.getTablaAsientosAsientos().setModel(model);
 
+            }
+        }
+    }
+    /**
+     * Event listener para cuando se busca en la cartelera
+     */
+    private class BuscarCarteleraListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Obtener fechas
+            Date fechaInicial = agentView.getFechaInicialChooser().getDate();
+            Date fechaFinal = agentView.getFechaFinallChooser().getDate();
+            // Validar que las fechas sean validas
+            if (fechaInicial == null || fechaFinal == null || fechaInicial.compareTo(fechaFinal) > 0) {
+                agentView.displayMessage("Fechas invalidas", false);
+                return;
+            }
+            // Obtener presentaciones de la cartelera
+
+            presentaciones = presentacionesJDBC.getPresentacionesCarteleraByFechas(fechaInicial, fechaFinal);
+            if (presentaciones.size() == 0) {
+                agentView.displayMessage("No se encontraron presentaciones en estas fechas", false);
+                return;
+            }
+            // Crear tabla
+            Object filas[][] = new Object[presentaciones.size()][7];
+            for (int i = 0; i < presentaciones.size(); i++) {
+                filas[i][0] = presentaciones.get(i).getNombreProduccion();
+                filas[i][1] = presentaciones.get(i).getNombreTeatro();
+                filas[i][2] = presentaciones.get(i).getTipo();
+                filas[i][3] = presentaciones.get(i).getFecha();
+                filas[i][4] = presentaciones.get(i).getHora().substring(0, presentaciones.get(i).getHora().indexOf('.'));
+                filas[i][5] = presentaciones.get(i).getEstado();
+                filas[i][6] = presentaciones.get(i).getDescripcion();
+            }
+            String columnNames[] = new String[] {"Produccion", "Teatro", "Tipo",
+                    "Fecha", "Hora", "Estado", "Descripcion"};
+            DefaultTableModel tableModel = new DefaultTableModel(filas, columnNames);
+            agentView.getCarteleraTable().setModel(tableModel);
+        }
+    }
+
+    /**
+     * Listener para cuando se bucan los precios de los bloques
+     */
+    private class ObtenerPreciosCarteleraListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Verificar que una fila este seleccionada
+            if (agentView.getCarteleraTable().getSelectedRow() != -1) {
+                int filaSeleccionada = agentView.getCarteleraTable().getSelectedRow();
+                // Obtener id de la produccion
+                int produccionId = presentaciones.get(filaSeleccionada).getProduccionId();
+                // Obtener los precios de los bloques
+                ArrayList<Bloque> bloquePrecios = presentacionesJDBC.getBloquePreciosByProduccionId(produccionId);
+                Object filas[][] = new Object[bloquePrecios.size()][2];
+                for (int i = 0; i < bloquePrecios.size(); i++) {
+                    filas[i][0] = bloquePrecios.get(i).getNombre();
+                    filas[i][1] = bloquePrecios.get(i).getPrecio();
+                }
+                String columnNames[] = new String[] {"Bloque", "Precio"};
+                DefaultTableModel tableModel = new DefaultTableModel(filas, columnNames);
+                agentView.getBloquePreciosTable().setModel(tableModel);
             }
         }
     }

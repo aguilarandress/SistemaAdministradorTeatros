@@ -1,5 +1,6 @@
 package sistemateatros.views;
 
+import com.toedter.calendar.JDateChooser;
 import sistemateatros.models.CheckBoxSelectionTableModel;
 import sistemateatros.models.Teatro;
 
@@ -32,9 +33,20 @@ public class AgentView {
     private JTable tablaAsientosAsientos;
     private JComboBox comboBloqueAsientos;
     private JComboBox comboFilaAsientos;
+    private JLabel consultarCarteleraTitle;
+    private JPanel fechaInicialJPanel;
+    private JPanel fechaFinalJPanel;
+    private JButton buscarCarteleraBtn;
+    private JScrollPane carteleraScrollPane;
+    private JTable carteleraTable;
+    private JScrollPane bloquePreciosScrollPane;
+    private JTable bloquePreciosTable;
+    private JButton obtenerPreciosCarteleraBtn;
     private String Agente;
     private int TeatroId;
     private DefaultListModel valoresLista;
+    private JDateChooser fechaInicialChooser = new JDateChooser();
+    private JDateChooser fechaFinallChooser = new JDateChooser();
 
     public AgentView (int TeatroId,String Agente)
     {
@@ -52,6 +64,11 @@ public class AgentView {
         this.valoresLista= model;
         CheckBoxSelectionTableModel.register(tablaProds);
         CheckBoxSelectionTableModel.register(tablaPresent);
+
+        this.fechaInicialChooser.setDateFormatString("yyyy-MM-dd");
+        this.fechaInicialJPanel.add(fechaInicialChooser);
+        this.fechaFinallChooser.setDateFormatString("yyyy-MM-dd");
+        this.fechaFinalJPanel.add(fechaFinallChooser);
 
     }
 
@@ -158,6 +175,28 @@ public class AgentView {
         TheaterInfo.setText("Teatro designado: "+ Nombre);
     }
 
+    public JDateChooser getFechaInicialChooser() {
+        return fechaInicialChooser;
+    }
 
+    public JDateChooser getFechaFinallChooser() {
+        return fechaFinallChooser;
+    }
+
+    public JButton getBuscarCarteleraBtn() {
+        return buscarCarteleraBtn;
+    }
+
+    public JTable getCarteleraTable() {
+        return carteleraTable;
+    }
+
+    public JTable getBloquePreciosTable() {
+        return bloquePreciosTable;
+    }
+
+    public JButton getObtenerPreciosCarteleraBtn() {
+        return obtenerPreciosCarteleraBtn;
+    }
 
 }
