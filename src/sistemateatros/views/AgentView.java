@@ -24,6 +24,14 @@ public class AgentView {
     private JLabel montoTotal;
     private JComboBox comboBLQ;
     private JComboBox comboFl;
+    private JPanel ConsultaAsientos;
+    private JComboBox teatroComboAsientos;
+    private JScrollPane HolderProdAsientos;
+    private JTable tablaProdAsientos;
+    private JTable tablaPresAsientos;
+    private JTable tablaAsientosAsientos;
+    private JComboBox comboBloqueAsientos;
+    private JComboBox comboFilaAsientos;
     private String Agente;
     private int TeatroId;
     private DefaultListModel valoresLista;
@@ -47,6 +55,29 @@ public class AgentView {
 
     }
 
+    public JComboBox getTeatroComboAsientos() {
+        return teatroComboAsientos;
+    }
+
+    public JTable getTablaProdAsientos() {
+        return tablaProdAsientos;
+    }
+
+    public JTable getTablaPresAsientos() {
+        return tablaPresAsientos;
+    }
+
+    public JTable getTablaAsientosAsientos() {
+        return tablaAsientosAsientos;
+    }
+
+    public JComboBox getComboBloqueAsientos() {
+        return comboBloqueAsientos;
+    }
+
+    public JComboBox getComboFilaAsientos() {
+        return comboFilaAsientos;
+    }
 
     public void setVisible()
     {
@@ -100,6 +131,13 @@ public class AgentView {
         for (Teatro t:teatros
              ) {
             this.comboTeatros.addItem(t);
+        }
+    }
+    public void setComboTeatrosAsientos(ArrayList<Teatro> teatros)
+    {
+        for (Teatro t:teatros
+        ) {
+            this.teatroComboAsientos.addItem(t);
         }
     }
 
