@@ -96,7 +96,9 @@ GO
 
 CREATE TYPE TablaAsientos AS TABLE(BloqueId int not null,FilaId char not null,AsientoId INT not null, Primary Key (BloqueId,FilaId,AsientoId))
 GO
-DROP PROCEDURE RealizarCompraTarjeta
+
+
+
 CREATE PROCEDURE RealizarCompraTarjeta 
 @nombre NVARCHAR(30),
 @telefono VARCHAR(9),
@@ -224,7 +226,7 @@ CREATE TRIGGER [dbo].[Trg_TeatroAgentesInsUpd]
         RETURN;
     END
 GO
-CREATE PROCEDURE GETByIdBloque
+CREATE PROCEDURE GetByIdBloque
 @BloqId INT,
 @ProdId INT
 AS

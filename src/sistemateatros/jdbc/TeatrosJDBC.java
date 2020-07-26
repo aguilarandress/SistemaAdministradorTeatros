@@ -169,7 +169,7 @@ public class TeatrosJDBC implements TeatrosDAO {
     @Override
     public Bloque getBloquePreciosByIDS(int IdBloque,int IdProd) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("EXEC GETByIdBloque ?,?");
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByIdBloque ?,?");
             preparedStatement.setInt(1,IdBloque);
             preparedStatement.setInt(2,IdProd);
             ResultSet resultSet = preparedStatement.executeQuery();
