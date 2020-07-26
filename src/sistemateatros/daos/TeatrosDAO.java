@@ -19,4 +19,5 @@ public interface TeatrosDAO {
     public void crearTeatro(Teatro teatro);
     public ArrayList<Fila> getFilasByBloque(Bloque bloque);
     public ArrayList<Asiento> getAsientosByFila(Fila fila, Presentacion presentacion);
+    public Bloque getBloquePreciosByIDS(int IdBloque,int IdProd);
 }

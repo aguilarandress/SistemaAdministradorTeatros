@@ -213,7 +213,6 @@ public class ProduccionesJDBC implements ProduccionesDAO {
                 BigDecimal bd = new BigDecimal(bloque.getPrecio()).setScale(2, RoundingMode.HALF_UP);
                 preparedStatement.setBigDecimal(1,bd);
                 preparedStatement.setInt(2,bloque.getId());
-                System.out.println(idProd);
                 preparedStatement.setInt(3,idProd);
                 preparedStatement.execute();
             }

@@ -161,6 +161,35 @@ public class TeatrosJDBC implements TeatrosDAO {
     }
 
     /**
+     *
+     * @param IdBloque El id de un bloque
+     * @param IdProd El id de una producicón
+     * @return bloque con el precio
+     */
+    @Override
+    public Bloque getBloquePreciosByIDS(int IdBloque,int IdProd) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC GETByIdBloque ?,?");
+            preparedStatement.setInt(1,IdBloque);
+            preparedStatement.setInt(2,IdProd);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Boolean found = resultSet.next();
+            if (!found) {
+                return null;
+            }
+            Bloque bloque = new Bloque();
+            bloque.setPrecio(resultSet.getBigDecimal("Monto").floatValue());
+            return bloque;
+        }
+        catch (SQLException e)
+        {
+
+        }
+
+        return null;
+    }
+
+    /**
      * Obtiene un bloque por nombre
      * @param idTeatro El id del teatro de ese bloque
      * @param nombre El nombre de ese bloque

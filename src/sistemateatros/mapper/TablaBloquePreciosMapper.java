@@ -5,19 +5,18 @@ import sistemateatros.models.ModelTablaBloquePrecios;
 import sistemateatros.models.ModelTablaBloques;
 import sistemateatros.models.ModelTablaProd;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class TablaBloquePreciosMapper {
-    public static ModelTablaProd mapRows(ArrayList<Bloque> bloques)
+    public static void mapRows(ArrayList<Bloque> bloques, JComboBox combo)
     {
-        Object row[][] = new Object[bloques.size()][2];
+
         for (int i=0 ; i<bloques.size();i++)
         {
-            row[i][0]=bloques.get(i) ;
-            row[i][1]= bloques.get(i).getPrecio();
+            combo.addItem(bloques.get(i));
+
         }
-        String[] columnNames = {"Bloque", "Precio"};
-        ModelTablaProd model = new ModelTablaProd(row,columnNames);
-        return  model;
+        return ;
     }
 }

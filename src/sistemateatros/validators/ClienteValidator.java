@@ -24,9 +24,12 @@ public class ClienteValidator {
 
         if(!reservacion.isEfectivo())
         {
-            if(reservacion.getNumeroTarjeta().length() != 16)
+            System.out.println("es compra tarjeta");
+            if(reservacion.getNumeroTarjeta()!=null)
             {
-                errores.add("Número de tarjeta inválido");
+                if(reservacion.getNumeroTarjeta().length()!=16) {
+                    errores.add("Número de tarjeta inválido");
+                }
             }
             if (reservacion.getExpiracion() == null) {
                 errores.add("Fecha de expiración inválida");

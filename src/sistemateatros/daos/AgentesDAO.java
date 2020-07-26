@@ -1,8 +1,7 @@
 package sistemateatros.daos;
 
-import sistemateatros.models.AgentTheater;
-import sistemateatros.models.Bloque;
-import sistemateatros.models.TheaterAdmin;
+import sistemateatros.models.*;
+import sun.jvm.hotspot.runtime.arm.ARMCurrentFrameGuess;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -15,4 +14,6 @@ public interface AgentesDAO {
     public void setConnection(Connection connection);
     public boolean existeCedula(int cedula);
     public ArrayList<Bloque> getBloquePreciosByProdId(int ProdId);
+    public Object[] procesarCompraTarjeta(Reservacion reservacion, ArrayList<Asiento> asientos,int ProdId, int PresId);
+    public Object[] procesarCompraEfectivo(Reservacion reservacion,ArrayList<Asiento> asientos,int ProdId, int PresId);
 }

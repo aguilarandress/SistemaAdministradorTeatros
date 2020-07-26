@@ -1,5 +1,6 @@
 package sistemateatros.views;
 
+import sistemateatros.models.CheckBoxSelectionTableModel;
 import sistemateatros.models.Teatro;
 
 import javax.swing.*;
@@ -15,12 +16,14 @@ public class AgentView {
     private JComboBox comboTeatros;
     private JTable tablaProds;
     private JTable tablaPresent;
-    private JTable tablaBloques;
     private JButton BoletosButton;
-    private JTable tablaFilas;
     private JTable tablaAsientos;
     private JList listaAsientos;
     private JButton realizarCompraButton;
+    private JLabel totalL;
+    private JLabel montoTotal;
+    private JComboBox comboBLQ;
+    private JComboBox comboFl;
     private String Agente;
     private int TeatroId;
     private DefaultListModel valoresLista;
@@ -39,8 +42,11 @@ public class AgentView {
         DefaultListModel model =new DefaultListModel();
         this.listaAsientos.setModel(model);
         this.valoresLista= model;
+        CheckBoxSelectionTableModel.register(tablaProds);
+        CheckBoxSelectionTableModel.register(tablaPresent);
 
     }
+
 
     public void setVisible()
     {
@@ -67,11 +73,10 @@ public class AgentView {
 
     public JTable getTablaPresent() { return tablaPresent; }
 
-    public JTable getTablaBloques() { return tablaBloques; }
 
     public JButton getBoletosButton() { return BoletosButton; }
 
-    public JTable getTablaFilas() { return tablaFilas; }
+
 
     public JTable getTablaAsientos() { return tablaAsientos; }
 
@@ -80,6 +85,15 @@ public class AgentView {
     public JList getListaAsientos() { return listaAsientos; }
 
     public DefaultListModel getValoresLista() { return valoresLista; }
+
+
+    public JComboBox getComboBLQ() {
+        return comboBLQ;
+    }
+
+    public JComboBox getComboFl() {
+        return comboFl;
+    }
 
     public void setComboTeatros(ArrayList<Teatro> teatros)
     {
@@ -92,6 +106,14 @@ public class AgentView {
     public void displayMessage(String message, boolean success) {
         JOptionPane.showMessageDialog(this.frame, message, success ? "EXITO" : "ERROR",
                 success ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE);
+    }
+
+    public Double getMontoTotal() {
+        return Double.parseDouble(montoTotal.getText());
+    }
+
+    public void setMontoTotal(Double montoTotal) {
+        this.montoTotal.setText(montoTotal.toString());
     }
 
     public void setTheaterInfo(String Nombre) {

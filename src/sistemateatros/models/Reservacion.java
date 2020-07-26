@@ -10,6 +10,7 @@ public class Reservacion {
     private int CVC;
     private Date expiracion;
     private boolean efectivo;
+    private double monto;
 
     public String getNombreCliente() { return nombreCliente; }
 
@@ -41,5 +42,13 @@ public class Reservacion {
 
     public void setEfectivo(boolean efectivo) {
         this.efectivo = efectivo;
+    }
+
+    public double getMonto() {
+        return monto;
+    }
+
+    public void setMonto(double monto) {
+        this.monto = monto;
     }
 }

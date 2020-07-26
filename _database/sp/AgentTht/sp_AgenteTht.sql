@@ -106,7 +106,7 @@ CREATE PROCEDURE RealizarCompraTarjeta
 @PId int,
 @PSId int,
 @Success bit OUTPUT,
-@NumAprob int OUTPUT ,
+@NumAprob DECIMAL(6) OUTPUT ,
 @DateDone DATETIME OUTPUT
 AS
 BEGIN
@@ -223,3 +223,60 @@ CREATE TRIGGER [dbo].[Trg_TeatroAgentesInsUpd]
         ROLLBACK TRANSACTION;
         RETURN;
     END
+GO
+CREATE PROCEDURE GETByIdBloque
+@BloqId INT,
+@ProdId INT
+AS
+SELECT *
+FROM BloquePrecios
+WHERE BloquePrecios.IdBloque = @BloqId AND @ProdId = BloquePrecios.IdProduccion
+GO
+
+
+CREATE PROCEDURE RealizarCompraEfectivo
+@nombre NVARCHAR(30),
+@telefono VARCHAR(9),
+@Pago DECIMAL(10,2),
+@Asientos TablaAsientos READONLY,
+@PId int,
+@PSId int,
+@Success bit OUTPUT,
+@NumAprob DECIMAL(6) OUTPUT ,
+@DateDone DATETIME OUTPUT
+AS
+BEGIN
+DECLARE @IDCliente INT
+DECLARE @IDReservacion INT
+BEGIN TRANSACTION
+	INSERT INTO CLIENTES(Nombre,Telefono)
+	VALUES( @nombre , @telefono)
+	SELECT @NumAprob = FLOOR(RAND()*(999999-100000+1))+100000;
+	SET @IDCliente = SCOPE_IDENTITY()
+	SET @DateDone =GETDATE()
+	INSERT INTO Reservaciones(IdCliente,Comprobante,Fecha,ProduccionId,PresentacionId,Monto)
+	VALUES(@IDCliente,@NumAprob,@DateDone,@PId,@PSId,@Pago)
+	SET @IDReservacion = SCOPE_IDENTITY()
+
+	DECLARE cur_asientos CURSOR FOR
+	SELECT BloqueId , FilaId , AsientoId
+	FROM @Asientos
+
+	OPEN cur_asientos
+	DECLARE @BloqId INT;
+	DECLARE @FilaId Char;
+	DECLARE @AsienId INT
+	FETCH NEXT FROM cur_asientos INTO @BloqId , @FilaId ,@AsienId ;
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+	INSERT INTO AsientosxReservaciones(ReservacionId,BloqueId,FilaId,AsientoId)
+	VALUES(@IDReservacion,@BloqId,@FilaId,@AsienId)
+	FETCH NEXT FROM cur_asientos INTO @BloqId , @FilaId ,@AsienId;
+	END
+
+	CLOSE cur_asientos
+	DEALLOCATE cur_asientos
+	SET @Success = 1
+	COMMIT TRANSACTION
+END 
+GO

@@ -22,8 +22,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TheaterAgenteController {
@@ -66,20 +69,25 @@ public class TheaterAgenteController {
         selectionModel = this.agentView.getTablaPresent().getSelectionModel();
         selectionModel.addListSelectionListener(new compraTeatroPresentListener());
 
-        this.agentView.getTablaBloques().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        selectionModel = this.agentView.getTablaBloques().getSelectionModel();
-        selectionModel.addListSelectionListener(new compraTeatroBloqueListener());
+        //TODO : COMBO BLOQUE
+        this.agentView.getComboBLQ().addItemListener(new compraTeatroBloqueListener());
 
-        this.agentView.getTablaFilas().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        selectionModel = this.agentView.getTablaFilas().getSelectionModel();
-        selectionModel.addListSelectionListener(new compraTeatroFilaListener());
+
+        //TODO : COMBO FILA
+        this.agentView.getComboFl().addItemListener(new compraTeatroFilaListener());
+
 
         this.agentView.getTablaAsientos().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        selectionModel = this.agentView.getTablaFilas().getSelectionModel();
+        selectionModel = this.agentView.getTablaAsientos().getSelectionModel();
 
+        //Botones
         this.agentView.getBoletosButton().addActionListener(new compraBoletosBtnListener());
-
         this.agentView.getRealizarCompraButton().addActionListener(new compraDatosBtnListener());
+
+        agentView.getTablaProds().setEnabled(true);
+        agentView.getTablaPresent().setEnabled(true);
+
+
 
 
 
@@ -100,10 +108,21 @@ public class TheaterAgenteController {
                 agentView.getTablaProds().setModel(model);
                 ModelTablaProd model2 = TablaPresenMapper.mapRows(new ArrayList<Presentacion>());
                 agentView.getTablaPresent().setModel(model2);
-                ModelTablaProd model3 = TablaBloquePreciosMapper.mapRows(new ArrayList<Bloque>());
-                agentView.getTablaBloques().setModel(model3);
-                ModelTablaProd model4 = TablaFilasMapper.mapRows(new ArrayList<Fila>());
-                agentView.getTablaFilas().setModel(model4);
+
+                agentView.getComboBLQ().removeAllItems();
+                agentView.getComboFl().removeAllItems();
+
+
+                ModelTablaProd model5 = TablaAsientosMapper.mapRows(new ArrayList<Asiento>());
+                agentView.getTablaAsientos().setModel(model5);
+            }
+            else {
+                ModelTablaProd model= TablaProdMapper.mapRows(new ArrayList<Produccion>());
+                agentView.getTablaProds().setModel(model);
+                ModelTablaProd model2 = TablaPresenMapper.mapRows(new ArrayList<Presentacion>());
+                agentView.getTablaPresent().setModel(model2);
+                agentView.getComboBLQ().removeAllItems();
+                agentView.getComboFl().removeAllItems();
                 ModelTablaProd model5 = TablaAsientosMapper.mapRows(new ArrayList<Asiento>());
                 agentView.getTablaAsientos().setModel(model5);
             }
@@ -120,12 +139,12 @@ public class TheaterAgenteController {
                 agentView.getTablaProds().setModel(model);
                 ModelTablaProd model2 = TablaPresenMapper.mapRows(new ArrayList<Presentacion>());
                 agentView.getTablaPresent().setModel(model2);
-                ModelTablaProd model3 = TablaBloquePreciosMapper.mapRows(new ArrayList<Bloque>());
-                agentView.getTablaBloques().setModel(model3);
-                ModelTablaProd model4 = TablaFilasMapper.mapRows(new ArrayList<Fila>());
-                agentView.getTablaFilas().setModel(model4);
+                agentView.getComboBLQ().removeAllItems();
+                agentView.getComboFl().removeAllItems();
                 ModelTablaProd model5 = TablaAsientosMapper.mapRows(new ArrayList<Asiento>());
                 agentView.getTablaAsientos().setModel(model5);
+                agentView.getTablaProds().setEnabled(true);
+                agentView.getTablaPresent().setEnabled(true);
             }
         }
     }
@@ -140,10 +159,8 @@ public class TheaterAgenteController {
                 ArrayList<Presentacion> presentacions = presentacionesJDBC.getPresentByProdIdView(produccion);
                 ModelTablaProd model = TablaPresenMapper.mapRows(presentacions);
                 agentView.getTablaPresent().setModel(model);
-                ModelTablaProd model3 = TablaBloquePreciosMapper.mapRows(new ArrayList<Bloque>());
-                agentView.getTablaBloques().setModel(model3);
-                ModelTablaProd model4 = TablaFilasMapper.mapRows(new ArrayList<Fila>());
-                agentView.getTablaFilas().setModel(model4);
+                agentView.getComboBLQ().removeAllItems();
+                agentView.getComboFl().removeAllItems();
                 ModelTablaProd model5 = TablaAsientosMapper.mapRows(new ArrayList<Asiento>());
                 agentView.getTablaAsientos().setModel(model5);
 
@@ -154,45 +171,47 @@ public class TheaterAgenteController {
 
         @Override
         public void valueChanged(ListSelectionEvent e) {
+
             if(agentView.getTablaPresent().getRowCount()>0)
             {
                 Presentacion presentacion = (Presentacion) agentView.getTablaPresent().getValueAt(agentView.getTablaPresent().getSelectedRow(),0);
                 ArrayList<Bloque> bloques = agentesJDBC.getBloquePreciosByProdId(presentacion.getId());
-                ModelTablaProd model = TablaBloquePreciosMapper.mapRows(bloques);
-                agentView.getTablaBloques().setModel(model);
-                ModelTablaProd model4 = TablaFilasMapper.mapRows(new ArrayList<Fila>());
-                agentView.getTablaFilas().setModel(model4);
+                agentView.getComboBLQ().removeAllItems();
+                TablaBloquePreciosMapper.mapRows(bloques,agentView.getComboBLQ());
+                agentView.getComboFl().removeAllItems();
                 ModelTablaProd model5 = TablaAsientosMapper.mapRows(new ArrayList<Asiento>());
                 agentView.getTablaAsientos().setModel(model5);
             }
         }
     }
-    private class compraTeatroBloqueListener implements  ListSelectionListener {
+    private class compraTeatroBloqueListener implements  ItemListener {
 
         @Override
-        public void valueChanged(ListSelectionEvent e) {
-            if(agentView.getTablaBloques().getRowCount()>0)
-            {
-                Bloque bloque = (Bloque) agentView.getTablaBloques().getValueAt(agentView.getTablaBloques().getSelectedRow(),0);
+        public void itemStateChanged(ItemEvent e) {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                Bloque bloque = (Bloque) agentView.getComboBLQ().getSelectedItem();
                 ArrayList<Fila> filas = teatrosJDBC.getFilasByBloque(bloque);
-                ModelTablaProd model = TablaFilasMapper.mapRows(filas);
-                agentView.getTablaFilas().setModel(model);
+                agentView.getComboFl().removeAllItems();
+                TablaFilasMapper.mapRows(filas,agentView.getComboFl());
                 ModelTablaProd model5 = TablaAsientosMapper.mapRows(new ArrayList<Asiento>());
                 agentView.getTablaAsientos().setModel(model5);
+                agentView.getTablaProds().setEnabled(false);
+                agentView.getTablaPresent().setEnabled(false);
+
             }
         }
     }
-    private class compraTeatroFilaListener implements  ListSelectionListener {
-
+    private class compraTeatroFilaListener implements  ItemListener {
         @Override
-        public void valueChanged(ListSelectionEvent e) {
-            if(agentView.getTablaFilas().getRowCount()>0)
-            {
-                Fila fila = (Fila) agentView.getTablaFilas().getValueAt(agentView.getTablaFilas().getSelectedRow(),0);
+        public void itemStateChanged(ItemEvent e) {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+
+                Fila fila = (Fila) agentView.getComboFl().getSelectedItem();
                 Presentacion presentacion = (Presentacion) agentView.getTablaPresent().getValueAt(agentView.getTablaPresent().getSelectedRow(),0);
                 ArrayList<Asiento> asientos = teatrosJDBC.getAsientosByFila(fila,presentacion);
                 ModelTablaProd model = TablaAsientosMapper.mapRows(asientos);
                 agentView.getTablaAsientos().setModel(model);
+
             }
         }
     }
@@ -215,7 +234,7 @@ public class TheaterAgenteController {
             }
             else if  (agentView.getValoresLista().getSize()+selectedRows.length > 8)
             {
-                agentView.displayMessage("La cantidad de asientos super el máximo de 8",false);
+                agentView.displayMessage("La cantidad de asientos supera el máximo de 8",false);
                 return;
             }
             boolean repetido = false;
@@ -235,6 +254,9 @@ public class TheaterAgenteController {
                 }
                 if (repetido)
                     continue;
+                Produccion produccion =  (Produccion)(agentView.getTablaProds().getValueAt(agentView.getTablaProds().getSelectedRow(),0));
+                Bloque bloque = teatrosJDBC.getBloquePreciosByIDS(asiento.getBloqueId(),produccion.getId());
+                agentView.setMontoTotal(agentView.getMontoTotal()+bloque.getPrecio());
                 agentView.getValoresLista().addElement(asiento);
             }
             if (repetido)
@@ -258,6 +280,8 @@ public class TheaterAgenteController {
             FormularioCliente view = new FormularioCliente();
             view.setVisible();
             formularioCliente=view;
+            formularioCliente.getComprarButton().addActionListener(new comprarFinalBtn());
+
 
 
 
@@ -273,20 +297,65 @@ public class TheaterAgenteController {
             reservacion.setNombreCliente(formularioCliente.getNombre().getText());
             reservacion.setCorreo(formularioCliente.getCorreo().getText());
             reservacion.setTelefono(formularioCliente.getTelefono().getText());
+            reservacion.setEfectivo(true);
             if(!formularioCliente.esEfectivo())
             {
                 reservacion.setNumeroTarjeta(formularioCliente.getTarjeta().getText());
-                reservacion.setCVC(Integer.parseInt(formularioCliente.getCvc().getText()));
+                try
+                {
+                    reservacion.setCVC(Integer.parseInt(formularioCliente.getCvc().getText()));
+                }
+                catch (Exception o)
+                {
+                    reservacion.setCVC(0);
+                }
                 reservacion.setExpiracion(formularioCliente.getDate().getDate());
                 reservacion.setEfectivo(false);
             }
+            reservacion.setMonto((Double) agentView.getMontoTotal()) ;
+            Produccion produccion = (Produccion) agentView.getTablaProds().getValueAt(agentView.getTablaProds().getSelectedRow(),0);
+            Presentacion presentacion = (Presentacion) agentView.getTablaPresent().getValueAt(agentView.getTablaPresent().getSelectedRow(),0);
             ArrayList<String> errores = ClienteValidator.validarCliente(reservacion);
+            ArrayList<Asiento> asientos = new ArrayList<Asiento>();
+            for (int i = 0 ; i < agentView.getValoresLista().getSize();i++)
+            {
+                asientos.add((Asiento) agentView.getValoresLista().getElementAt(i));
+            }
             if(errores.size()>0)
             {
-                //TODO: DISPLAY MESSAGE
+                formularioCliente.displayMessage(errores.get(0),false);
                 return;
             }
-            //TODO: TRANSACCIÓN
+            Object[] resultados;
+            if(!reservacion.isEfectivo()) {
+                resultados = agentesJDBC.procesarCompraTarjeta(reservacion, asientos, produccion.getId(), presentacion.getPresentId());
+                if ((Boolean)resultados[0]) {
+                    agentView.displayMessage("Compra exitosa, número de orden: "+(Integer)resultados[1],true);
+                } else {
+                    agentView.displayMessage("Tarjeta rechazada , por favor verifique que cuente con el dinero necesario",false);
+                }
+            }
+            else {
+                resultados = agentesJDBC.procesarCompraEfectivo(reservacion,asientos,produccion.getId(),presentacion.getPresentId());
+                agentView.displayMessage("Compra exitosa, número de orden: "+(Integer)resultados[1],true);
+            }
+            //Limpieza tablas
+            ModelTablaProd model= TablaProdMapper.mapRows(new ArrayList<Produccion>());
+            agentView.getTablaProds().setModel(model);
+            ModelTablaProd model2 = TablaPresenMapper.mapRows(new ArrayList<Presentacion>());
+            agentView.getTablaPresent().setModel(model2);
+            agentView.getComboBLQ().removeAllItems();
+            agentView.getComboFl().removeAllItems();
+            ModelTablaProd model5 = TablaAsientosMapper.mapRows(new ArrayList<Asiento>());
+            agentView.getTablaAsientos().setModel(model5);
+            formularioCliente.cerrar();
+            agentView.getValoresLista().clear();
+            agentView.setMontoTotal(0.0);
+
+            agentView.getTablaProds().setEnabled(true);
+            agentView.getTablaPresent().setEnabled(true);
+
+
         }
     }
 }

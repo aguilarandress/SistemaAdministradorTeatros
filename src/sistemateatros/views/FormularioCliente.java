@@ -77,6 +77,10 @@ public class FormularioCliente {
         cvc.setEnabled(false);
         date.setEnabled(false);
     }
+    public void displayMessage(String message, boolean success) {
+        JOptionPane.showMessageDialog(this.frame, message, success ? "EXITO" : "ERROR",
+                success ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE);
+    }
     public void setVisible()
     {
         this.frame.setVisible(true);
@@ -113,11 +117,15 @@ public class FormularioCliente {
     {
         if(this.efectivoRadioButton.isSelected())
         {
-            return false;
+            return true;
         }
         else
         {
-            return  true;
+            return  false;
         }
+    }
+    public void cerrar()
+    {
+        this.frame.dispose();
     }
 }

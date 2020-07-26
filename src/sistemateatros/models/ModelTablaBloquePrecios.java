@@ -11,7 +11,7 @@ public class ModelTablaBloquePrecios extends DefaultTableModel
     @Override
     public Class getColumnClass(int col) {
         if (col == 1)       //second column accepts only Integer values
-            return Integer.class;
+            return Double.class;
         else return String.class;  //other columns accept String values
     }
 
