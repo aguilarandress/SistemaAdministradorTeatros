@@ -1,13 +1,11 @@
 package sistemateatros.daos;
 
 import sistemateatros.models.*;
-import sun.jvm.hotspot.runtime.arm.ARMCurrentFrameGuess;
 
 import java.sql.Connection;
 import java.util.ArrayList;
 
 public interface AgentesDAO {
-
     public boolean verificarUsername(String username);
     public boolean verificarNombre(String nombre);
     public void AddAgente(AgentTheater agentTheater);

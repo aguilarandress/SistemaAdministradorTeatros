@@ -21,7 +21,7 @@ public class AuthenticationManager {
     private static String databaseName;
     private static User sysAdmin;
     private static User teatroAdmin;
-    // TODO: Definir la cuenta para el agente de teatro
+    private static User teatroAgente;
 
     /**
      * Carga los usuarios para la base de datos
@@ -50,7 +50,10 @@ public class AuthenticationManager {
             teatroAdmin = new User();
             teatroAdmin.setUsername(props.getProperty("datasource.teatroadminusername"));
             teatroAdmin.setPassword(props.getProperty("datasource.teatroadminpassword"));
-            // TODO Obtener los datos del agente de teatro
+            // Obtener el agente de teatro
+            teatroAgente = new User();
+            teatroAgente.setUsername(props.getProperty("datasource.teatroagenteusername"));
+            teatroAgente.setPassword(props.getProperty("datasource.teatroagentepassword"));
         } catch (FileNotFoundException e) {
             System.out.println("**ERROR** File not found...");
             e.printStackTrace();
@@ -98,5 +101,13 @@ public class AuthenticationManager {
      */
     public static User getTeatroAdmin() {
         return teatroAdmin;
+    }
+
+    /**
+     * Obtiene el agente de teatro
+     * @return La cuenta del agente de teatros
+     */
+    public static User getTeatroAgente() {
+        return teatroAgente;
     }
 }

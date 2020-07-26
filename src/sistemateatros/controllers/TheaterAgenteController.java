@@ -86,12 +86,6 @@ public class TheaterAgenteController {
 
         agentView.getTablaProds().setEnabled(true);
         agentView.getTablaPresent().setEnabled(true);
-
-
-
-
-
-
     }
     private class changeTabListener  implements ChangeListener
     {
@@ -281,10 +275,6 @@ public class TheaterAgenteController {
             view.setVisible();
             formularioCliente=view;
             formularioCliente.getComprarButton().addActionListener(new comprarFinalBtn());
-
-
-
-
         }
     }
     private class comprarFinalBtn implements ActionListener
@@ -354,8 +344,6 @@ public class TheaterAgenteController {
 
             agentView.getTablaProds().setEnabled(true);
             agentView.getTablaPresent().setEnabled(true);
-
-
         }
     }
 }

@@ -142,8 +142,8 @@ public class TeatrosJDBC implements TeatrosDAO {
         ArrayList<Asiento> asientos = new ArrayList<Asiento>();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByFilaId_BloqueId_ProdId_PresentacionIdAsientos ?,?,?,?");
-            preparedStatement.setString(1,fila.getLetra());
-            preparedStatement.setInt(2,fila.getBloqueId());
+            preparedStatement.setString(2,fila.getLetra());
+            preparedStatement.setInt(1,fila.getBloqueId());
             preparedStatement.setInt(3,presentacion.getId());
             preparedStatement.setInt(4,presentacion.getPresentId());
             ResultSet resultSet = preparedStatement.executeQuery();

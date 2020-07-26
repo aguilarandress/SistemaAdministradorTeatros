@@ -58,7 +58,20 @@ public class DatabaseConnection {
      * Se conecta a la base de datos como agente de teatro
      */
     public static void connectAsAgenteTeatro() {
-        // TODO: Implementar conexion a base de datos con agente teatro
+        dataSource.setServerName(AuthenticationManager.getHost());
+        dataSource.setPortNumber(AuthenticationManager.getPort());
+        dataSource.setDatabaseName(AuthenticationManager.getDatabaseName());
+        // Get theateradmin credentials
+        User teatroAgente = AuthenticationManager.getTeatroAgente();
+        dataSource.setUser(teatroAgente.getUsername());
+        dataSource.setPassword(teatroAgente.getPassword());
+        try {
+            connection = dataSource.getConnection();
+            System.out.println("Connected successfuly...");
+        } catch (SQLException e) {
+            System.out.println("**ERROR** En la conexion a la base");
+            e.printStackTrace();
+        }
     }
 
     /**

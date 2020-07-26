@@ -93,7 +93,7 @@ public class AuthenticationController {
         public void actionPerformed(ActionEvent e) {
             // Create connection
             DatabaseConnection.closeConnection();
-            DatabaseConnection.connectAsTeatroAdmin();
+            DatabaseConnection.connectAsAgenteTeatro();
             String username = authenticationView.getAgenteUsername();
             String password = authenticationView.getAgentePassword();
             //Obtener Admministradores de teatros
