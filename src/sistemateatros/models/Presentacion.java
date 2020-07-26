@@ -40,4 +40,9 @@ public class Presentacion {
     public void setHora(String hora) {
         this.hora = hora;
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(presentId);
+    }
 }

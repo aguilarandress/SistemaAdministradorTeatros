@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import org.mindrot.jbcrypt.BCrypt;
 import sistemateatros.database.DatabaseConnection;
 import sistemateatros.jdbc.AuthenticationJDBC;
+import sistemateatros.models.AgentTheater;
 import sistemateatros.models.SystemAdmin;
 import sistemateatros.models.TheaterAdmin;
 import sistemateatros.views.AuthenticationView;
@@ -25,6 +26,7 @@ public class AuthenticationController {
         // Set action listeners
         this.authenticationView.getLoginSysAdminBtn().addActionListener(new SystemAdminLoginListener());
         this.authenticationView.getLoginTeaAdminBtn().addActionListener(new AdministradorTeatroLoginListener());
+        this.authenticationView.getLoginAgenteBtn().addActionListener(new AgenteTeatroListener());
     }
 
     private class SystemAdminLoginListener implements ActionListener {
@@ -80,9 +82,39 @@ public class AuthenticationController {
             }
             authenticationView.displayMessage("Loggin in...", true);
             TheaterAdminController theaterAdminController= new TheaterAdminController(theaterAdmin.getIdTeatro(),theaterAdmin.getNombre());
-            theaterAdmin.setId(theaterAdmin.getId());
             authenticationView.hide();
-            // TODO: Crear el controlador de admin teatro
+
         }
+    }
+    private class AgenteTeatroListener implements ActionListener
+    {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Create connection
+            DatabaseConnection.closeConnection();
+            DatabaseConnection.connectAsAgenteTeatro();
+            String username = authenticationView.getAgenteUsername();
+            String password = authenticationView.getAgentePassword();
+            //Obtener Admministradores de teatros
+            AuthenticationJDBC authenticationJDBC = new AuthenticationJDBC();
+            authenticationJDBC.setConnection(DatabaseConnection.getConnection());
+
+            AgentTheater agentTheater = authenticationJDBC.getTheaterAgentByUsername(username);
+
+            if (agentTheater == null) {
+                authenticationView.displayMessage("No user found...", false);
+                return;
+            }
+            String inputPassword= String.valueOf(agentTheater.getPassword());
+            if (!BCrypt.checkpw(password, inputPassword)) {
+                authenticationView.displayMessage("Incorrrect password", false);
+                return;
+            }
+            authenticationView.displayMessage("Loggin in...", true);
+            TheaterAgenteController theaterAgenteController= new TheaterAgenteController(agentTheater.getIdTeatro(),agentTheater.getNombre());
+            authenticationView.hide();
+        }
+
     }
 }

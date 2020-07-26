@@ -31,4 +31,7 @@ public class Fila {
     public void setNumeroAsientos(int numeroAsientos) {
         this.numeroAsientos = numeroAsientos;
     }
+
+    @Override
+    public String toString() { return letra; }
 }

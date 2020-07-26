@@ -1,8 +1,6 @@
 package sistemateatros.daos;
 
-import sistemateatros.models.Bloque;
-import sistemateatros.models.Fila;
-import sistemateatros.models.Teatro;
+import sistemateatros.models.*;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -18,4 +16,7 @@ public interface TeatrosDAO {
     public void crearBloque(Bloque bloque);
     public void crearFila(Fila fila);
     public void crearTeatro(Teatro teatro);
+    public ArrayList<Fila> getFilasByBloque(Bloque bloque);
+    public ArrayList<Asiento> getAsientosByFila(Fila fila, Presentacion presentacion);
+    public Bloque getBloquePreciosByIDS(int IdBloque,int IdProd);
 }

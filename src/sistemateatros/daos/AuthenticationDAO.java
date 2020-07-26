@@ -1,5 +1,6 @@
 package sistemateatros.daos;
 
+import sistemateatros.models.AgentTheater;
 import sistemateatros.models.SystemAdmin;
 import sistemateatros.models.TheaterAdmin;
 
@@ -9,4 +10,5 @@ public interface AuthenticationDAO {
     public void setConnection(Connection connection);
     public SystemAdmin getSystemAdminByUsername(String username);
     public TheaterAdmin getTheaterAdminByUsername(String username);
+    public AgentTheater getTheaterAgentByUsername(String username);
 }

@@ -1,9 +1,7 @@
 package sistemateatros.jdbc;
 
 import sistemateatros.daos.TeatrosDAO;
-import sistemateatros.models.Bloque;
-import sistemateatros.models.Fila;
-import sistemateatros.models.Teatro;
+import sistemateatros.models.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -117,6 +115,78 @@ public class TeatrosJDBC implements TeatrosDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public ArrayList<Fila> getFilasByBloque(Bloque bloque) {
+        ArrayList<Fila> filas = new ArrayList<Fila>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByBloqueIdFilas ?");
+            preparedStatement.setInt(1, bloque.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Fila fila = new Fila();
+                fila.setLetra(resultSet.getString("FilaId"));
+                fila.setNumeroAsientos(resultSet.getInt("NumeroAsientos"));
+                fila.setBloqueId(resultSet.getInt("BloqueId"));
+                filas.add(fila);
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return filas;
+    }
+
+    @Override
+    public ArrayList<Asiento> getAsientosByFila(Fila fila, Presentacion presentacion ) {
+        ArrayList<Asiento> asientos = new ArrayList<Asiento>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByFilaId_BloqueId_ProdId_PresentacionIdAsientos ?,?,?,?");
+            preparedStatement.setString(2,fila.getLetra());
+            preparedStatement.setInt(1,fila.getBloqueId());
+            preparedStatement.setInt(3,presentacion.getId());
+            preparedStatement.setInt(4,presentacion.getPresentId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Asiento asiento = new Asiento();
+                asiento.setFilaId(fila.getLetra());
+                asiento.setBloqueId(fila.getBloqueId());
+                asiento.setAsientoId(resultSet.getInt("AsientoId"));
+                asientos.add(asiento);
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return asientos;
+    }
+
+    /**
+     *
+     * @param IdBloque El id de un bloque
+     * @param IdProd El id de una producicón
+     * @return bloque con el precio
+     */
+    @Override
+    public Bloque getBloquePreciosByIDS(int IdBloque,int IdProd) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByIdBloque ?,?");
+            preparedStatement.setInt(1,IdBloque);
+            preparedStatement.setInt(2,IdProd);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Boolean found = resultSet.next();
+            if (!found) {
+                return null;
+            }
+            Bloque bloque = new Bloque();
+            bloque.setPrecio(resultSet.getBigDecimal("Monto").floatValue());
+            return bloque;
+        }
+        catch (SQLException e)
+        {
+
+        }
+
+        return null;
     }
 
     /**

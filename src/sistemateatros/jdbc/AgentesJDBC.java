@@ -1,10 +1,15 @@
 package sistemateatros.jdbc;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
+import com.microsoft.sqlserver.jdbc.SQLServerCallableStatement;
+import com.microsoft.sqlserver.jdbc.SQLServerDataTable;
 import sistemateatros.daos.AgentesDAO;
-import sistemateatros.models.AgentTheater;
+import sistemateatros.models.*;
 
 public class AgentesJDBC implements AgentesDAO {
     private Connection connection;
@@ -34,6 +39,113 @@ public class AgentesJDBC implements AgentesDAO {
         }
         return true;
     }
+
+    @Override
+    public ArrayList<Bloque> getBloquePreciosByProdId(int ProdId) {
+        try
+        {
+
+        ArrayList<Bloque> bloques = new ArrayList<Bloque>() ;
+        PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetByProdIdBloquePrecios ?");
+        preparedStatement.setInt(1,ProdId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while(resultSet.next())
+        {
+            Bloque bloque = new Bloque();
+            bloque.setNombre(resultSet.getString("BloqueNombre"));
+            bloque.setPrecio(resultSet.getBigDecimal("Monto").floatValue());
+            bloque.setId(resultSet.getInt("BloqueId"));
+            bloque.setIdProd(resultSet.getInt("IdProduccion"));
+            bloques.add(bloque);
+        }
+        return bloques;
+    }
+        catch (SQLException e)
+    {
+        e.printStackTrace();
+    }
+        return null;
+    }
+
+    @Override
+    public Object[] procesarCompraTarjeta(Reservacion reservacion,ArrayList<Asiento> asientos,int ProdId, int PresId) {
+
+        try
+        {
+            SQLServerCallableStatement callableStatement = (SQLServerCallableStatement)connection.prepareCall("EXEC RealizarCompraTarjeta ?,?,?,?,?,?,?,?,?,? ");
+            callableStatement.setString(1,reservacion.getNombreCliente());
+            callableStatement.setString(2,reservacion.getTelefono());
+            callableStatement.setInt(3,reservacion.getCVC());
+            BigDecimal bd = new BigDecimal(reservacion.getMonto()).setScale(2, RoundingMode.HALF_UP);
+            callableStatement.setBigDecimal(4,bd);
+            SQLServerDataTable sourceDataTable = new SQLServerDataTable();
+            sourceDataTable.addColumnMetadata("BloqueId", Types.INTEGER);
+            sourceDataTable.addColumnMetadata("FilaId",Types.CHAR);
+            sourceDataTable.addColumnMetadata("AsientoId",Types.INTEGER);
+            for (Asiento asiento:asientos
+                 ) {
+                sourceDataTable.addRow(asiento.getBloqueId(),asiento.getFilaId(),asiento.getAsientoId());
+
+            }
+            callableStatement.setStructured(5,"dbo.TablaAsientos",sourceDataTable);
+            callableStatement.setInt(6,ProdId);
+            callableStatement.setInt(7,PresId);
+            callableStatement.registerOutParameter(8,Types.INTEGER);
+            callableStatement.registerOutParameter(9,Types.DECIMAL);
+            callableStatement.registerOutParameter(10,Types.DATE);
+            callableStatement.execute();
+            Boolean success=callableStatement.getBoolean(8);
+            int comprobacion=callableStatement.getBigDecimal(9).intValue();
+            Date fecha = callableStatement.getDate(10);
+            Object[] resultados= new Object[]{success,comprobacion,fecha};
+            return resultados;
+
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return new Object[0];
+    }
+
+    @Override
+    public Object[] procesarCompraEfectivo(Reservacion reservacion, ArrayList<Asiento> asientos, int ProdId, int PresId) {
+        try
+         {
+            SQLServerCallableStatement callableStatement = (SQLServerCallableStatement)connection.prepareCall("EXEC RealizarCompraEfectivo ?,?,?,?,?,?,?,?,? ");
+            callableStatement.setString(1,reservacion.getNombreCliente());
+            callableStatement.setString(2,reservacion.getTelefono());
+            BigDecimal bd = new BigDecimal(reservacion.getMonto()).setScale(2, RoundingMode.HALF_UP);
+            callableStatement.setBigDecimal(3,bd);
+            SQLServerDataTable sourceDataTable = new SQLServerDataTable();
+            sourceDataTable.addColumnMetadata("BloqueId", Types.INTEGER);
+            sourceDataTable.addColumnMetadata("FilaId",Types.CHAR);
+            sourceDataTable.addColumnMetadata("AsientoId",Types.INTEGER);
+            for (Asiento asiento:asientos
+            ) {
+                sourceDataTable.addRow(asiento.getBloqueId(),asiento.getFilaId(),asiento.getAsientoId());
+
+            }
+            callableStatement.setStructured(4,"dbo.TablaAsientos",sourceDataTable);
+            callableStatement.setInt(5,ProdId);
+            callableStatement.setInt(6,PresId);
+            callableStatement.registerOutParameter(7,Types.INTEGER);
+            callableStatement.registerOutParameter(8,Types.DECIMAL);
+            callableStatement.registerOutParameter(9,Types.DATE);
+            callableStatement.execute();
+            Boolean success=callableStatement.getBoolean(7);
+            int comprobacion=callableStatement.getBigDecimal(8).intValue();
+            Date fecha = callableStatement.getDate(9);
+            Object[] resultados= new Object[]{success,comprobacion,fecha};
+            return resultados;
+
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return new Object[0];
+}
 
     @Override
     public boolean verificarUsername(String username) {

@@ -220,8 +220,8 @@ public class TheaterAdminView {
         return tOther.getText();
     }
 
-    public char[] getPassword() {
-        return password.getPassword();
+    public String getPassword() {
+        return String.valueOf(password.getPassword());
     }
 
     public String getUsuario() {

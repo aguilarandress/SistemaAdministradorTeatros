@@ -1,6 +1,7 @@
 package sistemateatros.daos;
 
 import sistemateatros.models.Presentacion;
+import sistemateatros.models.Produccion;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -12,4 +13,5 @@ public interface PresentacionesDAO {
     public ResultSet getRawPresentByProdId (int Id);
     public void addPresentacion(Presentacion presentacion);
     public boolean validateDate (Presentacion presentacion);
+    public ArrayList<Presentacion> getPresentByProdIdView(Produccion produccion);
 }

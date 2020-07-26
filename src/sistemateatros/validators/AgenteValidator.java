@@ -29,7 +29,7 @@ public class AgenteValidator {
                 errores.add("Cédula inválida");
             }
         }
-        if(agente.getFechaNacimiento().toString().isEmpty())
+        if(agente.getFechaNacimiento()==null)
         {
             errores.add("Fecha de nacimiento Inválida");
 

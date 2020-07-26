@@ -118,6 +118,7 @@ public class TheaterAdminController {
                 Bloque bloque=(Bloque)theaterAdminView.getTablaBloques().getValueAt(i,0);
                 bloque.setPrecio((Integer) theaterAdminView.getTablaBloques().getValueAt(i,1));
                 bloques.add(bloque);
+                System.out.println(i);
             }
             errores = BloquePrecioValidator.validateBloques(bloques);
             if (errores.size()>0)
@@ -161,8 +162,8 @@ public class TheaterAdminController {
                 theaterAdminView.displayMessage(errores.get(0),false);
                 return;
             }
-            char[] pass=agentTheater.getPassword();
-            agentTheater.setPassword((BCrypt.hashpw(pass.toString(),BCrypt.gensalt(4))).toCharArray());
+            String pass=agentTheater.getPassword();
+            agentTheater.setPassword((BCrypt.hashpw(pass.toString(),BCrypt.gensalt(4))));
             agentTheater.setIdTeatro(idTeatro);
             agentesJDBC.AddAgente(agentTheater);
             theaterAdminView.displayMessage("Añadido con éxito",true);
@@ -172,7 +173,7 @@ public class TheaterAdminController {
     private class cambiarPaneListener implements ChangeListener {
         @Override
         public void stateChanged(ChangeEvent e) {
-            // Verificar cual tabbed pane se esta cargando
+                // Verificar cual tabbed pane se esta cargando
             if (theaterAdminView.getHomeTAdm().getSelectedIndex() == 1)
             {
 
@@ -180,6 +181,7 @@ public class TheaterAdminController {
                 ArrayList<Bloque> bloques = teatrosJDBC.getBloquesByIdTeatro(idTeatro);
                 ModelTablaBloques model =  TableBloquesMapper.mapRows(bloques);
                 theaterAdminView.getTablaBloques().setModel(model);
+
 
 
 
@@ -227,6 +229,7 @@ public class TheaterAdminController {
                 Produccion produccion = produccionesJDBC.getProdByName((String)theaterAdminView.getProduccionesEstados().getSelectedItem());
                 String estado = produccionesJDBC.getEstadoById(produccion.getIdEstado());
                 theaterAdminView.getLabelEstado().setText("La produccion se encuentra : "+estado);
+
             }
         }
     }
