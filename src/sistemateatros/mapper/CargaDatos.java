@@ -12,6 +12,7 @@ import sistemateatros.jdbc.ProduccionesJDBC;
 import sistemateatros.jdbc.TeatrosJDBC;
 import sistemateatros.models.*;
 
+import java.io.DataOutput;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,7 +34,7 @@ public class CargaDatos {
         presentacionesJDBC.setConnection(DatabaseConnection.getConnection());
         try {
             XSSFWorkbook documento = new XSSFWorkbook(file);
-            XSSFSheet teatros = documento.getSheetAt(7);
+            XSSFSheet teatros = documento.getSheetAt(8);
             XSSFSheet bloques = documento.getSheetAt(3);
             XSSFSheet filas = documento.getSheetAt(1);
             XSSFSheet producciones = documento.getSheetAt(5);
@@ -43,7 +44,7 @@ public class CargaDatos {
             Row filaTeatro =teatros.getRow(3);
             Teatro teatro = new Teatro();
             teatro.setNombre(filaTeatro.getCell(0).getStringCellValue());
-            teatro.setTelefonoAdministracion(filaTeatro.getCell(1).getStringCellValue());
+            teatro.setTelefonoAdministracion((filaTeatro.getCell(1).getStringCellValue()));
             teatro.setTelefonoBoleteria(filaTeatro.getCell(5).getStringCellValue());
             Double capacidad = filaTeatro.getCell(4).getNumericCellValue();
             teatro.setCapacidad(capacidad.intValue());
@@ -62,7 +63,7 @@ public class CargaDatos {
                     Bloque bloque = new Bloque();
                     bloque.setIdTeatro(teatroId.intValue());
                     bloque.setNombre(filabloque.getCell(1).getStringCellValue());
-                    teatrosJDBC.crearBloque(bloque);
+                        teatrosJDBC.crearBloque(bloque);
                 }
             }
             //Inicio carga Filas
@@ -72,7 +73,7 @@ public class CargaDatos {
             {
                 filafila = filas.getRow(i);
                 Double teatroId = filafila.getCell(0).getNumericCellValue();
-                if (teatroId.intValue() == 3)
+                    if (teatroId.intValue() == 3)
                 {
                     Fila fila = new Fila();
                     Double idBloque = filafila.getCell(1).getNumericCellValue();
@@ -94,7 +95,7 @@ public class CargaDatos {
                 if (idTeat == 3)
                 {
                     Produccion produccion = new Produccion();
-                    produccion.setIdTeatro(3);
+                    produccion.setIdTeatro(((Double)filaProd.getCell(0).getNumericCellValue()).intValue());
                     produccion.setNombre(filaProd.getCell(1).getStringCellValue());
                     produccion.setIdTipo(((Double)filaProd.getCell(2).getNumericCellValue()).intValue());
                     produccion.setFechaI(Date.valueOf(filaProd.getCell(3).getStringCellValue()));
