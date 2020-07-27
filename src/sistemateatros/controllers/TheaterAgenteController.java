@@ -335,7 +335,6 @@ public class TheaterAgenteController {
             if (repetido)
             {
                 agentView.displayMessage("No se agregaron los asientos repetidos",false);
-
             }
 
         }
