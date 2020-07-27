@@ -63,7 +63,7 @@ public class CargaDatos {
                     Bloque bloque = new Bloque();
                     bloque.setIdTeatro(teatroId.intValue());
                     bloque.setNombre(filabloque.getCell(1).getStringCellValue());
-                        teatrosJDBC.crearBloque(bloque);
+                    teatrosJDBC.crearBloque(bloque);
                 }
             }
             //Inicio carga Filas
@@ -89,7 +89,7 @@ public class CargaDatos {
             Row filaProd;
             for (int i = 1 ; i<= cantidadProducciones ; i++)
             {
-                filaProd = filas.getRow(i);
+                filaProd = producciones.getRow(i);
                 Double idTeatro = filaProd.getCell(0).getNumericCellValue();
                 int idTeat = idTeatro.intValue();
                 if (idTeat == 3)
@@ -98,8 +98,8 @@ public class CargaDatos {
                     produccion.setIdTeatro(((Double)filaProd.getCell(0).getNumericCellValue()).intValue());
                     produccion.setNombre(filaProd.getCell(1).getStringCellValue());
                     produccion.setIdTipo(((Double)filaProd.getCell(2).getNumericCellValue()).intValue());
-                    produccion.setFechaI(Date.valueOf(filaProd.getCell(3).getStringCellValue()));
-                    produccion.setFechaF(Date.valueOf(filaProd.getCell(4).getStringCellValue()));
+                    produccion.setFechaI((filaProd.getCell(3).getDateCellValue()));
+                    produccion.setFechaF((filaProd.getCell(4).getDateCellValue()));
                     produccion.setDescripcion(filaProd.getCell(5).getStringCellValue());
                     produccion.setIdEstado(((Double)filaProd.getCell(6).getNumericCellValue()).intValue());
                     produccionesJDBC.AddProd(produccion);
@@ -136,8 +136,8 @@ public class CargaDatos {
                 {
                     Presentacion presentacion1 = new Presentacion();
                     presentacion1.setId(((Double)presentacion.getCell(1).getNumericCellValue()).intValue());
-                    presentacion1.setFecha(Date.valueOf(presentacion.getCell(2).getStringCellValue()));
-                    presentacion1.setHora((presentacion.getCell(3).getStringCellValue()));
+                    presentacion1.setFecha((presentacion.getCell(2).getDateCellValue()));
+                    presentacion1.setHora((presentacion.getCell(3).toString()));
                     presentacion1.setPresentId(((Double)presentacion.getCell(4).getNumericCellValue()).intValue());
                     presentacionesJDBC.addPresentacion(presentacion1);
 
