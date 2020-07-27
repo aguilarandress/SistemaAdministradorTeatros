@@ -61,6 +61,7 @@ public class TheaterAdminView {
     JDateChooser prodInicio = new JDateChooser();
     JDateChooser prodFinal = new JDateChooser();
     JDateChooser presentacionFecha = new JDateChooser();
+    private AuthenticationView authenticationView;
 
 
 
@@ -361,5 +362,9 @@ public class TheaterAdminView {
     private void createUIComponents() {
         // TODO: place custom component creation code here
     }
+
+    public AuthenticationView getAuthenticationView() { return authenticationView; }
+
+    public void setAuthenticationView(AuthenticationView authenticationView) { this.authenticationView = authenticationView; }
 }
 

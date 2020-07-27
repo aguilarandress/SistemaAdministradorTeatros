@@ -47,6 +47,7 @@ public class AgentView {
     private DefaultListModel valoresLista;
     private JDateChooser fechaInicialChooser = new JDateChooser();
     private JDateChooser fechaFinallChooser = new JDateChooser();
+    private AuthenticationView authenticationView;
 
     public AgentView (int TeatroId,String Agente)
     {
@@ -199,4 +200,7 @@ public class AgentView {
         return obtenerPreciosCarteleraBtn;
     }
 
+    public AuthenticationView getAuthenticationView() { return authenticationView; }
+
+    public void setAuthenticationView(AuthenticationView authenticationView) { this.authenticationView = authenticationView; }
 }

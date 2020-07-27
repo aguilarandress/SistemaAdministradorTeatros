@@ -11,6 +11,7 @@ import sistemateatros.models.SystemAdmin;
 import sistemateatros.models.TheaterAdmin;
 import sistemateatros.views.AuthenticationView;
 
+import javax.swing.*;
 import javax.xml.crypto.Data;
 
 /**
@@ -51,7 +52,7 @@ public class AuthenticationController {
                 return;
             }
             authenticationView.displayMessage("Se ha iniciado sesion correctamente...", true);
-            authenticationView.close();
+            authenticationView.hide();
             // Abrir ventana para el administrador del sistema
             SystemAdminController systemAdminController = new SystemAdminController();
         }

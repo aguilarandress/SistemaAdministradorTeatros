@@ -1,8 +1,6 @@
 package sistemateatros.views;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Vista para iniciar sesion
@@ -24,6 +22,8 @@ public class AuthenticationView {
     private JTextField agenteUsername;
     private JPasswordField agentePassword;
     private JButton loginAgenteBtn;
+    private JButton cargaDeDatosBtn;
+    private AuthenticationView authenticationView;
 
     public JFrame getFrame() {
         return frame;
@@ -87,4 +87,10 @@ public class AuthenticationView {
     public String getAgentePassword() {
         return new String(agentePassword.getPassword());
     }
+
+    public JButton getCargaDeDatosBtn() {
+        return cargaDeDatosBtn;
+    }
+
+
 }

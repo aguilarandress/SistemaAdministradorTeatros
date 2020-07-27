@@ -4,6 +4,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import sistemateatros.database.DatabaseConnection;
 import sistemateatros.jdbc.TeatrosJDBC;
 import sistemateatros.jdbc.TheaterAdminsJDBC;
+import sistemateatros.mapper.CargaDatos;
 import sistemateatros.models.Bloque;
 import sistemateatros.models.Fila;
 import sistemateatros.models.Teatro;
@@ -12,9 +13,11 @@ import sistemateatros.validators.TeatroValidator;
 import sistemateatros.validators.TheaterAdminValidator;
 import sistemateatros.views.SystemAdminView;
 
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.*;
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -36,6 +39,7 @@ public class SystemAdminController {
         this.systemAdminView.getCedulaAgregarAdminField().addKeyListener(new NumeroEnteroFieldListener());
         this.systemAdminView.getSeleccionarTeatroAgregarFilaBox().addItemListener(new SeleccionarTeatroAgregarFilaListener());
         this.systemAdminView.getAgregarAdminBtn().addActionListener(new AgregarAdminTeatroListener());
+        this.systemAdminView.getCargaDatosBtn().addActionListener(new cargaDatosListener());
     }
 
     /**
@@ -278,6 +282,17 @@ public class SystemAdminController {
                     systemAdminView.getSeleccionarBloqueAgregarFilaBox().addItem(bloques.get(i));
                 }
             }
+        }
+    }
+
+    private class cargaDatosListener implements  ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JFileChooser jFileChooser = new JFileChooser();
+            jFileChooser.showOpenDialog(jFileChooser);
+            File archivoCarga=jFileChooser.getSelectedFile();
+            CargaDatos.cargaDatos(archivoCarga);
         }
     }
 

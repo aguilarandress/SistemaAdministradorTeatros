@@ -56,6 +56,7 @@ public class SystemAdminView {
 
     private DefaultComboBoxModel<Teatro> teatroAgregarAdminCBModel;
     private JComboBox teatroAgregarAdminCB;
+    private AuthenticationView authenticationView;
 
 
     private JRadioButton hombreAgregarAdminRB;
@@ -81,6 +82,8 @@ public class SystemAdminView {
     private JLabel passwordAgregarAdminLabel;
     private JLabel fechaNacimientoAgregarAdminLabel;
     private JPanel fachaNacimientoJPanel;
+    private JButton cargaDatosBtn;
+
 
     private JDateChooser fechaNacimientoChooser = new JDateChooser();
 
@@ -259,7 +262,13 @@ public class SystemAdminView {
         return mujerAgregarAdminRB;
     }
 
-    public char getSexoValue() {
-        return hombreAgregarAdminRB.isSelected() ? 'M' : 'F';
-    }
+    public char getSexoValue() { return hombreAgregarAdminRB.isSelected() ? 'M' : 'F'; }
+
+    public JButton getCargaDatosBtn() {return cargaDatosBtn; }
+
+    public void setCargaDatosBtn(JButton cargaDatosBtn) {this.cargaDatosBtn = cargaDatosBtn; }
+
+    public AuthenticationView getAuthenticationView() { return authenticationView; }
+
+    public void setAuthenticationView(AuthenticationView authenticationView) { this.authenticationView = authenticationView; }
 }
