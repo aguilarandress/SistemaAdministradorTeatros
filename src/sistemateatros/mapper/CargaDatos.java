@@ -132,6 +132,11 @@ public class CargaDatos {
             {
                 presentacion=presentaciones.getRow(i);
                 Double idTeatro = presentacion.getCell(0).getNumericCellValue();
+
+                if(idTeatro == null)
+                {
+                    continue;
+                }
                 if(idTeatro.intValue() == 3)
                 {
                     Presentacion presentacion1 = new Presentacion();

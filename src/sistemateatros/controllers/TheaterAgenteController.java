@@ -13,10 +13,7 @@ import sistemateatros.views.AgentView;
 import sistemateatros.views.FormularioCliente;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.event.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.event.ActionEvent;
@@ -60,6 +57,7 @@ public class TheaterAgenteController {
         //Listener compra
         this.agentView.getTabbedAgente().addChangeListener(new changeTabListener());
         this.agentView.getComboTeatros().addItemListener(new compraTeatroListener());
+        this.agentView.getComboTeatros().addPopupMenuListener(new compraTeatroListener2());
 
 
         this.agentView.getTablaProds().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -71,8 +69,10 @@ public class TheaterAgenteController {
         selectionModel.addListSelectionListener(new compraTeatroPresentListener());
 
         this.agentView.getComboBLQ().addItemListener(new compraTeatroBloqueListener());
+        this.agentView.getComboBLQ().addPopupMenuListener(new compraTeatroBloqueListener2());
 
         this.agentView.getComboFl().addItemListener(new compraTeatroFilaListener());
+        this.agentView.getComboFl().addPopupMenuListener(new compraTeatroFilaListener2());
 
         this.agentView.getTablaAsientos().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         selectionModel = this.agentView.getTablaAsientos().getSelectionModel();
@@ -83,6 +83,7 @@ public class TheaterAgenteController {
 
         //Listeners Consulta
         this.agentView.getTeatroComboAsientos().addItemListener(new consultaTeatroListener());
+        this.agentView.getTeatroComboAsientos().addPopupMenuListener(new consultaTeatroListener2());
 
         this.agentView.getTablaProdAsientos().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         selectionModel = this.agentView.getTablaProdAsientos().getSelectionModel();
@@ -93,9 +94,10 @@ public class TheaterAgenteController {
         selectionModel.addListSelectionListener(new consultaTeatroPresentListener());
 
         this.agentView.getComboBloqueAsientos().addItemListener(new consultaTeatroBloqueListener());
+        this.agentView.getComboBloqueAsientos().addPopupMenuListener(new consultaTeatroBloqueListener2());
 
         this.agentView.getComboFilaAsientos().addItemListener(new consultaTeatroFilaListener());
-
+        this.agentView.getComboFilaAsientos().addPopupMenuListener(new consultaTeatroFilaListener2());
         this.agentView.getTablaAsientos().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         selectionModel = this.agentView.getTablaAsientos().getSelectionModel();
         //Listener cartelera
@@ -142,6 +144,7 @@ public class TheaterAgenteController {
             }
             else if(agentView.getTabbedAgente().getSelectedIndex() == 2)
             {
+
                 agentView.getTeatroComboAsientos().removeAllItems();
                 ArrayList<Teatro> teatros = teatrosJDBC.getTeatros();
                 agentView.setComboTeatrosAsientos(teatros);
@@ -165,9 +168,12 @@ public class TheaterAgenteController {
                 agentView.getComboFl().removeAllItems();
                 model5 = TablaAsientosMapper.mapRows(new ArrayList<Asiento>());
                 agentView.getTablaAsientos().setModel(model5);
+
+
             }
 
             else {
+
                 ModelTablaProd model= TablaProdMapper.mapRows(new ArrayList<Produccion>());
                 agentView.getTablaProds().setModel(model);
                 ModelTablaProd model2 = TablaPresenMapper.mapRows(new ArrayList<Presentacion>());
@@ -189,19 +195,51 @@ public class TheaterAgenteController {
         @Override
         public void itemStateChanged(ItemEvent e) {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                Teatro teatro = (Teatro) agentView.getComboTeatros().getSelectedItem();
-                ArrayList <Produccion> producciones = produccionesJDBC.getProdTIdView(teatro.getId());
-                ModelTablaProd model= TablaProdMapper.mapRows(producciones);
-                agentView.getTablaProds().setModel(model);
-                ModelTablaProd model2 = TablaPresenMapper.mapRows(new ArrayList<Presentacion>());
-                agentView.getTablaPresent().setModel(model2);
-                agentView.getComboBLQ().removeAllItems();
-                agentView.getComboFl().removeAllItems();
-                ModelTablaProd model5 = TablaAsientosMapper.mapRows(new ArrayList<Asiento>());
-                agentView.getTablaAsientos().setModel(model5);
-                agentView.getTablaProds().setEnabled(true);
-                agentView.getTablaPresent().setEnabled(true);
+
+                    Teatro teatro = (Teatro) agentView.getComboTeatros().getSelectedItem();
+                    ArrayList<Produccion> producciones = produccionesJDBC.getProdTIdView(teatro.getId());
+                    ModelTablaProd model = TablaProdMapper.mapRows(producciones);
+                    agentView.getTablaProds().setModel(model);
+                    ModelTablaProd model2 = TablaPresenMapper.mapRows(new ArrayList<Presentacion>());
+                    agentView.getTablaPresent().setModel(model2);
+                    agentView.getComboBLQ().removeAllItems();
+                    agentView.getComboFl().removeAllItems();
+                    ModelTablaProd model5 = TablaAsientosMapper.mapRows(new ArrayList<Asiento>());
+                    agentView.getTablaAsientos().setModel(model5);
+                    agentView.getTablaProds().setEnabled(true);
+                    agentView.getTablaPresent().setEnabled(true);
+
+
             }
+        }
+    }
+    private class compraTeatroListener2 implements PopupMenuListener
+    {
+
+        @Override
+        public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+            Teatro teatro = (Teatro) agentView.getComboTeatros().getSelectedItem();
+            ArrayList<Produccion> producciones = produccionesJDBC.getProdTIdView(teatro.getId());
+            ModelTablaProd model = TablaProdMapper.mapRows(producciones);
+            agentView.getTablaProds().setModel(model);
+            ModelTablaProd model2 = TablaPresenMapper.mapRows(new ArrayList<Presentacion>());
+            agentView.getTablaPresent().setModel(model2);
+            agentView.getComboBLQ().removeAllItems();
+            agentView.getComboFl().removeAllItems();
+            ModelTablaProd model5 = TablaAsientosMapper.mapRows(new ArrayList<Asiento>());
+            agentView.getTablaAsientos().setModel(model5);
+            agentView.getTablaProds().setEnabled(true);
+            agentView.getTablaPresent().setEnabled(true);
+        }
+
+        @Override
+        public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+        }
+
+        @Override
+        public void popupMenuCanceled(PopupMenuEvent e) {
+
         }
     }
 
@@ -267,6 +305,31 @@ public class TheaterAgenteController {
             }
         }
     }
+    private class compraTeatroBloqueListener2 implements  PopupMenuListener
+    {
+
+        @Override
+        public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+            Bloque bloque = (Bloque) agentView.getComboBLQ().getSelectedItem();
+            ArrayList<Fila> filas = teatrosJDBC.getFilasByBloque(bloque);
+            agentView.getComboFl().removeAllItems();
+            TablaFilasMapper.mapRows(filas,agentView.getComboFl());
+            ModelTablaProd model5 = TablaAsientosMapper.mapRows(new ArrayList<Asiento>());
+            agentView.getTablaAsientos().setModel(model5);
+            agentView.getTablaProds().setEnabled(false);
+            agentView.getTablaPresent().setEnabled(false);
+        }
+
+        @Override
+        public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+        }
+
+        @Override
+        public void popupMenuCanceled(PopupMenuEvent e) {
+
+        }
+    }
     private class compraTeatroFilaListener implements  ItemListener {
         /**
          * Listener para cargar los asientos disponibles en base a la combinación de producción,presentación ,bloque y fila
@@ -283,6 +346,28 @@ public class TheaterAgenteController {
                 agentView.getTablaAsientos().setModel(model);
 
             }
+        }
+    }
+    private class compraTeatroFilaListener2 implements PopupMenuListener
+    {
+
+        @Override
+        public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+            Fila fila = (Fila) agentView.getComboFl().getSelectedItem();
+            Presentacion presentacion = (Presentacion) agentView.getTablaPresent().getValueAt(agentView.getTablaPresent().getSelectedRow(),0);
+            ArrayList<Asiento> asientos = teatrosJDBC.getAsientosByFila(fila,presentacion);
+            ModelTablaProd model = TablaAsientosMapper.mapRows(asientos);
+            agentView.getTablaAsientos().setModel(model);
+        }
+
+        @Override
+        public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+        }
+
+        @Override
+        public void popupMenuCanceled(PopupMenuEvent e) {
+
         }
     }
 
@@ -456,6 +541,35 @@ public class TheaterAgenteController {
             }
         }
     }
+    private class consultaTeatroListener2 implements PopupMenuListener
+    {
+
+        @Override
+        public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+            Teatro teatro = (Teatro) agentView.getTeatroComboAsientos().getSelectedItem();
+            ArrayList <Produccion> producciones = produccionesJDBC.getProdTIdView(teatro.getId());
+            ModelTablaProd model= TablaProdMapper.mapRows(producciones);
+            agentView.getTablaProdAsientos().setModel(model);
+            ModelTablaProd model2 = TablaPresenMapper.mapRows(new ArrayList<Presentacion>());
+            agentView.getTablaPresAsientos().setModel(model2);
+            agentView.getComboBloqueAsientos().removeAllItems();
+            agentView.getComboFilaAsientos().removeAllItems();
+            ModelTablaProd model5 = TablaAsientosMapper.mapRows(new ArrayList<Asiento>());
+            agentView.getTablaAsientosAsientos().setModel(model5);
+            agentView.getTablaProdAsientos().setEnabled(true);
+            agentView.getTablaPresAsientos().setEnabled(true);
+        }
+
+        @Override
+        public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+        }
+
+        @Override
+        public void popupMenuCanceled(PopupMenuEvent e) {
+
+        }
+    }
 
 
 
@@ -519,6 +633,32 @@ public class TheaterAgenteController {
             }
         }
     }
+    private class consultaTeatroBloqueListener2 implements  PopupMenuListener
+    {
+
+
+        @Override
+        public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+            Bloque bloque = (Bloque) agentView.getComboBloqueAsientos().getSelectedItem();
+            ArrayList<Fila> filas = teatrosJDBC.getFilasByBloque(bloque);
+            agentView.getComboFilaAsientos().removeAllItems();
+            TablaFilasMapper.mapRows(filas,agentView.getComboFilaAsientos());
+            ModelTablaProd model5 = TablaAsientosMapper.mapRows(new ArrayList<Asiento>());
+            agentView.getTablaAsientosAsientos().setModel(model5);
+            agentView.getTablaProdAsientos().setEnabled(false);
+            agentView.getTablaPresAsientos().setEnabled(false);
+        }
+
+        @Override
+        public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+        }
+
+        @Override
+        public void popupMenuCanceled(PopupMenuEvent e) {
+
+        }
+    }
     private class consultaTeatroFilaListener implements  ItemListener {
         /**
          * Listener para cargar los asientos disponibles en base a la combinación de producción,presentación ,bloque y fila
@@ -527,7 +667,6 @@ public class TheaterAgenteController {
         @Override
         public void itemStateChanged(ItemEvent e) {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-
                 Fila fila = (Fila) agentView.getComboFilaAsientos().getSelectedItem();
                 Presentacion presentacion = (Presentacion) agentView.getTablaPresAsientos().getValueAt(agentView.getTablaPresAsientos().getSelectedRow(),0);
                 ArrayList<Asiento> asientos = teatrosJDBC.getAsientosByFila(fila,presentacion);
@@ -535,6 +674,29 @@ public class TheaterAgenteController {
                 agentView.getTablaAsientosAsientos().setModel(model);
 
             }
+        }
+    }
+    private class consultaTeatroFilaListener2 implements PopupMenuListener
+    {
+
+
+        @Override
+        public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+            Fila fila = (Fila) agentView.getComboFilaAsientos().getSelectedItem();
+            Presentacion presentacion = (Presentacion) agentView.getTablaPresAsientos().getValueAt(agentView.getTablaPresAsientos().getSelectedRow(),0);
+            ArrayList<Asiento> asientos = teatrosJDBC.getAsientosByFila(fila,presentacion);
+            ModelTablaProd model = TablaAsientosMapper.mapRows(asientos);
+            agentView.getTablaAsientosAsientos().setModel(model);
+        }
+
+        @Override
+        public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+        }
+
+        @Override
+        public void popupMenuCanceled(PopupMenuEvent e) {
+
         }
     }
     /**
