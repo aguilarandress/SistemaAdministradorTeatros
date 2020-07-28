@@ -73,7 +73,7 @@ public class ProduccionesJDBC implements ProduccionesDAO {
         try
         {
             ArrayList<Produccion> producciones = new ArrayList<Produccion>() ;
-            PreparedStatement preparedStatement = connection.prepareStatement("EXEC getProducciones");
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC GetProducciones");
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next())
             {
