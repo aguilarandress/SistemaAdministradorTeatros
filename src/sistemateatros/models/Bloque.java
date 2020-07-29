@@ -48,7 +48,9 @@ public class Bloque {
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
+
         return this.nombre;
     }
 }
