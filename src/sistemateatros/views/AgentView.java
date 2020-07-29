@@ -42,6 +42,7 @@ public class AgentView {
     private JScrollPane bloquePreciosScrollPane;
     private JTable bloquePreciosTable;
     private JButton obtenerPreciosCarteleraBtn;
+    private JButton logoutBtn;
     private String Agente;
     private int TeatroId;
     private DefaultListModel valoresLista;
@@ -201,6 +202,17 @@ public class AgentView {
     }
 
     public AuthenticationView getAuthenticationView() { return authenticationView; }
+
+    public JButton getLogoutBtn() {
+        return logoutBtn;
+    }
+    public void close()
+    {
+        this.frame.dispose();
+    }
+    public void setLogoutBtn(JButton logoutBtn) {
+        this.logoutBtn = logoutBtn;
+    }
 
     public void setAuthenticationView(AuthenticationView authenticationView) { this.authenticationView = authenticationView; }
 }

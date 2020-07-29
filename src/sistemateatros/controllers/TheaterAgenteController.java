@@ -10,6 +10,7 @@ import sistemateatros.mapper.*;
 import sistemateatros.models.*;
 import sistemateatros.validators.ClienteValidator;
 import sistemateatros.views.AgentView;
+import sistemateatros.views.AuthenticationView;
 import sistemateatros.views.FormularioCliente;
 
 import javax.swing.*;
@@ -38,8 +39,9 @@ public class TheaterAgenteController {
     private TeatrosJDBC teatrosJDBC;
     private PresentacionesJDBC presentacionesJDBC;
     private ArrayList<PresentacionCartelera> presentaciones = new ArrayList<>();
-    public  TheaterAgenteController(int IdTeatro,String agente)
+    public  TheaterAgenteController(int IdTeatro, String agente, AuthenticationView authenticationView)
     {
+
         this.agente=agente;
         this.IdTeatro=IdTeatro;
         agentView = new AgentView(IdTeatro,agente);
@@ -54,6 +56,7 @@ public class TheaterAgenteController {
         presentacionesJDBC.setConnection(DatabaseConnection.getConnection());
         this.teatro = teatrosJDBC.getTeatroByID(IdTeatro);
         this.agentView.setTheaterInfo(teatro.getNombre());
+        this.agentView.getLogoutBtn().addActionListener(new logoutBtnListener());
         //Listener compra
         this.agentView.getTabbedAgente().addChangeListener(new changeTabListener());
         this.agentView.getComboTeatros().addItemListener(new compraTeatroListener());
@@ -109,6 +112,7 @@ public class TheaterAgenteController {
         agentView.getTablaPresent().setEnabled(true);
         agentView.getTablaProdAsientos().setEnabled(true);
         agentView.getTablaPresAsientos().setEnabled(true);
+        this.agentView.setAuthenticationView(authenticationView);
     }
     private class changeTabListener  implements ChangeListener
     {
@@ -760,6 +764,19 @@ public class TheaterAgenteController {
                 DefaultTableModel tableModel = new DefaultTableModel(filas, columnNames);
                 agentView.getBloquePreciosTable().setModel(tableModel);
             }
+        }
+    }
+    /**
+     * Listener que realiza la acción de logout
+     */
+    private class logoutBtnListener implements  ActionListener
+    {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            agentView.getAuthenticationView().setVisible();
+            agentView.close();
+
         }
     }
 }

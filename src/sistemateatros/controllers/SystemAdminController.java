@@ -11,6 +11,7 @@ import sistemateatros.models.Teatro;
 import sistemateatros.models.TheaterAdmin;
 import sistemateatros.validators.TeatroValidator;
 import sistemateatros.validators.TheaterAdminValidator;
+import sistemateatros.views.AuthenticationView;
 import sistemateatros.views.SystemAdminView;
 
 import javax.swing.*;
@@ -27,7 +28,7 @@ public class SystemAdminController {
 
     private SystemAdminView systemAdminView;
 
-    public SystemAdminController() {
+    public SystemAdminController(AuthenticationView authenticationView) {
         this.systemAdminView = new SystemAdminView();
         this.systemAdminView.setVisible();
         // Set event listeners
@@ -40,6 +41,8 @@ public class SystemAdminController {
         this.systemAdminView.getSeleccionarTeatroAgregarFilaBox().addItemListener(new SeleccionarTeatroAgregarFilaListener());
         this.systemAdminView.getAgregarAdminBtn().addActionListener(new AgregarAdminTeatroListener());
         this.systemAdminView.getCargaDatosBtn().addActionListener(new cargaDatosListener());
+        this.systemAdminView.getLogoutBtn().addActionListener(new logoutBtnListener());
+        this.systemAdminView.setAuthenticationView(authenticationView);
     }
 
     /**
@@ -285,6 +288,9 @@ public class SystemAdminController {
         }
     }
 
+    /**
+     * Listener de botón para abrir el menú de carga de datos
+     */
     private class cargaDatosListener implements  ActionListener
     {
         @Override
@@ -293,6 +299,20 @@ public class SystemAdminController {
             jFileChooser.showOpenDialog(jFileChooser);
             File archivoCarga=jFileChooser.getSelectedFile();
             CargaDatos.cargaDatos(archivoCarga);
+        }
+    }
+
+    /**
+     * Listener que realiza la acción de logout
+     */
+    private class logoutBtnListener implements  ActionListener
+    {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            systemAdminView.getAuthenticationView().setVisible();
+            systemAdminView.close();
+
         }
     }
 

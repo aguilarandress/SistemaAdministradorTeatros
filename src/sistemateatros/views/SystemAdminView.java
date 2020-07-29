@@ -83,6 +83,7 @@ public class SystemAdminView {
     private JLabel fechaNacimientoAgregarAdminLabel;
     private JPanel fachaNacimientoJPanel;
     private JButton cargaDatosBtn;
+    private JButton logoutBtn;
 
 
     private JDateChooser fechaNacimientoChooser = new JDateChooser();
@@ -271,4 +272,12 @@ public class SystemAdminView {
     public AuthenticationView getAuthenticationView() { return authenticationView; }
 
     public void setAuthenticationView(AuthenticationView authenticationView) { this.authenticationView = authenticationView; }
+
+    public JButton getLogoutBtn() {
+        return logoutBtn;
+    }
+
+    public void setLogoutBtn(JButton logoutBtn) {
+        this.logoutBtn = logoutBtn;
+    }
 }

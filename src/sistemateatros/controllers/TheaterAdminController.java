@@ -12,6 +12,7 @@ import sistemateatros.models.*;
 import sistemateatros.validators.AgenteValidator;
 import sistemateatros.validators.BloquePrecioValidator;
 import sistemateatros.validators.ProduccionValidator;
+import sistemateatros.views.AuthenticationView;
 import sistemateatros.views.TheaterAdminView;
 
 import javax.swing.*;
@@ -42,7 +43,7 @@ public class TheaterAdminController {
 
 
 
-    public  TheaterAdminController(int IdTeatro,String Admin){
+    public  TheaterAdminController(int IdTeatro, String Admin, AuthenticationView authenticationView){
 
 
         this.setAdmin(Admin);
@@ -70,6 +71,9 @@ public class TheaterAdminController {
         ArrayList<String> tipos = produccionesJDBC.getTipos();
         this.theaterAdminView.setCombo(tipos);
 
+        this.theaterAdminView.getLogoutBtn().addActionListener(new logoutBtnListener());
+
+        this.theaterAdminView.setAuthenticationView(authenticationView);
 
     }
 
@@ -273,6 +277,19 @@ public class TheaterAdminController {
 
 
 
+
+        }
+    }
+    /**
+     * Listener que realiza la acción de logout
+     */
+    private class logoutBtnListener implements  ActionListener
+    {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            theaterAdminView.getAuthenticationView().setVisible();
+            theaterAdminView.close();
 
         }
     }

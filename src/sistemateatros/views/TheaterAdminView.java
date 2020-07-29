@@ -54,6 +54,7 @@ public class TheaterAdminView {
     private JButton cambiarEstadoButton;
     private JLabel labelEstado;
     private JTable tablaBloques;
+    private JButton logoutBtn;
     private JPanel horaHolderPresen;
     private String Admin;
     private JSpinner horaSpinner;
@@ -358,12 +359,22 @@ public class TheaterAdminView {
 
     }
 
-
+    public void close() {
+        this.frame.dispose();
+    }
     private void createUIComponents() {
         // TODO: place custom component creation code here
     }
 
     public AuthenticationView getAuthenticationView() { return authenticationView; }
+
+    public JButton getLogoutBtn() {
+        return logoutBtn;
+    }
+
+    public void setLogoutBtn(JButton logoutBtn) {
+        this.logoutBtn = logoutBtn;
+    }
 
     public void setAuthenticationView(AuthenticationView authenticationView) { this.authenticationView = authenticationView; }
 }

@@ -10,6 +10,7 @@ import sistemateatros.models.AgentTheater;
 import sistemateatros.models.SystemAdmin;
 import sistemateatros.models.TheaterAdmin;
 import sistemateatros.views.AuthenticationView;
+import sistemateatros.views.TheaterAdminView;
 
 import javax.swing.*;
 import javax.xml.crypto.Data;
@@ -54,7 +55,7 @@ public class AuthenticationController {
             authenticationView.displayMessage("Se ha iniciado sesion correctamente...", true);
             authenticationView.hide();
             // Abrir ventana para el administrador del sistema
-            SystemAdminController systemAdminController = new SystemAdminController();
+            SystemAdminController systemAdminController = new SystemAdminController(authenticationView);
         }
     }
 
@@ -82,8 +83,9 @@ public class AuthenticationController {
                 return;
             }
             authenticationView.displayMessage("Loggin in...", true);
-            TheaterAdminController theaterAdminController= new TheaterAdminController(theaterAdmin.getIdTeatro(),theaterAdmin.getNombre());
+            TheaterAdminController theaterAdminController= new TheaterAdminController(theaterAdmin.getIdTeatro(),theaterAdmin.getNombre(),authenticationView);
             authenticationView.hide();
+
 
         }
     }
@@ -113,7 +115,7 @@ public class AuthenticationController {
                 return;
             }
             authenticationView.displayMessage("Loggin in...", true);
-            TheaterAgenteController theaterAgenteController= new TheaterAgenteController(agentTheater.getIdTeatro(),agentTheater.getNombre());
+            TheaterAgenteController theaterAgenteController= new TheaterAgenteController(agentTheater.getIdTeatro(),agentTheater.getNombre(),authenticationView);
             authenticationView.hide();
         }
 

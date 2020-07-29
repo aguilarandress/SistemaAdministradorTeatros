@@ -19,6 +19,6 @@ public class Asiento {
 
     @Override
     public String toString() {
-        return String.valueOf(this.getAsientoId()+this.getFilaId()+this.getBloqueId());
+        return String.valueOf(this.getAsientoId()+this.getFilaId());
     }
 }
