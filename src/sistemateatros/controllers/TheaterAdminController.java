@@ -96,6 +96,7 @@ public class TheaterAdminController {
     private class addProdListener implements  ActionListener
     {
         public void actionPerformed(ActionEvent e) {
+            //TODO: Implementar método titovare
             Produccion produccion = new Produccion();
             produccion.setNombre(theaterAdminView.getProduccion());
             produccion.setDescripcion(theaterAdminView.getDescripcion());
